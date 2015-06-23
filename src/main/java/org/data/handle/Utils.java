@@ -1,6 +1,7 @@
 package org.data.handle;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -12,6 +13,11 @@ public class Utils {
 		if(value==null)
 			return -1;
 		return Integer.parseInt(value.toString());
+	}
+	public static long convertToLong(Object value){
+		if(value==null)
+			return -1;
+		return Long.parseLong(value.toString());
 	}
 	public static String convertToString(Object value){
 		if(value==null)

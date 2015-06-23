@@ -53,5 +53,6 @@ public abstract class DAO<T> {
 	public abstract List<T> all();
 	
 	public abstract ResultSet resultSet();
-
+	
+	public abstract T get (ResultSet result);
 }

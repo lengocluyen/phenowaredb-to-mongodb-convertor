@@ -3,15 +3,19 @@ package org.data.handle;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import info.aduna.iteration.Iterations;
 
+import org.data.connection.StudyDao;
 import org.data.connection.WeighingresultDao;
+import org.data.form.Study;
 import org.data.form.Weighingresult;
 import org.data.jsonconvertor.Convertor;
 import org.data.jsonconvertor.JsonReadWrite;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.openrdf.*;
 import org.openrdf.model.Model;
@@ -35,7 +39,8 @@ public class main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		ExportJsonData();
+		//ExportJsonData();
+		TestStudy();
 	}
 	public static void ExportJsonData(){
 		String file = "test.json";
@@ -44,6 +49,16 @@ public class main {
 		List<LinkedHashMap<String,Object>> jsons = Convertor.WeighingResultConvertToJson(rs);
 		JsonReadWrite jrw = new JsonReadWrite();
 		jrw.WriteToFile(jsons, file,true);
+	}
+	public static void TestStudy(){
+		StudyDao sd = new StudyDao(null);
+		List<Study> studies = sd.all();
+		for(Study s: studies){
+			System.out.print(s.getStudyid()+"\t");
+			System.out.print(s.getUserInfo().getFirstName()+"\t");
+			System.out.print(s.getStudystatus().getLabel()+"\t");
+			System.out.print("\n");
+		}
 	}
 	public static void TestSQLConnection(){
 		WeighingresultDao wrd = new WeighingresultDao(null);
