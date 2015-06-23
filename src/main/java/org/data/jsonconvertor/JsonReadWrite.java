@@ -4,8 +4,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.data.handle.Utils;
 import org.json.simple.JSONObject;
@@ -18,11 +20,11 @@ import com.google.gson.JsonParser;
 
 
 public class JsonReadWrite {
-	public boolean WriteToFile(List<LinkedHashMap<String,String>> jsonObj, String filename, boolean formated){
+	public boolean WriteToFile(List<LinkedHashMap<String,Object>> jsonObj, String filename, boolean formated){
 		try{
 			FileWriter file = new FileWriter(filename);
 			int i=0;
-			for(LinkedHashMap<String,String> j:jsonObj){
+			for(LinkedHashMap<String,Object> j:jsonObj){
 				i++;
 				String jsonString = new org.json.JSONObject(j).toString();
 				//file.write("Document json "+i+"\n");

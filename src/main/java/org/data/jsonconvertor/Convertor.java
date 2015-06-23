@@ -12,10 +12,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class Convertor {
-	public static List<LinkedHashMap<String,String>> WeighingResultConvertToJson(ResultSet rs){
-		List<LinkedHashMap<String,String>> jsons = new ArrayList<LinkedHashMap<String,String>>();
+	public static List<LinkedHashMap<String, Object>> WeighingResultConvertToJson(ResultSet rs){
+		List<LinkedHashMap<String,Object>> jsons = new ArrayList<LinkedHashMap<String,Object>>();
 		//JSONObject jsonObject = new JSONObject();
-		LinkedHashMap<String, String> jsonOrderedMap = new LinkedHashMap<String, String>();
+		LinkedHashMap<String,Object> jsonOrderedMap = new LinkedHashMap<String,Object>();
 		try {
 			while(rs.next()){
 				//dans platforme
@@ -30,7 +30,7 @@ public class Convertor {
 				jsonOrderedMap.put("plantAlias","1605/22H3/ZM3597/MYB/WW/1/2745/ARCH2013-09-12");
 				
 			
-				Map<String, String> childObject = new LinkedHashMap<String, String>();
+				Map<String, Object> childObject = new LinkedHashMap<String, Object>();
 				childObject.put("separator", "/");
 				childObject.put("itemsNumber", "8");
 				childObject.put("item1", "car_number");
@@ -43,7 +43,7 @@ public class Convertor {
 				childObject.put("item8", "experiment");
 				org.json.JSONObject childjson = new org.json.JSONObject(childObject) ;
 				//JSONArray jsonArray = new JSONArray(childjson);
-				jsonOrderedMap.put("plantPatternAlias",Utils.prettyJsonFormat(childjson.toString()));
+				jsonOrderedMap.put("plantPatternAlias",childjson);
 				
 				
 				//dans weighingresult

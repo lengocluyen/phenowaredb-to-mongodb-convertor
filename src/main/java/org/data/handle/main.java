@@ -41,7 +41,7 @@ public class main {
 		String file = "test.json";
 		WeighingresultDao wrd = new WeighingresultDao(null);
 		ResultSet rs = wrd.resultSet();
-		List<LinkedHashMap<String,String>> jsons = Convertor.WeighingResultConvertToJson(rs);
+		List<LinkedHashMap<String,Object>> jsons = Convertor.WeighingResultConvertToJson(rs);
 		JsonReadWrite jrw = new JsonReadWrite();
 		jrw.WriteToFile(jsons, file,true);
 	}

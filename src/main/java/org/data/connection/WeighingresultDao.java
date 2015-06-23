@@ -38,14 +38,13 @@ public class WeighingresultDao extends DAO<Weighingresult> {
 	@Override
 	public Weighingresult single(int id) {
 		// TODO Auto-generated method stub
-		List<Weighingresult> wrs = new ArrayList<Weighingresult>();
+		Weighingresult temps = new Weighingresult();
 		try {
 			Statement statement = this.connect.createStatement();
 			ResultSet result = statement
-					.executeQuery("Select * from weighingresults limit 10");
+					.executeQuery("Select * from weighingresults where weighingid = "+id);
 			
-			while (result.next()) {
-				Weighingresult temps = new Weighingresult();
+			if (result.first()) {
 				temps.setWeighingid(Utils.convertToInt(result.getInt("weighingid")));
 				temps.setStudyname (Utils.convertToString(result.getString("studyname")));
 				temps.setTaskid (Utils.convertToInt(result.getInt("taskid")));
@@ -64,12 +63,11 @@ public class WeighingresultDao extends DAO<Weighingresult> {
 				temps.setLane (Utils.convertToInt(result.getInt("lane")));
 				temps.setRank ( Utils.convertToInt(result.getInt("rank")));
 				temps.setLevel( Utils.convertToInt(result.getInt("level")));
-				wrs.add(temps);
 			}
 		} catch(Exception ex) {
 			return null;
 		}
-		return wrs;
+		return temps;
 	}
 
 	@Override
