@@ -10,6 +10,7 @@ import java.util.List;
 import info.aduna.iteration.Iterations;
 
 import org.data.connection.StudyDao;
+import org.data.connection.WateringresultDao;
 import org.data.connection.WeighingresultDao;
 import org.data.form.Study;
 import org.data.form.Weighingresult;
@@ -40,10 +41,17 @@ public class main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//ExportJsonData();
-		TestStudy();
+		//TestStudy();//		String path = "/home/siverama/Documents/Annotation_semantique_workflow/PhenowaredbToMongo/";
+	String file2 = "testWatering.json";
+		WateringresultDao ward = new WateringresultDao(null);
+	ResultSet rs2 = ward.resultSet();
+	List<LinkedHashMap<String,Object>> jsons2 = Convertor.WateringResultConvertToJson(rs2);
+	System.out.println(jsons2);
+	JsonReadWrite jrw2 = new JsonReadWrite();
+	jrw2.WriteToFile(jsons2, file2,true);
 	}
 	public static void ExportJsonData(){
-		String file = "test.json";
+		String file = "test2.json";
 		WeighingresultDao wrd = new WeighingresultDao(null);
 		ResultSet rs = wrd.resultSet();
 		List<LinkedHashMap<String,Object>> jsons = Convertor.WeighingResultConvertToJson(rs);

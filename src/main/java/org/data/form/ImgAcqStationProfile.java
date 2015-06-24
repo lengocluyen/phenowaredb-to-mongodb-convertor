@@ -1,6 +1,6 @@
 package org.data.form;
 
-public class Imgacqstationprofile {
+public class ImgAcqStationProfile {
 	int imgacqstationprofileid;
 	String imgacqstationprofilename;
 	boolean validated;
