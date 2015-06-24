@@ -39,9 +39,9 @@
   "weightbefore": "1254",
   "weightafter": "1307",
   "success": "false",
-  --"lane": "0",
-  --"rank": "0",
-  --"level": "0"
+  "lane": "0",
+  "rank": "0",
+  "level": "0"
 }
 {
   "plateform": "http://www.phenome-fppn.fr/m3p/",
@@ -444,7 +444,7 @@
   "weightbefore": "0",
   "weightafter": "899",
   "success": "true",
-  --"lane": "0",
-  --"rank": "0",
-  --"level": "0"
+  "lane": "0",
+  "rank": "0",
+  "level": "0"
 }
