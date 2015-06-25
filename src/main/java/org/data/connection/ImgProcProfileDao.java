@@ -3,6 +3,7 @@ package org.data.connection;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,9 @@ import org.data.form.ImgProcProfile;
 import org.data.handle.Utils;
 
 
-public class ImgProcProfileDao extends DAO<ImgProcProfile>{
+public class ImgProcProfileDao extends DAO<ImgProcProfile> {
+
+
 
 
 	public ImgProcProfileDao(Connection conn) {
@@ -87,6 +90,7 @@ public class ImgProcProfileDao extends DAO<ImgProcProfile>{
 					.executeQuery("Select * from imgprocprofiles limit 10");
 
 		} catch (Exception ex) {
+
 
 			return null;
 		}
