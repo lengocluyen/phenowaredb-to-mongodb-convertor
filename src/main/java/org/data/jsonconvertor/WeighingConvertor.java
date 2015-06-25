@@ -1,77 +1,98 @@
 package org.data.jsonconvertor;
 
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.data.connection.WeighingresultDao;
 import org.data.form.Weighingresult;
-import org.data.handle.Utils;
+import org.data.handle.JsonReadWrite;
 
 public class WeighingConvertor {
-	public static List<LinkedHashMap<String,Object>> WeighingResultConvertToJson(ResultSet rs){
-		List<LinkedHashMap<String,Object>> jsons = new ArrayList<LinkedHashMap<String,Object>>();
+	public static List<LinkedHashMap<String, Object>> WeighingResultConvertToJson() {
+		List<LinkedHashMap<String, Object>> jsons = new ArrayList<LinkedHashMap<String, Object>>();
 		WeighingresultDao wrsd = new WeighingresultDao(null);
 		List<Weighingresult> wrs = wrsd.all();
-		try {
-			for(Weighingresult ws: wrs){
-				LinkedHashMap<String, Object> jsonOrderedMap = new LinkedHashMap<String, Object>();
-				//dans platforme
-				jsonOrderedMap.put("platform","http://www.phenome-fppn.fr/m3p/");
-				jsonOrderedMap.put("technicalPlateau","http://www.phenome-fppn.fr/m3p/phenoarch");
-				jsonOrderedMap.put("experiment","http://www.phenome-fppn.fr/m3p/ARCH2013-09-12");
-				jsonOrderedMap.put("experimentAlias","ZD13");
-				jsonOrderedMap.put("study","");
-				jsonOrderedMap.put("studyAlias","");
-				jsonOrderedMap.put("plant","http://www.phenome-fppn.fr/m3p/arch/2013/c13006199");
-				jsonOrderedMap.put("plantAlias","1605/22H3/ZM3597/MYB/WW/1/2745/ARCH2013-09-12");
-				
-				Map<String, Object> childObject = new LinkedHashMap<String, Object>();
-				childObject.put("separator", "/");
-				childObject.put("itemsNumber", "8");
-				childObject.put("item1", "car_number");
-				childObject.put("item2", "genotype");
-				childObject.put("item3", "seedlot");
-				childObject.put("item4", "project");
-				childObject.put("item5", "scenario");
-				childObject.put("item6", "repetition");
-				childObject.put("item7", "balance");
-				childObject.put("item8", "experiment");
-				org.json.JSONObject childjson = new org.json.JSONObject(childObject) ;
-				//JSONArray jsonArray = new JSONArray(childjson);
-				jsonOrderedMap.put("plantPatternAlias",childjson);
-				
-				
-				//dans weighingresult
-				jsonOrderedMap.put("weighingid", Utils.convertToString(rs.getInt("weighingid")));
-				jsonOrderedMap.put("studyname", Utils.convertToString(rs.getString("studyname")));
-				jsonOrderedMap.put("taskid", Utils.convertToString(rs.getInt("taskid")));
-				jsonOrderedMap.put("tagname", Utils.convertToString(rs.getString("tagname")));
-				jsonOrderedMap.put("plantid", Utils.convertToString(rs.getInt("plantid")));
-				jsonOrderedMap.put("resultdate", rs.getTimestamp("resultdate").toString());
-				jsonOrderedMap.put("valid", Utils.convertToString(rs.getBoolean("valid")));
-				jsonOrderedMap.put("weighingtype", Utils.convertToString(rs.getString("weighingtype")));
-				jsonOrderedMap.put("reqscaletypename", Utils.convertToString(rs.getString("reqscaletypename")));
-				jsonOrderedMap.put("usedstationid", Utils.convertToString(rs.getInt("usedstationid")));
-				jsonOrderedMap.put("usedscaleid", Utils.convertToString(rs.getInt("usedscaleid")));
-				jsonOrderedMap.put("usedscaletypename", Utils.convertToString(rs.getString("usedscaletypename")));
-				jsonOrderedMap.put("weightbefore", Utils.convertToString(rs.getInt("weightbefore")));
-				jsonOrderedMap.put("weightafter", Utils.convertToString(rs.getInt("weightafter")));
-				jsonOrderedMap.put("success", Utils.convertToString(rs.getBoolean("success")));
-				jsonOrderedMap.put("lane", Utils.convertToString(rs.getInt("lane")));
-				jsonOrderedMap.put("rank", Utils.convertToString(rs.getInt("rank")));
-				jsonOrderedMap.put("level", Utils.convertToString(rs.getInt("level")));
-				//jsonObject = new JSONObject(data).toString(); 
-				jsons.add(jsonOrderedMap);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+		for (Weighingresult ws : wrs) {
+			LinkedHashMap<String, Object> weighing = new LinkedHashMap<String, Object>();
+			// dans platforme
+			weighing.put("platform", "http://www.phenome-fppn.fr/m3p/");
+			weighing.put("technicalPlateau",
+					"http://www.phenome-fppn.fr/m3p/phenoarch");
+			weighing.put("experiment", "");
+			weighing.put("experimentAlias", "");
+			weighing.put("study", "");
+			weighing.put("studyAlias", "");
+			weighing.put("plant",
+					"http://www.phenome-fppn.fr/m3p/arch/2013/c13006199");
+			weighing.put("plantAlias",
+					"1605/22H3/ZM3597/MYB/WW/1/2745/ARCH2013-09-12");
+
+			Map<String, Object> configurations = new LinkedHashMap<String, Object>();
+			configurations.put("provider", "phenowaredb");
+			configurations.put("weighingid", ws.getWeighingid());
+			configurations.put("studyname", ws.getStudyname());
+			configurations.put("taskid", ws.getTaskid());
+			configurations.put("plantid", ws.getPlantid());
+			configurations.put("usedstationid", ws.getUsedstationid());
+			configurations.put("usedscaleid", ws.getUsedscaleid());
+
+			Map<String, Object> nextLocation = new LinkedHashMap<String, Object>();
+			nextLocation.put("lane", ws.getLane());
+			nextLocation.put("rank", ws.getRank());
+			nextLocation.put("level", ws.getLevel());
+
+			configurations.put("nextLocation", nextLocation);
+
+			weighing.put("configurations", configurations);
+			weighing.put("automatonSuccess", ws.isSuccess());
+			weighing.put("userValidation", ws.isValid());
+
+			Map<String, Object> setpoints = new LinkedHashMap<String, Object>();
+			setpoints.put("scaleType", ws.getLane());
+
+			weighing.put("setpoints", setpoints);
+
+			Map<String, Object> measures = new LinkedHashMap<String, Object>();
+			Map<String, Object> weightBefore = new LinkedHashMap<String, Object>();
+			Map<String, Object> weightAfter = new LinkedHashMap<String, Object>();
+			Map<String, Object> weight = new LinkedHashMap<String, Object>();
+
+			measures.put("weightBefore", weightBefore);
+			weightBefore.put("value", ws.getWeighbefore());
+			weightBefore.put("unity", "");
+			weightBefore.put("type", "automatic");
+			weightBefore.put("confidence", "unspecified");
+
+			measures.put("weightAfter", weightAfter);
+			weightAfter.put("value", ws.getWeighafter());
+			weightAfter.put("unity", "");
+			weightAfter.put("type", "automatic");
+			weightAfter.put("confidence", "unspecified");
+
+			measures.put("weight", weight);
+			weight.put("value", ComputedWeight(ws.getWeighafter(), ws.getWeighbefore()));
+			weight.put("unity", "");
+			weight.put("type", "computed");
+			weight.put("confidence", "unspecified");
+
+			weighing.put("measures", measures);
+
+			jsons.add(weighing);
 		}
 		return jsons;
 	}
+	public static int ComputedWeight(int before, int after){
+		return Math.abs(after-before);
+	}
+	public static void ExportToFile(String filename){
+		List<LinkedHashMap<String,Object>> jsons3 = WeighingResultConvertToJson();
+		JsonReadWrite jrw3 = new JsonReadWrite();
+		jrw3.WriteToFile(jsons3, filename,true);
+	}
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		ExportToFile("Data/Weigting.json");
 	}
 }
