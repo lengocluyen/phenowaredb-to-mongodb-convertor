@@ -14,6 +14,11 @@ public class Utils {
 			return -1;
 		return Integer.parseInt(value.toString());
 	}
+	public static double convertToDouble(Object value){
+		if(value==null)
+			return -1.0;
+		return Double.parseDouble(value.toString());
+	}
 	public static long convertToLong(Object value){
 		if(value==null)
 			return -1;
