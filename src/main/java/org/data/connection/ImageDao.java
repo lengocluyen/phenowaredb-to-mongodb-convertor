@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.data.form.DirectoryPath;
 import org.data.form.Image;
+import org.data.form.ImageViewType;
 import org.data.handle.Utils;
 
 public class ImageDao extends DAO<Image>{
@@ -62,7 +63,7 @@ public class ImageDao extends DAO<Image>{
 			Statement statement = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
 							ResultSet.CONCUR_UPDATABLE);
-			String query = "Select * from images";
+			String query = "Select * from images limit 10";
 			ResultSet rs = statement.executeQuery(query);
 			List<Image> data = new ArrayList<Image>();
 			while (rs.next()) {
@@ -99,12 +100,19 @@ public class ImageDao extends DAO<Image>{
 			img.setImgangle(Utils.convertToInt(rs.getObject("imgangle")));
 			img.setSubfolder(Utils.convertToString(rs.getObject("subfolder")));
 			img.setAcquisitiondate(Utils.convertToString(rs.getObject("acquisitiondate")));
+			img.setTimestamps(rs.getTimestamp("acquisitiondate").getTime());
 			img.setImgguid(Utils.convertToString(rs.getObject("imgguid")));
 			img.setImgid(Utils.convertToInt(rs.getObject("imgid")));
 			img.setLane(Utils.convertToInt(rs.getObject("lane")));
 			img.setRank(Utils.convertToInt(rs.getObject("rank")));
 			img.setLevel(Utils.convertToInt(rs.getObject("level")));
 			img.setRefimage(Utils.convertToBool(rs.getObject("refimage")));
+			ImageViewTypeDao ivtd = new ImageViewTypeDao(null);
+			ImageViewType ivt= ivtd.single(img.getViewtypeid());
+			img.setViewType(ivt);
+			DirectoryPathDao dpd = new DirectoryPathDao(null);
+			DirectoryPath dp = dpd.single(img.getRootpathid());
+			img.setRootPath(dp);
 			return img;
 		}
 		catch(SQLException e){

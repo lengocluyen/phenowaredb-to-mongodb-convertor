@@ -25,6 +25,8 @@ public class WeighingConvertor {
 			weighing.put("experimentAlias", "");
 			weighing.put("study", "");
 			weighing.put("studyAlias", "");
+			weighing.put("genotype", "");
+			weighing.put("genotypeAlias", "");
 			weighing.put("plant",
 					"http://www.phenome-fppn.fr/m3p/arch/2013/c13006199");
 			weighing.put("plantAlias",

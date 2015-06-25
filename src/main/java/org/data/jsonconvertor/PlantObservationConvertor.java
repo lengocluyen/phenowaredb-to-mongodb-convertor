@@ -25,6 +25,8 @@ public class PlantObservationConvertor {
 					"http://www.phenome-fppn.fr/m3p/phenoarch");
 			plantObservation.put("experiment", "");
 			plantObservation.put("experimentAlias", "");
+			plantObservation.put("genotype", "");
+			plantObservation.put("genotypeAlias", "");
 			plantObservation.put("study", "");
 			plantObservation.put("studyAlias", "");
 			plantObservation.put("plant",

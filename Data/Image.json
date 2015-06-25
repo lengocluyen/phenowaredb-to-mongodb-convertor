@@ -1,0 +1,360 @@
+{
+  "platform": "http://www.phenome-fppn.fr/m3p/",
+  "technicalPlateau": "http://www.phenome-fppn.fr/m3p/phenoarch",
+  "experiment": "",
+  "experimentAlias": "",
+  "study": "",
+  "studyAlias": "",
+  "plant": "http://www.phenome-fppn.fr/m3p/arch/2013/c13006199",
+  "plantAlias": "1605/22H3/ZM3597/MYB/WW/1/2745/ARCH2013-09-12",
+  "date": "2015-03-24 03:40:47.812384",
+  "timestamp": 1427164847812,
+  "configurations": {
+    "provider": "phenowaredb",
+    "imageid": 78447,
+    "plantid": 126,
+    "taskid": 478,
+    "stationid": 5,
+    "imgangle": 330,
+    "subfolder": "478",
+    "nextLocation": {
+      "lane": -1,
+      "rank": -1,
+      "level": -1
+    }
+  },
+  "userValidation": true,
+  "refimage": false,
+  "setpoints": {
+    "label": "Side"
+  },
+  "directorypaths": {
+    "pathid": 5,
+    "dirpath": "\\\\10.21.0.13\\Studies\\MyTestStudy"
+  },
+  "imgacqprofile": 8
+}
+{
+  "platform": "http://www.phenome-fppn.fr/m3p/",
+  "technicalPlateau": "http://www.phenome-fppn.fr/m3p/phenoarch",
+  "experiment": "",
+  "experimentAlias": "",
+  "study": "",
+  "studyAlias": "",
+  "plant": "http://www.phenome-fppn.fr/m3p/arch/2013/c13006199",
+  "plantAlias": "1605/22H3/ZM3597/MYB/WW/1/2745/ARCH2013-09-12",
+  "date": "2015-03-24 03:41:32.599946",
+  "timestamp": 1427164892599,
+  "configurations": {
+    "provider": "phenowaredb",
+    "imageid": 78448,
+    "plantid": 128,
+    "taskid": 478,
+    "stationid": 5,
+    "imgangle": 0,
+    "subfolder": "478",
+    "nextLocation": {
+      "lane": -1,
+      "rank": -1,
+      "level": -1
+    }
+  },
+  "userValidation": true,
+  "refimage": false,
+  "setpoints": {
+    "label": "Top"
+  },
+  "directorypaths": {
+    "pathid": 5,
+    "dirpath": "\\\\10.21.0.13\\Studies\\MyTestStudy"
+  },
+  "imgacqprofile": 8
+}
+{
+  "platform": "http://www.phenome-fppn.fr/m3p/",
+  "technicalPlateau": "http://www.phenome-fppn.fr/m3p/phenoarch",
+  "experiment": "",
+  "experimentAlias": "",
+  "study": "",
+  "studyAlias": "",
+  "plant": "http://www.phenome-fppn.fr/m3p/arch/2013/c13006199",
+  "plantAlias": "1605/22H3/ZM3597/MYB/WW/1/2745/ARCH2013-09-12",
+  "date": "2015-03-24 03:41:32.597946",
+  "timestamp": 1427164892597,
+  "configurations": {
+    "provider": "phenowaredb",
+    "imageid": 78449,
+    "plantid": 128,
+    "taskid": 478,
+    "stationid": 5,
+    "imgangle": 0,
+    "subfolder": "478",
+    "nextLocation": {
+      "lane": -1,
+      "rank": -1,
+      "level": -1
+    }
+  },
+  "userValidation": true,
+  "refimage": false,
+  "setpoints": {
+    "label": "Side"
+  },
+  "directorypaths": {
+    "pathid": 5,
+    "dirpath": "\\\\10.21.0.13\\Studies\\MyTestStudy"
+  },
+  "imgacqprofile": 8
+}
+{
+  "platform": "http://www.phenome-fppn.fr/m3p/",
+  "technicalPlateau": "http://www.phenome-fppn.fr/m3p/phenoarch",
+  "experiment": "",
+  "experimentAlias": "",
+  "study": "",
+  "studyAlias": "",
+  "plant": "http://www.phenome-fppn.fr/m3p/arch/2013/c13006199",
+  "plantAlias": "1605/22H3/ZM3597/MYB/WW/1/2745/ARCH2013-09-12",
+  "date": "2015-03-24 03:41:32.84196",
+  "timestamp": 1427164892841,
+  "configurations": {
+    "provider": "phenowaredb",
+    "imageid": 78450,
+    "plantid": 128,
+    "taskid": 478,
+    "stationid": 5,
+    "imgangle": 30,
+    "subfolder": "478",
+    "nextLocation": {
+      "lane": -1,
+      "rank": -1,
+      "level": -1
+    }
+  },
+  "userValidation": true,
+  "refimage": false,
+  "setpoints": {
+    "label": "Side"
+  },
+  "directorypaths": {
+    "pathid": 5,
+    "dirpath": "\\\\10.21.0.13\\Studies\\MyTestStudy"
+  },
+  "imgacqprofile": 8
+}
+{
+  "platform": "http://www.phenome-fppn.fr/m3p/",
+  "technicalPlateau": "http://www.phenome-fppn.fr/m3p/phenoarch",
+  "experiment": "",
+  "experimentAlias": "",
+  "study": "",
+  "studyAlias": "",
+  "plant": "http://www.phenome-fppn.fr/m3p/arch/2013/c13006199",
+  "plantAlias": "1605/22H3/ZM3597/MYB/WW/1/2745/ARCH2013-09-12",
+  "date": "2015-03-24 03:41:33.091974",
+  "timestamp": 1427164893091,
+  "configurations": {
+    "provider": "phenowaredb",
+    "imageid": 78451,
+    "plantid": 128,
+    "taskid": 478,
+    "stationid": 5,
+    "imgangle": 60,
+    "subfolder": "478",
+    "nextLocation": {
+      "lane": -1,
+      "rank": -1,
+      "level": -1
+    }
+  },
+  "userValidation": true,
+  "refimage": false,
+  "setpoints": {
+    "label": "Side"
+  },
+  "directorypaths": {
+    "pathid": 5,
+    "dirpath": "\\\\10.21.0.13\\Studies\\MyTestStudy"
+  },
+  "imgacqprofile": 8
+}
+{
+  "platform": "http://www.phenome-fppn.fr/m3p/",
+  "technicalPlateau": "http://www.phenome-fppn.fr/m3p/phenoarch",
+  "experiment": "",
+  "experimentAlias": "",
+  "study": "",
+  "studyAlias": "",
+  "plant": "http://www.phenome-fppn.fr/m3p/arch/2013/c13006199",
+  "plantAlias": "1605/22H3/ZM3597/MYB/WW/1/2745/ARCH2013-09-12",
+  "date": "2015-03-24 03:41:33.341988",
+  "timestamp": 1427164893341,
+  "configurations": {
+    "provider": "phenowaredb",
+    "imageid": 78452,
+    "plantid": 128,
+    "taskid": 478,
+    "stationid": 5,
+    "imgangle": 90,
+    "subfolder": "478",
+    "nextLocation": {
+      "lane": -1,
+      "rank": -1,
+      "level": -1
+    }
+  },
+  "userValidation": true,
+  "refimage": false,
+  "setpoints": {
+    "label": "Side"
+  },
+  "directorypaths": {
+    "pathid": 5,
+    "dirpath": "\\\\10.21.0.13\\Studies\\MyTestStudy"
+  },
+  "imgacqprofile": 8
+}
+{
+  "platform": "http://www.phenome-fppn.fr/m3p/",
+  "technicalPlateau": "http://www.phenome-fppn.fr/m3p/phenoarch",
+  "experiment": "",
+  "experimentAlias": "",
+  "study": "",
+  "studyAlias": "",
+  "plant": "http://www.phenome-fppn.fr/m3p/arch/2013/c13006199",
+  "plantAlias": "1605/22H3/ZM3597/MYB/WW/1/2745/ARCH2013-09-12",
+  "date": "2015-03-24 03:41:33.592002",
+  "timestamp": 1427164893592,
+  "configurations": {
+    "provider": "phenowaredb",
+    "imageid": 78453,
+    "plantid": 128,
+    "taskid": 478,
+    "stationid": 5,
+    "imgangle": 120,
+    "subfolder": "478",
+    "nextLocation": {
+      "lane": -1,
+      "rank": -1,
+      "level": -1
+    }
+  },
+  "userValidation": true,
+  "refimage": false,
+  "setpoints": {
+    "label": "Side"
+  },
+  "directorypaths": {
+    "pathid": 5,
+    "dirpath": "\\\\10.21.0.13\\Studies\\MyTestStudy"
+  },
+  "imgacqprofile": 8
+}
+{
+  "platform": "http://www.phenome-fppn.fr/m3p/",
+  "technicalPlateau": "http://www.phenome-fppn.fr/m3p/phenoarch",
+  "experiment": "",
+  "experimentAlias": "",
+  "study": "",
+  "studyAlias": "",
+  "plant": "http://www.phenome-fppn.fr/m3p/arch/2013/c13006199",
+  "plantAlias": "1605/22H3/ZM3597/MYB/WW/1/2745/ARCH2013-09-12",
+  "date": "2015-03-24 03:41:33.842017",
+  "timestamp": 1427164893842,
+  "configurations": {
+    "provider": "phenowaredb",
+    "imageid": 78454,
+    "plantid": 128,
+    "taskid": 478,
+    "stationid": 5,
+    "imgangle": 150,
+    "subfolder": "478",
+    "nextLocation": {
+      "lane": -1,
+      "rank": -1,
+      "level": -1
+    }
+  },
+  "userValidation": true,
+  "refimage": false,
+  "setpoints": {
+    "label": "Side"
+  },
+  "directorypaths": {
+    "pathid": 5,
+    "dirpath": "\\\\10.21.0.13\\Studies\\MyTestStudy"
+  },
+  "imgacqprofile": 8
+}
+{
+  "platform": "http://www.phenome-fppn.fr/m3p/",
+  "technicalPlateau": "http://www.phenome-fppn.fr/m3p/phenoarch",
+  "experiment": "",
+  "experimentAlias": "",
+  "study": "",
+  "studyAlias": "",
+  "plant": "http://www.phenome-fppn.fr/m3p/arch/2013/c13006199",
+  "plantAlias": "1605/22H3/ZM3597/MYB/WW/1/2745/ARCH2013-09-12",
+  "date": "2015-03-24 03:41:34.092031",
+  "timestamp": 1427164894092,
+  "configurations": {
+    "provider": "phenowaredb",
+    "imageid": 78455,
+    "plantid": 128,
+    "taskid": 478,
+    "stationid": 5,
+    "imgangle": 180,
+    "subfolder": "478",
+    "nextLocation": {
+      "lane": -1,
+      "rank": -1,
+      "level": -1
+    }
+  },
+  "userValidation": true,
+  "refimage": false,
+  "setpoints": {
+    "label": "Side"
+  },
+  "directorypaths": {
+    "pathid": 5,
+    "dirpath": "\\\\10.21.0.13\\Studies\\MyTestStudy"
+  },
+  "imgacqprofile": 8
+}
+{
+  "platform": "http://www.phenome-fppn.fr/m3p/",
+  "technicalPlateau": "http://www.phenome-fppn.fr/m3p/phenoarch",
+  "experiment": "",
+  "experimentAlias": "",
+  "study": "",
+  "studyAlias": "",
+  "plant": "http://www.phenome-fppn.fr/m3p/arch/2013/c13006199",
+  "plantAlias": "1605/22H3/ZM3597/MYB/WW/1/2745/ARCH2013-09-12",
+  "date": "2015-03-24 03:41:34.342045",
+  "timestamp": 1427164894342,
+  "configurations": {
+    "provider": "phenowaredb",
+    "imageid": 78456,
+    "plantid": 128,
+    "taskid": 478,
+    "stationid": 5,
+    "imgangle": 210,
+    "subfolder": "478",
+    "nextLocation": {
+      "lane": -1,
+      "rank": -1,
+      "level": -1
+    }
+  },
+  "userValidation": true,
+  "refimage": false,
+  "setpoints": {
+    "label": "Side"
+  },
+  "directorypaths": {
+    "pathid": 5,
+    "dirpath": "\\\\10.21.0.13\\Studies\\MyTestStudy"
+  },
+  "imgacqprofile": 8
+}
