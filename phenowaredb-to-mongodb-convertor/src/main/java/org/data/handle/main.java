@@ -3,19 +3,17 @@ package org.data.handle;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import info.aduna.iteration.Iterations;
 
-import org.data.connection.StudyDao;
+import org.data.connection.ImgProcProfileDao;
+import org.data.connection.WateringresultDao;
 import org.data.connection.WeighingresultDao;
-import org.data.form.Study;
 import org.data.form.Weighingresult;
 import org.data.jsonconvertor.Convertor;
 import org.data.jsonconvertor.JsonReadWrite;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.openrdf.*;
 import org.openrdf.model.Model;
@@ -35,30 +33,38 @@ import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.Rio;
 import org.openrdf.sail.memory.MemoryStore;
 
+
 public class main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		//ExportJsonData();
-		TestStudy();
+		ExportJsonData();
 	}
 	public static void ExportJsonData(){
-		String file = "test.json";
-		WeighingresultDao wrd = new WeighingresultDao(null);
-		ResultSet rs = wrd.resultSet();
-		List<LinkedHashMap<String,Object>> jsons = Convertor.WeighingResultConvertToJson(rs);
-		JsonReadWrite jrw = new JsonReadWrite();
-		jrw.WriteToFile(jsons, file,true);
-	}
-	public static void TestStudy(){
-		StudyDao sd = new StudyDao(null);
-		List<Study> studies = sd.all();
-		for(Study s: studies){
-			System.out.print(s.getStudyid()+"\t");
-			System.out.print(s.getUserInfo().getFirstName()+"\t");
-			System.out.print(s.getStudystatus().getLabel()+"\t");
-			System.out.print("\n");
-		}
+//		String file = "test.json";
+//		WeighingresultDao wrd = new WeighingresultDao(null);
+//		ResultSet rs = wrd.resultSet();
+//		List<LinkedHashMap<String,String>> jsons = Convertor.WeighingResultConvertToJson(rs);
+//		JsonReadWrite jrw = new JsonReadWrite();
+//		jrw.WriteToFile(jsons, file,true);
+		
+//		String path = "/home/siverama/Documents/Annotation_semantique_workflow/PhenowaredbToMongo/";
+//		String file2 = "testWatering.json";
+//		WateringresultDao ward = new WateringresultDao(null);
+//		ResultSet rs2 = ward.resultSet();
+//		List<LinkedHashMap<String,Object>> jsons2 = Convertor.WateringResultConvertToJson(rs2);
+//		System.out.println(jsons2);
+//		JsonReadWrite jrw2 = new JsonReadWrite();
+//		jrw2.WriteToFile(jsons2, path+file2,true);
+//		
+		String path = "/home/siverama/Documents/Annotation_semantique_workflow/PhenowaredbToMongo/";
+		String file3 = "testImgProcProfile.json";
+		ImgProcProfileDao ippd = new ImgProcProfileDao(null);
+		ResultSet rs3 = ippd.resultSet();
+		List<LinkedHashMap<String,Object>> jsons3 = Convertor.ImgProcProfileConvertToJson(rs3);
+		System.out.println(jsons3);
+		JsonReadWrite jrw3 = new JsonReadWrite();
+		jrw3.WriteToFile(jsons3, path+file3,true);
 	}
 	public static void TestSQLConnection(){
 		WeighingresultDao wrd = new WeighingresultDao(null);
