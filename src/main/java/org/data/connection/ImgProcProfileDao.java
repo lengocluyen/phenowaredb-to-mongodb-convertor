@@ -81,4 +81,10 @@ public class ImgProcProfileDao extends DAO<ImgProcProfile>{
 		return result;
 	}
 
+	@Override
+	public ImgProcProfile get(ResultSet result) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

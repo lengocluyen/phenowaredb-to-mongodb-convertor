@@ -1,0 +1,183 @@
+!SESSION 2015-06-24 16:22:17.687 -----------------------------------------------
+eclipse.buildId=debbuild
+java.version=1.7.0_79
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -data /home/siverama/phenowaredb-to-mongodb-convertor -os linux -ws gtk -arch x86_64
+
+!ENTRY org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help documentation could not be indexed completely.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.swt.examples.paint/doc-html/swt_paint_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.swt.examples/doc-html/swt_clipboard_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.swt.examples/doc-html/swt_imageanalyzer_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.swt.examples/doc-html/swt_texteditor_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.swt.examples.launcher/doc-html/swt_launcher_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.swt.examples.controls/doc-html/swt_controls_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.swt.examples/doc-html/swt_manual_setup.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.ui.examples.javaeditor/doc-html/ui_templateeditor_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/awt/package-summary.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.swt.examples.layouts/doc-html/swt_layout_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.team.examples.filesystem/doc-html/team_filesystem_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.ui.examples.propertysheet/doc-html/ui_propertysheet_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.ui.examples.fieldassist/doc-html/ui_fieldassist_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.swt.examples.ole.win32/doc-html/swt_ole_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.compare.examples/doc-html/ui_structurecreator_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.ui.examples.undo/doc-html/ui_undo_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.compare.examples.xml/doc-html/ui_xmlcompare_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/ole/win32/package-summary.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.ui.examples.readmetool/doc-html/ui_readmetool_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.swt.examples.controls/doc-html/swt_customcontrols_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.swt.examples/doc-html/swt_helloworld_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.swt.examples/doc-html/swt_javaviewer_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.swt.examples/doc-html/swt_fileviewer_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.team.examples.filesystem/doc-html/team_localhistory_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.swt.examples/doc-html/swt_addressbook_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.swt.examples/doc-html/swt_hoverhelp_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/opengl/package-summary.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.swt.examples.browser/doc-html/swt_browser_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.team.examples.filesystem/doc-html/team_model_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.ui.examples.javaeditor/doc-html/ui_javaeditor_ex.html cannot be opened.
+!SUBENTRY 1 org.eclipse.help.base 4 4 2015-06-24 16:30:17.454
+!MESSAGE Help document /org.eclipse.platform.doc.isv/samples/org.eclipse.ui.examples.multipageeditor/doc-html/ui_multipageeditor_ex.html cannot be opened.
+
+!ENTRY org.eclipse.ui.ide 4 4 2015-06-24 16:46:17.877
+!MESSAGE Problems saving workspace
+
+!ENTRY org.eclipse.ui.ide 4 1 2015-06-24 16:46:17.877
+!MESSAGE Problems occurred while trying to save the state of the workbench.
+!SUBENTRY 1 org.eclipse.core.resources 4 568 2015-06-24 16:46:17.877
+!MESSAGE Could not write workspace metadata '/home/siverama/phenowaredb-to-mongodb-convertor/.metadata/.plugins/org.eclipse.core.resources/.root/6.tree'.
+!STACK 0
+java.io.FileNotFoundException: /home/siverama/phenowaredb-to-mongodb-convertor/.metadata/.plugins/org.eclipse.core.resources/.root/6.tree (Aucun fichier ou dossier de ce type)
+	at java.io.FileOutputStream.open(Native Method)
+	at java.io.FileOutputStream.<init>(FileOutputStream.java:221)
+	at java.io.FileOutputStream.<init>(FileOutputStream.java:171)
+	at org.eclipse.core.internal.localstore.SafeFileOutputStream.<init>(SafeFileOutputStream.java:51)
+	at org.eclipse.core.internal.resources.SaveManager.saveTree(SaveManager.java:1350)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1134)
+	at org.eclipse.core.internal.resources.Workspace.save(Workspace.java:2375)
+	at org.eclipse.ui.internal.ide.application.IDEWorkbenchAdvisor$5.run(IDEWorkbenchAdvisor.java:508)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:121)
+
+!ENTRY org.eclipse.ui 2 2 2015-06-24 16:46:17.901
+!MESSAGE Invalid property category path: ValidationPropertiesPage (bundle: org.eclipse.wst.xml.ui, propertyPage: org.eclipse.wst.xml.ui.propertyPage.project.validation)
+!SESSION 2015-06-24 16:46:19.584 -----------------------------------------------
+eclipse.buildId=debbuild
+java.version=1.7.0_79
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -data /home/siverama/phenowaredb-to-mongodb-convertor -os linux -ws gtk -arch x86_64
+
+!ENTRY org.eclipse.egit.ui 4 0 2015-06-24 16:47:37.544
+!MESSAGE Invalid project description.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:175)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:53)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:287)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:269)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createExistingProject(ProjectUtils.java:175)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.access$0(ProjectUtils.java:138)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils$1.run(ProjectUtils.java:97)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2344)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2326)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:130)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:60)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.importProjects(GitImportWizard.java:253)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.access$2(GitImportWizard.java:235)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard$4.run(GitImportWizard.java:205)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:121)
+Contains: OK
+Contains: /home/siverama/phenowaredb-to-mongodb-convertor overlaps the workspace location: /home/siverama/phenowaredb-to-mongodb-convertor
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2015-06-24 16:47:37.546
+!MESSAGE Invalid project description.
+!SUBENTRY 2 unknown 0 0 2015-06-24 16:47:37.546
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2015-06-24 16:47:37.546
+!MESSAGE /home/siverama/phenowaredb-to-mongodb-convertor overlaps the workspace location: /home/siverama/phenowaredb-to-mongodb-convertor
+
+!ENTRY org.eclipse.egit.ui 4 0 2015-06-24 16:51:05.935
+!MESSAGE Invalid project description.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:175)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:53)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:287)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:269)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createExistingProject(ProjectUtils.java:175)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.access$0(ProjectUtils.java:138)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils$1.run(ProjectUtils.java:97)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2344)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2326)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:130)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:60)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.importProjects(GitImportWizard.java:253)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.access$2(GitImportWizard.java:235)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard$4.run(GitImportWizard.java:205)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:121)
+Contains: OK
+Contains: /home/siverama/phenowaredb-to-mongodb-convertor overlaps the workspace location: /home/siverama/phenowaredb-to-mongodb-convertor
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2015-06-24 16:51:05.936
+!MESSAGE Invalid project description.
+!SUBENTRY 2 unknown 0 0 2015-06-24 16:51:05.936
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2015-06-24 16:51:05.936
+!MESSAGE /home/siverama/phenowaredb-to-mongodb-convertor overlaps the workspace location: /home/siverama/phenowaredb-to-mongodb-convertor
+
+!ENTRY org.eclipse.egit.ui 4 0 2015-06-24 16:51:49.031
+!MESSAGE Invalid project description.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:175)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:53)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:287)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:269)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createExistingProject(ProjectUtils.java:175)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.access$0(ProjectUtils.java:138)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils$1.run(ProjectUtils.java:97)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2344)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2326)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:130)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:60)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.importProjects(GitImportWizard.java:253)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.access$2(GitImportWizard.java:235)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard$4.run(GitImportWizard.java:205)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:121)
+Contains: OK
+Contains: /home/siverama/phenowaredb-to-mongodb-convertor overlaps the workspace location: /home/siverama/phenowaredb-to-mongodb-convertor
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2015-06-24 16:51:49.032
+!MESSAGE Invalid project description.
+!SUBENTRY 2 unknown 0 0 2015-06-24 16:51:49.032
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2015-06-24 16:51:49.032
+!MESSAGE /home/siverama/phenowaredb-to-mongodb-convertor overlaps the workspace location: /home/siverama/phenowaredb-to-mongodb-convertor

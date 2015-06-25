@@ -107,4 +107,10 @@ public class WateringresultDao extends DAO<Wateringresult>{
 		return result;
 	}
 
+	@Override
+	public Wateringresult get(ResultSet result) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

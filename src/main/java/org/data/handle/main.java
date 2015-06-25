@@ -44,27 +44,27 @@ public class main {
 //		String file = "test.json";
 //		WeighingresultDao wrd = new WeighingresultDao(null);
 //		ResultSet rs = wrd.resultSet();
-//		List<LinkedHashMap<String,String>> jsons = Convertor.WeighingResultConvertToJson(rs);
+//		List<LinkedHashMap<String,Object>> jsons = Convertor.WeighingResultConvertToJson(rs);
 //		JsonReadWrite jrw = new JsonReadWrite();
 //		jrw.WriteToFile(jsons, file,true);
 		
-//		String path = "/home/siverama/Documents/Annotation_semantique_workflow/PhenowaredbToMongo/";
-//		String file2 = "testWatering.json";
-//		WateringresultDao ward = new WateringresultDao(null);
-//		ResultSet rs2 = ward.resultSet();
-//		List<LinkedHashMap<String,Object>> jsons2 = Convertor.WateringResultConvertToJson(rs2);
-//		System.out.println(jsons2);
-//		JsonReadWrite jrw2 = new JsonReadWrite();
-//		jrw2.WriteToFile(jsons2, path+file2,true);
-//		
 		String path = "/home/siverama/Documents/Annotation_semantique_workflow/PhenowaredbToMongo/";
-		String file3 = "testImgProcProfile.json";
-		ImgProcProfileDao ippd = new ImgProcProfileDao(null);
-		ResultSet rs3 = ippd.resultSet();
-		List<LinkedHashMap<String,Object>> jsons3 = Convertor.ImgProcProfileConvertToJson(rs3);
-		System.out.println(jsons3);
-		JsonReadWrite jrw3 = new JsonReadWrite();
-		jrw3.WriteToFile(jsons3, path+file3,true);
+		String file2 = "testWatering2.json";
+		WateringresultDao ward = new WateringresultDao(null);
+		ResultSet rs2 = ward.resultSet();
+		List<LinkedHashMap<String,Object>> jsons2 = Convertor.WateringResultConvertToJson(rs2);
+		System.out.println(jsons2);
+		JsonReadWrite jrw2 = new JsonReadWrite();
+		jrw2.WriteToFile(jsons2, path+file2,true);
+//		
+//		String path = "/home/siverama/Documents/Annotation_semantique_workflow/PhenowaredbToMongo/";
+//		String file3 = "testImgProcProfile.json";
+//		ImgProcProfileDao ippd = new ImgProcProfileDao(null);
+//		ResultSet rs3 = ippd.resultSet();
+//		List<LinkedHashMap<String,Object>> jsons3 = Convertor.ImgProcProfileConvertToJson(rs3);
+//		System.out.println(jsons3);
+//		JsonReadWrite jrw3 = new JsonReadWrite();
+//		jrw3.WriteToFile(jsons3, path+file3,true);
 	}
 	public static void TestSQLConnection(){
 		WeighingresultDao wrd = new WeighingresultDao(null);
