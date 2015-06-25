@@ -2,6 +2,7 @@ package org.data.connection;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 import org.data.form.ImgProcProfile;
 import org.data.handle.Utils;
 
-public class ImgProcProfileDao extends DAO<ImgProcProfile>{
+public class ImgProcProfileDao extends DAO<ImgProcProfile> {
 
 	public ImgProcProfileDao(Connection conn) {
 		super(conn);
@@ -36,32 +37,38 @@ public class ImgProcProfileDao extends DAO<ImgProcProfile>{
 
 	@Override
 	public ImgProcProfile single(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			Statement statement = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_UPDATABLE);
+			String query = "Select * from imgprocprofiles where  imgprocprofileid = "
+					+ id;
+			ResultSet rs = statement.executeQuery(query);
+			if (rs.first()) {
+				return this.get(rs);
+			}
+			return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
 	public List<ImgProcProfile> all() {
 		List<ImgProcProfile> ipp = new ArrayList<ImgProcProfile>();
 		try {
-			Statement statement = this.connect.createStatement();
+			Statement statement = this.connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+					ResultSet.CONCUR_UPDATABLE);
 			ResultSet result = statement
 					.executeQuery("Select * from imgprocprofiles limit 10");
-			
+
 			while (result.next()) {
-				ImgProcProfile temps = new ImgProcProfile();
-				temps.setImgProcProfileId(Utils.convertToInt(result.getInt("imgprocprofileid")));
-				temps.setImgProcProfileName (Utils.convertToString(result.getString("imgprocprofilename")));
-				temps.setValidated ( Utils.convertToBool(result.getBoolean("validated")));
-				temps.setDeleted(Utils.convertToBool(result.getBoolean("deleted")));
 				
-				temps.setProfileType( Utils.convertToInt(result.getInt("profiletype")));
-				temps.setDescription( Utils.convertToString(result.getString("description")));
-				temps.setImgProcScript( Utils.convertToString(result.getString("imgprocscript")));
-			
-				ipp.add(temps);
+				ipp.add(this.get(result));
 			}
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			return null;
 		}
 		return ipp;
@@ -75,10 +82,34 @@ public class ImgProcProfileDao extends DAO<ImgProcProfile>{
 			statement = this.connect.createStatement();
 			result = statement
 					.executeQuery("Select * from imgprocprofiles limit 10");
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			return null;
 		}
 		return result;
 	}
 
+	@Override
+	public ImgProcProfile get(ResultSet result) {
+		ImgProcProfile temps = new ImgProcProfile();
+		try {
+			temps.setImgProcProfileId(Utils.convertToInt(result
+					.getInt("imgprocprofileid")));
+			temps.setImgProcProfileName(Utils.convertToString(result
+					.getString("imgprocprofilename")));
+			temps.setValidated(Utils.convertToBool(result
+					.getBoolean("validated")));
+			temps.setDeleted(Utils.convertToBool(result.getBoolean("deleted")));
+
+			temps.setProfileType(Utils.convertToInt(result
+					.getInt("profiletype")));
+			temps.setDescription(Utils.convertToString(result
+					.getString("description")));
+			temps.setImgProcScript(Utils.convertToString(result
+					.getString("imgprocscript")));
+			return temps;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

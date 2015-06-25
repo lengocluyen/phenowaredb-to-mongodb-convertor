@@ -6,8 +6,17 @@ public class ImgAcqStationProfile {
 	boolean validated;
 	boolean deleted;
 	int profiletype;
+	ProfileType profileTypeObject;
+	
+	public ProfileType getProfileTypeObject() {
+		return profileTypeObject;
+	}
+	public void setProfileTypeObject(ProfileType profileTypeObject) {
+		this.profileTypeObject = profileTypeObject;
+	}
 	String description;
 	int imageryusertype;
+	
 	int stationid;
 	int indexer;
 	int toplight;

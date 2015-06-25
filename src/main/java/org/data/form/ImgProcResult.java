@@ -1,6 +1,6 @@
 package org.data.form;
 
-public class Imgprocresult {
+public class ImgProcResult {
 	int resultid;
 	String studyname;
 	int taskid;
