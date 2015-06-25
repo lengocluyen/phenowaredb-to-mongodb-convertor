@@ -1,125 +1,123 @@
 package org.data.jsonconvertor;
 
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.data.handle.Utils;
+import org.data.connection.WateringresultDao;
+import org.data.form.Wateringresult;
+import org.data.handle.JsonReadWrite;
 
 public class WateringConvertor {
 	
-	
-	public static List<LinkedHashMap<String,Object>> WateringResultConvertToJson(ResultSet rs){
+	public static List<LinkedHashMap<String,Object>> WateringResultConvertToJson(){
 		List<LinkedHashMap<String,Object>> jsons = new ArrayList<LinkedHashMap<String,Object>>();
-		//JSONObject jsonObject = new JSONObject();
+		WateringresultDao ward = new WateringresultDao(null);
+		List<Wateringresult> war = ward.all();
 		
-		try {
-			while(rs.next()){
-				LinkedHashMap<String, Object> jsonOrderedMap = new LinkedHashMap<String, Object>();
-				//dans platforme
+		for (Wateringresult ws : war) {
+				LinkedHashMap<String, Object> watering = new LinkedHashMap<String, Object>();
+				watering.put("plant","");
+				watering.put("plantAlias","");
+				watering.put("genotype","");
+				watering.put("genotypeAlias","");
+				watering.put("experiment","");
+				watering.put("experimentAlias","");
+				watering.put("study","");
+				watering.put("studyAlias","");
+				watering.put("platform","http://www.phenome-fppn.fr/m3p/");
+				watering.put("technicalPlateau","http://www.phenome-fppn.fr/m3p/phenoarch");
+				watering.put("timestamp", ws.getResultDate().getTime());
+				watering.put("date", ws.getResultDate());
 
-				jsonOrderedMap.put("plant","");
-				jsonOrderedMap.put("plantAlias","");
-				jsonOrderedMap.put("genotype","");
-				jsonOrderedMap.put("genotypeAlias","");
-				jsonOrderedMap.put("experiment","");
-				jsonOrderedMap.put("experimentAlias","");
-				jsonOrderedMap.put("study","");
-				jsonOrderedMap.put("studyAlias","");
-				jsonOrderedMap.put("platform","http://www.phenome-fppn.fr/m3p/");
-				jsonOrderedMap.put("technicalPlateau","http://www.phenome-fppn.fr/m3p/phenoarch");
-				jsonOrderedMap.put("timestamp", rs.getTimestamp("resultdate").getTime());
-				jsonOrderedMap.put("date", rs.getTimestamp("resultdate").toString());
-
-				Map<String, Object> childConfig = new LinkedHashMap<String, Object>();
-				childConfig.put("provider","phenowaredb");
-				childConfig.put("wateringid", Utils.convertToString(rs.getInt("wateringid")));
-				childConfig.put("plantid", Utils.convertToString(rs.getInt("plantid")));
-				childConfig.put("studyname", Utils.convertToString(rs.getString("studyname")));
-				childConfig.put("taskid", Utils.convertToString(rs.getInt("taskid")));
-				childConfig.put("calibration", Utils.convertToString(rs.getInt("calibration")));
-				childConfig.put("stationid", Utils.convertToString(rs.getInt("usedstationid")));
-				childConfig.put("usedscaleid", Utils.convertToString(rs.getInt("usedscaleid")));
-				childConfig.put("usedpumpid", Utils.convertToString(rs.getInt("usedpumpid")));
-				Map<String, Object> childNextLoc = new LinkedHashMap<String, Object>();
-				childNextLoc.put("lane", Utils.convertToString(rs.getInt("lane")));
-				childNextLoc.put("rank", Utils.convertToString(rs.getInt("rank")));
-				childNextLoc.put("level", Utils.convertToString(rs.getInt("level")));
-				org.json.JSONObject childjson = new org.json.JSONObject(childNextLoc) ;
-				childConfig.put("nextLocation", childjson);
-				childjson = new org.json.JSONObject(childConfig) ;
-				jsonOrderedMap.put("configuration",childjson);
+				Map<String, Object> config = new LinkedHashMap<String, Object>();
+				config.put("provider","phenowaredb");
+				config.put("wateringid", ws.getWateringId());
+				config.put("plantid", ws.getPlantId());
+				config.put("studyname",ws.getStudyName());
+				config.put("taskid", ws.getTaskId());
+				config.put("calibration", ws.getCalibration());
+				config.put("usedstationid", ws.getUsedStationId());
+				config.put("usedscaleid", ws.getUsedScaleId());
+				config.put("usedpumpid", ws.getUsedPumpId());
+				Map<String, Object> nextLoc = new LinkedHashMap<String, Object>();
+				nextLoc.put("lane", ws.getLane());
+				nextLoc.put("rank", ws.getRank());
+				nextLoc.put("level", ws.getLevel());
+				org.json.JSONObject childjson = new org.json.JSONObject(nextLoc);
+				config.put("nextLocation", childjson);
+				childjson = new org.json.JSONObject(config) ;
+				watering.put("configuration",childjson);
 								
 				
 				//dans wateringresult
-				jsonOrderedMap.put("automatonSuccess", Utils.convertToString(rs.getBoolean("success")));
-				jsonOrderedMap.put("userValidation", Utils.convertToString(rs.getBoolean("valid")));
+				watering.put("automatonSuccess", ws.isSuccess());
+				watering.put("userValidation", ws.isValid());
 
-				Map<String, Object> childRequired = new LinkedHashMap<String, Object>();
-				childRequired.put("product", Utils.convertToString(rs.getString("reqproductname")));
-				childRequired.put("scaleType", Utils.convertToString(rs.getString("reqscaletypename")));
-				childRequired.put("pumpType", Utils.convertToString(rs.getString("reqpumptypename")));
-				childRequired.put("targetWeight", Utils.convertToString(rs.getInt("reqtargetweight")));
-				childRequired.put("targetQuantity", Utils.convertToString(rs.getInt("reqtargetquantity")));
-				childRequired.put("pumpSpeed", Utils.convertToString(rs.getInt("reqpumpspeed")));
-				childRequired.put("maxQuantity", Utils.convertToString(rs.getInt("reqmaxquantity")));
-				childRequired.put("minWeight", Utils.convertToString(rs.getInt("reqminweight")));
-				childRequired.put("movePerch", Utils.convertToString(rs.getBoolean("reqmoveperch")));
-				childjson = new org.json.JSONObject(childRequired) ;
-				jsonOrderedMap.put("setpoints",childjson);
+				Map<String, Object> setpoints = new LinkedHashMap<String, Object>();
+				setpoints.put("product", ws.getRequiredProduct());
+				setpoints.put("scaleType", ws.getRequiredScaleType());
+				setpoints.put("pumpType", ws.getRequiredPumpType());
+				setpoints.put("targetWeight", ws.getRequiredTargetWeight());
+				setpoints.put("targetQuantity", ws.getRequiredTargetQuantity());
+				setpoints.put("pumpSpeed", ws.getRequiredPumpSpeed());
+				setpoints.put("maxQuantity", ws.getRequiredMaxQuantity());
+				setpoints.put("minWeight", ws.getRequiredMinWeight());
+				setpoints.put("movePerch", ws.isRequiredMovePerch());
+				childjson = new org.json.JSONObject(setpoints) ;
+				watering.put("setpoints",childjson);
 				
-				jsonOrderedMap.put("product", Utils.convertToString(rs.getString("usedproductname")));
-				jsonOrderedMap.put("scaleType", Utils.convertToString(rs.getString("usedscaletypename")));
-				jsonOrderedMap.put("pumpType", Utils.convertToString(rs.getString("usedpumptypename")));
-				jsonOrderedMap.put("pumpSpeed", Utils.convertToString(rs.getInt("pumpspeed")));
+				watering.put("product", ws.getUsedProduct());
+				watering.put("scaleType", ws.getUsedScaleType());
+				watering.put("pumpType", ws.getUsedPumpType());
+				watering.put("pumpSpeed", ws.getUsedPumpSpeed());
 				
-				Map<String, Object> childMeasures = new LinkedHashMap<String, Object>();
+				Map<String, Object> measures = new LinkedHashMap<String, Object>();
 				
-				Map<String, Object> childM = new LinkedHashMap<String, Object>();
-				childM.put("value", Utils.convertToString(rs.getInt("weightbefore")));
-				childM.put("unity",  "");
-				childM.put("type", "automatic");
-				childM.put("confidence", "unspecified");
-				childjson = new org.json.JSONObject(childM) ;
-				childMeasures.put("weightBefore",childjson );
-				childM = new LinkedHashMap<String, Object>();
-				childM.put("value", Utils.convertToString(rs.getInt("weightafter")));
-				childM.put("unity",  "");
-				childM.put("type", "automatic");
-				childM.put("confidence", "unspecified");
-				childjson = new org.json.JSONObject(childM) ;
-				childMeasures.put("weightAfter",childjson );
-				childM = new LinkedHashMap<String, Object>();
-				childM.put("value", Utils.convertToString(rs.getInt("weightafter")-rs.getInt("weightbefore")));
-				childM.put("unity",  "");
-				childM.put("type", "computed");
-				childM.put("confidence", "unspecified");
-				childjson = new org.json.JSONObject(childM) ;
-				childMeasures.put("weightAmount",childjson );
+				Map<String, Object> meas = new LinkedHashMap<String, Object>();
+				meas.put("value", ws.getWeightBefore());
+				meas.put("unity",  "");
+				meas.put("type", "automatic");
+				meas.put("confidence", "unspecified");
+				childjson = new org.json.JSONObject(meas) ;
+				measures.put("weightBefore",childjson );
+				meas = new LinkedHashMap<String, Object>();
+				meas.put("value", ws.getWeightAfter());
+				meas.put("unity",  "");
+				meas.put("type", "automatic");
+				meas.put("confidence", "unspecified");
+				childjson = new org.json.JSONObject(meas) ;
+				measures.put("weightAfter",childjson );
+				meas = new LinkedHashMap<String, Object>();
+				meas.put("value", ws.getWeightAfter()-ws.getWeightBefore());
+				meas.put("unity",  "");
+				meas.put("type", "computed");
+				meas.put("confidence", "unspecified");
+				childjson = new org.json.JSONObject(meas) ;
+				measures.put("weightAmount",childjson );
 				
-				childjson = new org.json.JSONObject(childMeasures) ;
-				jsonOrderedMap.put("measures",childjson);
+				childjson = new org.json.JSONObject(measures) ;
+				watering.put("measures",childjson);
 				
 
-				jsons.add(jsonOrderedMap);
+				jsons.add(watering);
 	
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		return jsons;
 	}
 	
 	
+	public static void ExportToFile(String filename){
+		List<LinkedHashMap<String,Object>> jsons = WateringResultConvertToJson();
+		JsonReadWrite jrw3 = new JsonReadWrite();
+		jrw3.WriteToFile(jsons, filename,true);
+	}
 	
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		ExportToFile("Data/Watering.json");
 
 	}
 }
