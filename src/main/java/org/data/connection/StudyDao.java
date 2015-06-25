@@ -79,7 +79,22 @@ public class StudyDao extends DAO<Study>{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	public Study single(String studyName){
+		try {
+			Statement statement = this.connect.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE);
+			String query = "Select * from studies where name like '" + studyName +"'";
+			ResultSet rs = statement.executeQuery(query);
+			if (rs.first()) {
+				return this.get(rs);
+			}
+			return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
 	@Override
 	public Study get(ResultSet rs) {
 		Study study = new Study();

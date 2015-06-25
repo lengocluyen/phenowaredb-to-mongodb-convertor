@@ -29,7 +29,10 @@ public class WeighingConvertor {
 					"http://www.phenome-fppn.fr/m3p/arch/2013/c13006199");
 			weighing.put("plantAlias",
 					"1605/22H3/ZM3597/MYB/WW/1/2745/ARCH2013-09-12");
-
+			
+			weighing.put("date", ws.getDate());
+			weighing.put("timestamp", ws.getTimestamps());
+			
 			Map<String, Object> configurations = new LinkedHashMap<String, Object>();
 			configurations.put("provider", "phenowaredb");
 			configurations.put("weighingid", ws.getWeighingid());
@@ -51,10 +54,12 @@ public class WeighingConvertor {
 			weighing.put("userValidation", ws.isValid());
 
 			Map<String, Object> setpoints = new LinkedHashMap<String, Object>();
-			setpoints.put("scaleType", ws.getLane());
+			setpoints.put("scaleType", ws.getSetpointscaletype()==-1?"":ws.getSetpointscaletype());
 
 			weighing.put("setpoints", setpoints);
-
+			weighing.put("scaleType", ws.getUsedscaletypename());
+			weighing.put("weighingType", ws.getWeighingtype());
+			
 			Map<String, Object> measures = new LinkedHashMap<String, Object>();
 			Map<String, Object> weightBefore = new LinkedHashMap<String, Object>();
 			Map<String, Object> weightAfter = new LinkedHashMap<String, Object>();

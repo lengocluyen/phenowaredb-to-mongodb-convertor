@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.data.form.WeighingSetpoint;
 import org.data.form.Weighingresult;
 import org.data.handle.Utils;
 
@@ -99,6 +100,8 @@ public class WeighingresultDao extends DAO<Weighingresult> {
 			temps.setTagname(Utils.convertToString(result.getString("tagname")));
 			temps.setPlantid(Utils.convertToInt(result.getInt("plantid")));
 			temps.setResultdate(result.getTimestamp("resultdate"));
+			temps.setDate(Utils.convertToString(result.getString("resultdate")));
+			temps.setTimestamps(temps.getResultdate().getTime());
 			temps.setValid(Utils.convertToBool(result.getBoolean("valid")));
 			temps.setWeighingtype(Utils.convertToString(result
 					.getString("weighingtype")));
@@ -117,6 +120,14 @@ public class WeighingresultDao extends DAO<Weighingresult> {
 			temps.setLane(Utils.convertToInt(result.getInt("lane")));
 			temps.setRank(Utils.convertToInt(result.getInt("rank")));
 			temps.setLevel(Utils.convertToInt(result.getInt("level")));
+			
+			WeighingSetpointDao wsd = new WeighingSetpointDao(null);
+			WeighingSetpoint ws = wsd.single(temps.getTaskid(), temps.getPlantid(), temps.getStudyname());
+			if(ws!=null)
+			temps.setSetpointscaletype(ws.getScaletypeid());
+			else 
+				temps.setSetpointscaletype(-1);
+			
 			return temps;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

@@ -10,7 +10,7 @@ public class Weighingresult {
 	public int getWeighingid() {
 		return weighingid;
 	}
-
+	
 	public void setWeighingid(int weighingid) {
 		this.weighingid = weighingid;
 	}
@@ -150,6 +150,29 @@ public class Weighingresult {
 	public void setLevel(int level) {
 		this.level = level;
 	}
+	public int getSetpointscaletype() {
+		return setpointscaletype;
+	}
+
+	public void setSetpointscaletype(int setpointscaletype) {
+		this.setpointscaletype = setpointscaletype;
+	}
+	
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public long getTimestamps() {
+		return timestamps;
+	}
+
+	public void setTimestamps(long timestamps) {
+		this.timestamps = timestamps;
+	}
 
 	int weighingid;
 	String studyname;
@@ -157,6 +180,8 @@ public class Weighingresult {
 	String tagname;
 	int plantid;
 	Timestamp resultdate;
+	String date;
+	long timestamps;
 	boolean valid;
 	String weighingtype;
 	String reqscaletypename;
@@ -169,5 +194,8 @@ public class Weighingresult {
 	int lane;
 	int rank;
 	int level;
+	int setpointscaletype;
+	
+	
 
 }
