@@ -1,0 +1,8 @@
+package org.data.jsonconvertor;
+
+public class WeighingConvertor {
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+}
