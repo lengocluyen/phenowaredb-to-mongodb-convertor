@@ -11,7 +11,10 @@ import java.util.List;
 import org.data.form.ImgProcProfile;
 import org.data.handle.Utils;
 
+
 public class ImgProcProfileDao extends DAO<ImgProcProfile> {
+
+
 
 
 	public ImgProcProfileDao(Connection conn) {
@@ -39,6 +42,7 @@ public class ImgProcProfileDao extends DAO<ImgProcProfile> {
 
 	@Override
 	public ImgProcProfile single(int id) {
+
 		try {
 			Statement statement = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
@@ -84,11 +88,15 @@ public class ImgProcProfileDao extends DAO<ImgProcProfile> {
 			statement = this.connect.createStatement();
 			result = statement
 					.executeQuery("Select * from imgprocprofiles limit 10");
+
 		} catch (Exception ex) {
+
+
 			return null;
 		}
 		return result;
 	}
+
 
 	@Override
 	public ImgProcProfile get(ResultSet result) {

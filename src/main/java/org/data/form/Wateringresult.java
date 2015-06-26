@@ -13,6 +13,10 @@ public class Wateringresult {
 	private boolean valid;
 	private boolean success;
 	private int calibration;
+	
+	private int lane;
+	private int rank;
+	private int level;
 
 	//"requiredConfig" : 
 	private String requiredProduct;
@@ -95,6 +99,30 @@ public class Wateringresult {
 		public void setCalibration(int calibration) {
 			this.calibration = calibration;
 		}
+		public int getLane() {
+			return lane;
+		}
+
+		public void setLane(int lane) {
+			this.lane = lane;
+		}
+
+		public int getRank() {
+			return rank;
+		}
+
+		public void setRank(int rank) {
+			this.rank = rank;
+		}
+
+		public int getLevel() {
+			return level;
+		}
+
+		public void setLevel(int level) {
+			this.level = level;
+		}
+
 		public String getRequiredProduct() {
 			return requiredProduct;
 		}
