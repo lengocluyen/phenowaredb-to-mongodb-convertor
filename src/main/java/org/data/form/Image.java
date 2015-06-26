@@ -23,11 +23,20 @@ public class Image {
 	int imgangle;
 	String subfolder;
 	String acquisitiondate;
+	long timestamps;
 	int imgid;
 	int lane;
 	int rank;
 	int level;
 	boolean refimage;
+	
+	
+	public long getTimestamps() {
+		return timestamps;
+	}
+	public void setTimestamps(long timestamps) {
+		this.timestamps = timestamps;
+	}
 	public String getImgguid() {
 		return imgguid;
 	}

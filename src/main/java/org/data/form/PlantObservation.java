@@ -14,16 +14,43 @@ public class PlantObservation {
 		this.taks = taks;
 	}
 
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public long getTimestamps() {
+		return timestamps;
+	}
+
+	public void setTimestamps(long timestamps) {
+		this.timestamps = timestamps;
+	}
+
 	String tagname;
 	int plantid;
 	String userlogin;
 	String resultdate;
+	String date;
+	long timestamps;
 	boolean valid;
 	String observationcode;
 	String observation;
 	int lane;
 	int rank;
 	int level;
+	int setpointsStationid;
+	
+	public int getSetpointsStationid() {
+		return setpointsStationid;
+	}
+
+	public void setSetpointsStationid(int setpointsStationid) {
+		this.setpointsStationid = setpointsStationid;
+	}
 
 	public int getObservationid() {
 		return observationid;

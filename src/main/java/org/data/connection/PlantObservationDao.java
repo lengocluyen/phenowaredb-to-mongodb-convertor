@@ -60,7 +60,7 @@ public class PlantObservationDao extends DAO<PlantObservation>{
 		try {
 			Statement statement = this.connect.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, 
                     ResultSet.CONCUR_UPDATABLE);
-			String query = "Select * from plantobservations";
+			String query = "Select * from plantobservations limit 10";
 			ResultSet rs = statement.executeQuery(query);
 			List<PlantObservation> data = new ArrayList<PlantObservation>();
 			while(rs.next()) {
@@ -91,6 +91,8 @@ public class PlantObservationDao extends DAO<PlantObservation>{
 			po.setPlantid(Utils.convertToInt(rs.getObject("plantid")));
 			po.setUserlogin(Utils.convertToString(rs.getObject("userlogin")));
 			po.setResultdate(Utils.convertToString(rs.getObject("resultdate")));
+			po.setDate(Utils.convertToString(rs.getObject("resultdate")));
+			po.setTimestamps(rs.getTimestamp("resultdate").getTime());
 			po.setValid(Utils.convertToBool(rs.getObject("valid")));
 			po.setObservationcode(Utils.convertToString(rs.getObject("observationcode")));
 			po.setObservation(Utils.convertToString(rs.getObject("observation")));
