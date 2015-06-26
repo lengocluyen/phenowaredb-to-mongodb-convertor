@@ -62,7 +62,7 @@ public class WateringresultDao extends DAO<Wateringresult>{
 			Statement statement = this.connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, 
                     ResultSet.CONCUR_UPDATABLE);
 			ResultSet result = statement
-					.executeQuery("Select * from wateringresults limit 10");
+					.executeQuery("Select * from wateringresults where wateringid < 20001");
 			
 			while (result.next()) {
 				Wateringresult temps = this.get(result);

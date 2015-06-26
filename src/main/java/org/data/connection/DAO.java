@@ -7,17 +7,22 @@ import java.util.List;
 
 public abstract class DAO<T> {
 	protected Connection connect = null;
-	
+
 	public DAO(Connection conn) {
-		try {
-			Class.forName("org.postgresql.Driver");
-			this.connect = DriverManager
-					.getConnection(
-							"jdbc:postgresql://lps-elcomdb.supagro.inra.fr:5432/phenowaredb",
-							"phis", "c1.61!");
-			this.connect.setAutoCommit(false);
-		} catch (Exception ex) {
-			this.connect = conn;
+		if (this.connect == null) {
+			try {
+				Class.forName("org.postgresql.Driver");
+				this.connect = DriverManager
+						.getConnection(
+								"jdbc:postgresql://lps-elcomdb.supagro.inra.fr:5432/phenowaredb",
+								"phis", "c1.61!");
+				this.connect.setAutoCommit(false);
+
+			} catch (Exception ex) {
+				this.connect = conn;
+				//System.out.println("connectException : " + this.connect);
+
+			}
 		}
 	}
 
@@ -39,7 +44,7 @@ public abstract class DAO<T> {
 	}
 
 	public void setConnect(Connection connect) {
-			this.connect = connect;
+		this.connect = connect;
 	}
 
 	public abstract boolean create(T obj);
@@ -51,8 +56,8 @@ public abstract class DAO<T> {
 	public abstract T single(int id);
 
 	public abstract List<T> all();
-	
+
 	public abstract ResultSet resultSet();
-	
-	public abstract T get (ResultSet result);
+
+	public abstract T get(ResultSet result);
 }

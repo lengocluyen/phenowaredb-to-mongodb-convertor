@@ -88,6 +88,7 @@ public class WeighingresultDao extends DAO<Weighingresult> {
 		}
 		return result;
 	}
+	WeighingSetpointDao wsd = new WeighingSetpointDao(null);
 	@Override
 	public Weighingresult get (ResultSet result) {
 		Weighingresult temps = new Weighingresult();
@@ -121,7 +122,6 @@ public class WeighingresultDao extends DAO<Weighingresult> {
 			temps.setRank(Utils.convertToInt(result.getInt("rank")));
 			temps.setLevel(Utils.convertToInt(result.getInt("level")));
 			
-			WeighingSetpointDao wsd = new WeighingSetpointDao(null);
 			WeighingSetpoint ws = wsd.single(temps.getTaskid(), temps.getPlantid(), temps.getStudyname());
 			if(ws!=null)
 			temps.setSetpointscaletype(ws.getScaletypeid());

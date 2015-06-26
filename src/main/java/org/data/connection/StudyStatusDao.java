@@ -1,6 +1,7 @@
 package org.data.connection;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -39,7 +40,8 @@ public class StudyStatusDao extends DAO<StudyStatus> {
 	public StudyStatus single(int id) {
 		// TODO Auto-generated method stub
 		try {
-			Statement statement = this.connect.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, 
+			Connection connection = this.connect;
+			Statement statement = connection.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, 
                     ResultSet.CONCUR_UPDATABLE);
 			String query = "Select * from studystatus where labelid = " + id;
 			ResultSet rs = statement.executeQuery(query);

@@ -18,13 +18,15 @@ public class WateringConvertor {
 	public static List<LinkedHashMap<String,Object>> WateringResultConvertToJson(){
 		List<LinkedHashMap<String,Object>> jsons = new ArrayList<LinkedHashMap<String,Object>>();
 		WateringresultDao ward = new WateringresultDao(null);
-		PlantDao pld = new PlantDao(null);
-		StudyDao std = new StudyDao(null);
+		
 		List<Wateringresult> war = ward.all();
 		
 		for (Wateringresult ws : war) {
+			System.out.println("wateringid : "+ws.getWateringId());
 				LinkedHashMap<String, Object> watering = new LinkedHashMap<String, Object>();
 				
+				PlantDao pld = new PlantDao(ward.getConnect());
+				StudyDao std = new StudyDao(ward.getConnect());
 				Study st = std.singleFromName(ws.getStudyName());
 				Plant pl = pld.single(st.getStudyid(),ws.getPlantId());
 				
@@ -127,7 +129,7 @@ public class WateringConvertor {
 	
 
 	public static void main(String[] args) {
-		ExportToFile("Data/Watering.json");
+		ExportToFile("Data/Watering1.json");
 
 	}
 }

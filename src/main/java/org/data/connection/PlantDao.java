@@ -118,7 +118,7 @@ public class PlantDao extends DAO<Plant> {
 			p.setCustomint3(Utils.convertToInt(rs.getObject("customint3")));
 			p.setCustomint4(Utils.convertToInt(rs.getObject("customint4")));
 			p.setCustomint5(Utils.convertToInt(rs.getObject("customint5")));
-			StudyDao sd = new StudyDao(null);
+			StudyDao sd = new StudyDao(this.getConnect());
 			Study s = sd.single(p.getStudyid());
 			if(s!=null)
 				p.setStudyObject(s);
