@@ -25,10 +25,11 @@ public class ImageConvertor {
 			PlantDao pld = new PlantDao(id.getConnect());
 			Plant pl = pld.single(img.getStudyid(),img.getPlantid());
 			
-			image.put("plant",
-					"http://www.phenome-fppn.fr/m3p/arch/2013/c13006199");
-			image.put("plantAlias",
-					pl.getPlantCode());
+			image.put("plant", "");
+			if(pl!=null)
+				image.put("plantAlias", pl.getPlantCode());
+			else
+				image.put("plantAlias", "");
 			image.put("genotype", "");
 			image.put("genotypeAlias",  "");
 			image.put("experiment", "");
