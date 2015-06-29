@@ -54,6 +54,23 @@ public class PlantDao extends DAO<Plant> {
 			return null;
 		}
 	}
+	
+	public Plant single(int studyid, int plantid) {
+		try {
+			Statement statement = this.connect.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE);
+			String query = "Select * from plants where  studyid = " + studyid + " and plantid = " + plantid;
+			ResultSet rs = statement.executeQuery(query);
+			if (rs.first()) {
+				return this.get(rs);
+			}
+			return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	@Override
 	public List<Plant> all() {
@@ -101,7 +118,7 @@ public class PlantDao extends DAO<Plant> {
 			p.setCustomint3(Utils.convertToInt(rs.getObject("customint3")));
 			p.setCustomint4(Utils.convertToInt(rs.getObject("customint4")));
 			p.setCustomint5(Utils.convertToInt(rs.getObject("customint5")));
-			StudyDao sd = new StudyDao(null);
+			StudyDao sd = new StudyDao(this.getConnect());
 			Study s = sd.single(p.getStudyid());
 			if(s!=null)
 				p.setStudyObject(s);

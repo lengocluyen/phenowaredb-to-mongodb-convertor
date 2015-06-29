@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.data.connection.ImageDao;
+import org.data.connection.PlantDao;
 import org.data.form.Image;
+import org.data.form.Plant;
 import org.data.handle.JsonReadWrite;
 import org.data.handle.Utils;
 
@@ -20,51 +22,57 @@ public class ImageConvertor {
 
 		for (Image img : imgs) {
 			LinkedHashMap<String, Object> image = new LinkedHashMap<String, Object>();
-			image.put("platform", "http://www.phenome-fppn.fr/m3p/");
-			image.put("technicalPlateau",
-					"http://www.phenome-fppn.fr/m3p/phenoarch");
+			PlantDao pld = new PlantDao(id.getConnect());
+			Plant pl = pld.single(img.getStudyid(),img.getPlantid());
+			
+			image.put("plant",
+					"http://www.phenome-fppn.fr/m3p/arch/2013/c13006199");
+			image.put("plantAlias",
+					pl.getPlantCode());
+			image.put("genotype", "");
+			image.put("genotypeAlias",  "");
 			image.put("experiment", "");
 			image.put("experimentAlias", "");
 			image.put("study", "");
 			image.put("studyAlias", "");
-			image.put("plant",
-					"http://www.phenome-fppn.fr/m3p/arch/2013/c13006199");
-			image.put("plantAlias",
-					"1605/22H3/ZM3597/MYB/WW/1/2745/ARCH2013-09-12");
-
-			image.put("date", img.getAcquisitiondate());
+			image.put("platform", "http://www.phenome-fppn.fr/m3p/");
+			image.put("technicalPlateau",
+					"http://www.phenome-fppn.fr/m3p/phenoarch");
 			image.put("timestamp", img.getTimestamps());
-
-			Map<String, Object> configurations = new LinkedHashMap<String, Object>();
-			configurations.put("provider", "phenowaredb");
-			configurations.put("imageid", img.getImgid());
-			configurations.put("plantid", img.getPlantid());
-			configurations.put("taskid", img.getTaskid());
-			configurations.put("stationid", img.getStationid());
-			configurations.put("imgangle", img.getImgangle());
-			configurations.put("subfolder", img.getSubfolder());
+			image.put("date", img.getAcquisitiondate());
+			
+			Map<String, Object> configuration = new LinkedHashMap<String, Object>();
+			configuration.put("provider", "phenowaredb");
+			configuration.put("imgid", img.getImgid());
+			configuration.put("plantid", img.getPlantid());
+			configuration.put("taskid", img.getTaskid());
+			configuration.put("stationid", img.getStationid());
+			configuration.put("imgacqprofileid", img.getImgacqprofileid());
+			configuration.put("subfolder", img.getSubfolder());
 
 			Map<String, Object> nextLocation = new LinkedHashMap<String, Object>();
 			nextLocation.put("lane", img.getLane());
 			nextLocation.put("rank", img.getRank());
 			nextLocation.put("level", img.getLevel());
 
-			configurations.put("nextLocation", nextLocation);
+			configuration.put("nextLocation", nextLocation);
 
-			image.put("configurations", configurations);
+			image.put("configuration", configuration);
 			image.put("userValidation", img.isValid());
-			image.put("refimage", img.isRefimage());
-
-			Map<String, Object> viewtypes = new LinkedHashMap<String, Object>();
-			viewtypes.put("label", img.getViewType().getViewtypelabel());
-			image.put("setpoints", viewtypes);
-
-			Map<String, Object> directorypaths = new LinkedHashMap<String, Object>();
-			directorypaths.put("pathid", img.getRootPath().getPathid());
-			directorypaths.put("dirpath", img.getRootPath().getDirpath());
-			image.put("directorypaths", directorypaths);
-
-			image.put("imgacqprofile", img.getImgacqprofileid());
+			image.put("isReferenceImage", img.isRefimage());
+			image.put("viewType", img.getViewType().getViewtypelabel());
+			image.put("cameraAngle", img.getImgangle());
+			image.put("fileName", img.getImgguid());
+			
+			image.put("serverPath", "http://stck-lespe.supagro.inra.fr/");	
+			image.put("imageServerPath", "");
+			image.put("imageWebPath","");
+			image.put("thumbServerPath", ""); 
+			image.put("thumbWebPath", ""); 
+			image.put("binaryServerPath", "unspecified");
+			image.put("binaryWebPath", "unspecified");
+			image.put("md5", "unspecified");
+			    	
 			jsons.add(image);
 		}
 		return jsons;

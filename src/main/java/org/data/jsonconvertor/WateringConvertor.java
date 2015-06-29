@@ -5,7 +5,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.data.connection.PlantDao;
+import org.data.connection.StudyDao;
 import org.data.connection.WateringresultDao;
+import org.data.form.Plant;
+import org.data.form.Study;
 import org.data.form.Wateringresult;
 import org.data.handle.JsonReadWrite;
 
@@ -14,12 +18,20 @@ public class WateringConvertor {
 	public static List<LinkedHashMap<String,Object>> WateringResultConvertToJson(){
 		List<LinkedHashMap<String,Object>> jsons = new ArrayList<LinkedHashMap<String,Object>>();
 		WateringresultDao ward = new WateringresultDao(null);
+		
 		List<Wateringresult> war = ward.all();
 		
 		for (Wateringresult ws : war) {
+			System.out.println("wateringid : "+ws.getWateringId());
 				LinkedHashMap<String, Object> watering = new LinkedHashMap<String, Object>();
+				
+				PlantDao pld = new PlantDao(ward.getConnect());
+				StudyDao std = new StudyDao(ward.getConnect());
+				Study st = std.singleFromName(ws.getStudyName());
+				Plant pl = pld.single(st.getStudyid(),ws.getPlantId());
+				
 				watering.put("plant","");
-				watering.put("plantAlias","");
+				watering.put("plantAlias",pl.getPlantCode());
 				watering.put("genotype","");
 				watering.put("genotypeAlias","");
 				watering.put("experiment","");
@@ -117,7 +129,7 @@ public class WateringConvertor {
 	
 
 	public static void main(String[] args) {
-		ExportToFile("Data/Watering.json");
+		ExportToFile("Data/Watering1.json");
 
 	}
 }

@@ -9,11 +9,12 @@ import java.util.List;
 
 import org.data.form.Study;
 import org.data.form.StudyStatus;
+import org.data.form.UserInfo;
 import org.data.handle.Utils;
 import org.json.simple.JSONArray;
 
 public class StudyDao extends DAO<Study>{
-
+	
 	public StudyDao(Connection conn) {
 		super(conn);
 		// TODO Auto-generated constructor stub
@@ -43,6 +44,23 @@ public class StudyDao extends DAO<Study>{
 			Statement statement = this.connect.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, 
                     ResultSet.CONCUR_UPDATABLE);
 			String query = "Select * from studies where studyid = " + id;
+			ResultSet rs = statement.executeQuery(query);
+			if (rs.first()) {
+				return this.get(rs);
+			}
+			return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public Study singleFromName(String name) {
+		try {
+			Statement statement = this.connect.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE);
+			String query = "Select * from studies where name = '" + name + "'";
 			ResultSet rs = statement.executeQuery(query);
 			if (rs.first()) {
 				return this.get(rs);
@@ -114,11 +132,14 @@ public class StudyDao extends DAO<Study>{
 		study.setExtranetimgstorename(Utils.convertToString(rs.getObject("extranetimgstorename")));
 		study.setImgstorelogin(Utils.convertToString(rs.getObject("imgstorelogin")));
 		study.setImgstorepassword(Utils.convertToString(rs.getObject("imgstorepassword")));
-		StudyStatusDao ssd = new StudyStatusDao(null);
+		StudyStatusDao ssd = new StudyStatusDao(this.getConnect());
 		study.setStudystatus(ssd.single(study.getStatus()));
-		UserInfoDao uid = new UserInfoDao(null);
-		study.setUserInfo(uid.single(study.getOwnerid()));
-		return study;
+		UserInfoDao uid = new UserInfoDao(this.getConnect());
+		
+		UserInfo ui = uid.single(study.getOwnerid());
+		if(ui!=null)
+		study.setUserInfo(ui);
+ 		return study;
 		}catch(SQLException e){
 			e.printStackTrace();
 			return null;
