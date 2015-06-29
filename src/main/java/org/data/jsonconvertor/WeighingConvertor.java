@@ -1,6 +1,7 @@
 package org.data.jsonconvertor;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,13 +9,13 @@ import java.util.Map;
 import org.data.connection.WeighingresultDao;
 import org.data.form.Weighingresult;
 import org.data.handle.JsonReadWrite;
+import org.data.handle.Utils;
 
 public class WeighingConvertor {
 	public static List<LinkedHashMap<String, Object>> WeighingResultConvertToJson() {
 		List<LinkedHashMap<String, Object>> jsons = new ArrayList<LinkedHashMap<String, Object>>();
 		WeighingresultDao wrsd = new WeighingresultDao(null);
-		List<Weighingresult> wrs = wrsd.all();
-
+		List<Weighingresult> wrs = wrsd.all(false);
 		for (Weighingresult ws : wrs) {
 			LinkedHashMap<String, Object> weighing = new LinkedHashMap<String, Object>();
 			// dans platforme
@@ -89,6 +90,7 @@ public class WeighingConvertor {
 
 			jsons.add(weighing);
 		}
+		
 		return jsons;
 	}
 	public static int ComputedWeight(int before, int after){
@@ -100,6 +102,9 @@ public class WeighingConvertor {
 		jrw3.WriteToFile(jsons3, filename,true);
 	}
 	public static void main(String[] args) {
+		Date start = new Date();
 		ExportToFile("Data/Weigting.json");
+		Date end = new Date();
+		System.out.println(Utils.timePerformance(start, end));
 	}
 }

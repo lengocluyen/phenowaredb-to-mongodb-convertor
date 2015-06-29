@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.data.form.ImageViewType;
 import org.data.form.ImgAcqCameraProfile;
+import org.data.form.ProfileType;
 import org.data.handle.Utils;
 
 public class ImgAcqCameraProfileDao extends DAO<ImgAcqCameraProfile>{
@@ -93,7 +94,7 @@ public class ImgAcqCameraProfileDao extends DAO<ImgAcqCameraProfile>{
 			iacp.setProfiletype(Utils.convertToInt(rs.getObject("profiletype")));
 			iacp.setDescription(Utils.convertToString(rs.getObject("description")));
 			iacp.setImageryusertype(Utils.convertToInt(rs.getObject("imageryusertype")));
-			iacp.setInterfaceacqtype(Utils.convertToInt(rs.getObject("intefaceacqtype")));
+			iacp.setInterfaceacqtype(Utils.convertToInt(rs.getObject("interfaceacqtype")));
 			iacp.setViewtype(Utils.convertToInt(rs.getObject("viewtype")));
 			iacp.setStationid(Utils.convertToInt(rs.getObject("stationid")));
 			iacp.setWidth(Utils.convertToInt(rs.getObject("width")));
@@ -110,7 +111,15 @@ public class ImgAcqCameraProfileDao extends DAO<ImgAcqCameraProfile>{
 			iacp.setViewcount(Utils.convertToInt(rs.getObject("viewcount")));
 			iacp.setPixelformat(Utils.convertToString(rs.getObject("pixelformat")));
 			iacp.setMode(Utils.convertToString(rs.getObject("mode")));
+			ProfileTypeDao ptd = new ProfileTypeDao(null);
+			ProfileType pt = ptd.single(iacp.getProfiletype());
+			if(pt!=null)
+				iacp.setProfileTypeObject(pt);
 			
+			ImageViewTypeDao ivtd = new ImageViewTypeDao(null);
+			ImageViewType ivt = ivtd.single(iacp.getViewtype());
+			if(ivt!=null)
+				iacp.setImageViewType(ivt);
 			return iacp;
 		}
 		catch(SQLException e){

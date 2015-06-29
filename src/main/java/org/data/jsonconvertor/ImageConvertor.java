@@ -1,6 +1,7 @@
 package org.data.jsonconvertor;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,13 +9,14 @@ import java.util.Map;
 import org.data.connection.ImageDao;
 import org.data.form.Image;
 import org.data.handle.JsonReadWrite;
+import org.data.handle.Utils;
 
 public class ImageConvertor {
 
 	public static List<LinkedHashMap<String, Object>> ImagesConvertToJson() {
 		List<LinkedHashMap<String, Object>> jsons = new ArrayList<LinkedHashMap<String, Object>>();
 		ImageDao id = new ImageDao(null);
-		List<Image> imgs = id.all();
+		List<Image> imgs = id.all(true);
 
 		for (Image img : imgs) {
 			LinkedHashMap<String, Object> image = new LinkedHashMap<String, Object>();
@@ -75,6 +77,9 @@ public class ImageConvertor {
 	}
 
 	public static void main(String[] args) {
+		Date start = new Date();
 		ExportToFile("Data/Image.json");
+		Date end = new Date();
+		System.out.println(Utils.timePerformance(start, end));
 	}
 }

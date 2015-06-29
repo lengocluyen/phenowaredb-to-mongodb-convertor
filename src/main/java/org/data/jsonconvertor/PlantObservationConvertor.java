@@ -1,6 +1,7 @@
 package org.data.jsonconvertor;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,12 +11,13 @@ import org.data.connection.WeighingresultDao;
 import org.data.form.PlantObservation;
 import org.data.form.Weighingresult;
 import org.data.handle.JsonReadWrite;
+import org.data.handle.Utils;
 
 public class PlantObservationConvertor {
 	public static List<LinkedHashMap<String, Object>> PlantObservationResultConvertToJson() {
 		List<LinkedHashMap<String, Object>> jsons = new ArrayList<LinkedHashMap<String, Object>>();
 		PlantObservationDao pod = new PlantObservationDao(null);
-		List<PlantObservation> pos = pod.all();
+		List<PlantObservation> pos = pod.all(false);
 
 		for (PlantObservation po : pos) {
 			LinkedHashMap<String, Object> plantObservation = new LinkedHashMap<String, Object>();
@@ -80,6 +82,9 @@ public class PlantObservationConvertor {
 		jrw3.WriteToFile(jsons3, filename,true);
 	}
 	public static void main(String[] args) {
+		Date start = new Date();
 		ExportToFile("Data/PlantObservation.json");
+		Date end = new Date();
+		System.out.println(Utils.timePerformance(start, end));
 	}
 }

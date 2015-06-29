@@ -87,15 +87,16 @@ public class ImgAcqStationProfileDao extends DAO<ImgAcqStationProfile> {
 	public ImgAcqStationProfile get(ResultSet rs) {
 		ImgAcqStationProfile iasp = new ImgAcqStationProfile();
 		try{
-			iasp.setImgacqstationprofileid(Utils.convertToInt(rs.getObject("imgacqcameraprofileid")));
-			iasp.setImgacqstationprofilename(Utils.convertToString(rs.getObject("imgacqcameraprofilename")));
+			iasp.setImgacqstationprofileid(Utils.convertToInt(rs.getObject("imgacqstationprofileid")));
+			iasp.setImgacqstationprofilename(Utils.convertToString(rs.getObject("imgacqstationprofilename")));
 			iasp.setValidated(Utils.convertToBool(rs.getObject("validated")));
 			iasp.setDeleted(Utils.convertToBool(rs.getObject("deleted")));
 			iasp.setProfiletype(Utils.convertToInt(rs.getObject("profiletype")));
 			
 			ProfileTypeDao ptd = new ProfileTypeDao(null);
 			ProfileType pt = ptd.single(iasp.getProfiletype());
-			iasp.setProfileTypeObject(pt);
+			if(pt!=null)
+				iasp.setProfileTypeObject(pt);
 			iasp.setDescription(Utils.convertToString(rs.getObject("description")));
 			
 			iasp.setImageryusertype(Utils.convertToInt(rs.getObject("imageryusertype")));

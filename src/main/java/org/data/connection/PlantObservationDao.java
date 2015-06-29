@@ -73,7 +73,28 @@ public class PlantObservationDao extends DAO<PlantObservation>{
 			return null;
 		}
 	}
-
+	public List<PlantObservation> all(boolean test) {
+		try {
+			Statement statement = this.connect.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE);
+			String query;
+			if(test)
+			query = "Select * from plantobservations limit 10";
+			else
+				query = "Select * from plantobservations";
+				
+			ResultSet rs = statement.executeQuery(query);
+			List<PlantObservation> data = new ArrayList<PlantObservation>();
+			while(rs.next()) {
+				data.add(this.get(rs));
+			}
+			return data;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
 	@Override
 	public ResultSet resultSet() {
 		// TODO Auto-generated method stub
@@ -104,6 +125,8 @@ public class PlantObservationDao extends DAO<PlantObservation>{
 			Task t = td.single(po.getTaskid());
 			if(t!=null)
 				po.setTaks(t);
+
+			System.out.println("transacting... with observationid " + po.getObservationid());
 			return po;
 		}
 		catch(SQLException e)

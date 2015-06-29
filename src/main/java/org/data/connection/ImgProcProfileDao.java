@@ -11,11 +11,7 @@ import java.util.List;
 import org.data.form.ImgProcProfile;
 import org.data.handle.Utils;
 
-
 public class ImgProcProfileDao extends DAO<ImgProcProfile> {
-
-
-
 
 	public ImgProcProfileDao(Connection conn) {
 		super(conn);
@@ -61,17 +57,38 @@ public class ImgProcProfileDao extends DAO<ImgProcProfile> {
 		}
 	}
 
+	public ImgProcProfile single(String profileName) {
+
+		try {
+			Statement statement = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_UPDATABLE);
+			String query = "Select * from imgprocprofiles where  imgprocprofilename = '"
+					+ profileName + "'";
+			ResultSet rs = statement.executeQuery(query);
+			if (rs.first()) {
+				return this.get(rs);
+			}
+			return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	@Override
 	public List<ImgProcProfile> all() {
 		List<ImgProcProfile> ipp = new ArrayList<ImgProcProfile>();
 		try {
-			Statement statement = this.connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-					ResultSet.CONCUR_UPDATABLE);
+			Statement statement = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_UPDATABLE);
 			ResultSet result = statement
 					.executeQuery("Select * from imgprocprofiles limit 10");
 
 			while (result.next()) {
-				
+
 				ipp.add(this.get(result));
 			}
 		} catch (Exception ex) {
@@ -91,12 +108,10 @@ public class ImgProcProfileDao extends DAO<ImgProcProfile> {
 
 		} catch (Exception ex) {
 
-
 			return null;
 		}
 		return result;
 	}
-
 
 	@Override
 	public ImgProcProfile get(ResultSet result) {

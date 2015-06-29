@@ -73,7 +73,28 @@ public class WeighingresultDao extends DAO<Weighingresult> {
 		}
 		return wrs;
 	}
-
+	public List<Weighingresult> all(boolean test) {
+		List<Weighingresult> wrs = new ArrayList<Weighingresult>();
+		try {
+			Statement statement = this.connect.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE);
+			ResultSet result;
+			if(test)
+			result = statement
+					.executeQuery("Select * from weighingresults limit 10");
+			else
+				result = statement
+				.executeQuery("Select * from weighingresults");
+		
+			while (result.next()) {
+				Weighingresult temps = this.get(result);
+				wrs.add(temps);
+			}
+		} catch (Exception ex) {
+			return null;
+		}
+		return wrs;
+	}
 	@Override
 	public ResultSet resultSet() {
 		Statement statement;
@@ -127,7 +148,7 @@ public class WeighingresultDao extends DAO<Weighingresult> {
 			temps.setSetpointscaletype(ws.getScaletypeid());
 			else 
 				temps.setSetpointscaletype(-1);
-			
+			System.out.println("transacting... with weighingid " + temps.getWeighingid());
 			return temps;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

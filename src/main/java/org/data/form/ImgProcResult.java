@@ -7,9 +7,11 @@ public class ImgProcResult {
 	String tagname;
 	int plantid;
 	String resultdate;
+	long timeStampResult;
 	boolean valid;
 	boolean offlineprocessing;
 	String imgprocprofilename;
+	ImgProcProfile imagProcProfile;
 	String imgguid;
 	String rootpath;
 	String xscale;
@@ -49,6 +51,20 @@ public class ImgProcResult {
 	String unitscale;
 	double minenclosingcircle_radius;
 	String acquisitiondate;
+	
+	
+	public long getTimeStampResult() {
+		return timeStampResult;
+	}
+	public void setTimeStampResult(long timeStampResult) {
+		this.timeStampResult = timeStampResult;
+	}
+	public ImgProcProfile getImagProcProfile() {
+		return imagProcProfile;
+	}
+	public void setImagProcProfile(ImgProcProfile imagProcProfile) {
+		this.imagProcProfile = imagProcProfile;
+	}
 	public int getResultid() {
 		return resultid;
 	}

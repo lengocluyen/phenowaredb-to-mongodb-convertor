@@ -1,0 +1,132 @@
+{
+  "imgacqstationprofileid": 11,
+  "imgacqstationprofilename": "Test3103",
+  "validated": true,
+  "deleted": true,
+  "profiletype": {
+    "id": "",
+    "name": ""
+  },
+  "description": "",
+  "imageryusertype": 0,
+  "stationid": 6,
+  "indexer": 0,
+  "toplight": 1,
+  "sidelight": 1,
+  "zoom": 0,
+  "focus": 0,
+  "aperture": 0,
+  "rotationspeed": "20",
+  "topviewcount": 1,
+  "sideviewcount": 12
+}
+{
+  "imgacqstationprofileid": 14,
+  "imgacqstationprofilename": "Test3103",
+  "validated": true,
+  "deleted": true,
+  "profiletype": {
+    "id": "",
+    "name": ""
+  },
+  "description": "",
+  "imageryusertype": 0,
+  "stationid": 5,
+  "indexer": 0,
+  "toplight": 1,
+  "sidelight": 1,
+  "zoom": 0,
+  "focus": 0,
+  "aperture": 0,
+  "rotationspeed": "20",
+  "topviewcount": 1,
+  "sideviewcount": 12
+}
+{
+  "imgacqstationprofileid": 15,
+  "imgacqstationprofilename": "Test2104",
+  "validated": true,
+  "deleted": true,
+  "profiletype": {
+    "id": "",
+    "name": ""
+  },
+  "description": "",
+  "imageryusertype": 0,
+  "stationid": 5,
+  "indexer": 0,
+  "toplight": 1,
+  "sidelight": 1,
+  "zoom": 0,
+  "focus": 0,
+  "aperture": 0,
+  "rotationspeed": "20",
+  "topviewcount": 1,
+  "sideviewcount": 12
+}
+{
+  "imgacqstationprofileid": 16,
+  "imgacqstationprofilename": "Test2104",
+  "validated": true,
+  "deleted": true,
+  "profiletype": {
+    "id": "",
+    "name": ""
+  },
+  "description": "",
+  "imageryusertype": 0,
+  "stationid": 6,
+  "indexer": 0,
+  "toplight": 1,
+  "sidelight": 1,
+  "zoom": 0,
+  "focus": 0,
+  "aperture": 0,
+  "rotationspeed": "20",
+  "topviewcount": 1,
+  "sideviewcount": 12
+}
+{
+  "imgacqstationprofileid": 17,
+  "imgacqstationprofilename": "24004",
+  "validated": true,
+  "deleted": true,
+  "profiletype": {
+    "id": "",
+    "name": ""
+  },
+  "description": "",
+  "imageryusertype": 0,
+  "stationid": 5,
+  "indexer": 0,
+  "toplight": 1,
+  "sidelight": 1,
+  "zoom": 0,
+  "focus": 0,
+  "aperture": 0,
+  "rotationspeed": "20",
+  "topviewcount": 1,
+  "sideviewcount": 12
+}
+{
+  "imgacqstationprofileid": 18,
+  "imgacqstationprofilename": "24004",
+  "validated": true,
+  "deleted": true,
+  "profiletype": {
+    "id": "",
+    "name": ""
+  },
+  "description": "",
+  "imageryusertype": 0,
+  "stationid": 6,
+  "indexer": 0,
+  "toplight": 1,
+  "sidelight": 1,
+  "zoom": 0,
+  "focus": 0,
+  "aperture": 0,
+  "rotationspeed": "20",
+  "topviewcount": 1,
+  "sideviewcount": 12
+}

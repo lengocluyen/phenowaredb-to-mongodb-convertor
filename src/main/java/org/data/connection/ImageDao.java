@@ -76,7 +76,29 @@ public class ImageDao extends DAO<Image>{
 			return null;
 		}
 	}
-
+	public List<Image> all(boolean test) {
+		try {
+			Statement statement = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_UPDATABLE);
+			String query;
+			if(test)
+				query = "Select * from images limit 10";
+			else 
+				query = "Select * from images limit 10";
+			
+			ResultSet rs = statement.executeQuery(query);
+			List<Image> data = new ArrayList<Image>();
+			while (rs.next()) {
+				data.add(this.get(rs));
+			}
+			return data;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
 	@Override
 	public ResultSet resultSet() {
 		// TODO Auto-generated method stub
@@ -113,6 +135,8 @@ public class ImageDao extends DAO<Image>{
 			DirectoryPathDao dpd = new DirectoryPathDao(null);
 			DirectoryPath dp = dpd.single(img.getRootpathid());
 			img.setRootPath(dp);
+
+			System.out.println("transacting... with imgid " + img.getImgid());
 			return img;
 		}
 		catch(SQLException e){

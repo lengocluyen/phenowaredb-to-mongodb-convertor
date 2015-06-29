@@ -6,10 +6,14 @@ public class ImgAcqCameraProfile {
 	boolean validated;
 	boolean deleted;
 	int profiletype;
+	ProfileType profileTypeObject;
+	
 	String description;
 	int imageryusertype;
+
 	int interfaceacqtype;
 	int viewtype;
+	ImageViewType imageViewType;
 	int stationid;
 	int width;
 	int height;
@@ -25,6 +29,20 @@ public class ImgAcqCameraProfile {
 	int viewcount;
 	String pixelformat;
 	String mode;
+	
+	
+	public ImageViewType getImageViewType() {
+		return imageViewType;
+	}
+	public void setImageViewType(ImageViewType imageViewType) {
+		this.imageViewType = imageViewType;
+	}
+	public ProfileType getProfileTypeObject() {
+		return profileTypeObject;
+	}
+	public void setProfileTypeObject(ProfileType profileTypeObject) {
+		this.profileTypeObject = profileTypeObject;
+	}
 	public int getImgacqcameraprofileid() {
 		return imgacqcameraprofileid;
 	}
