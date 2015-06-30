@@ -6,7 +6,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.data.connection.PlantDao;
+import org.data.connection.StudyDao;
 import org.data.connection.WeighingresultDao;
+import org.data.form.Plant;
+import org.data.form.Study;
 import org.data.form.Weighingresult;
 import org.data.handle.JsonReadWrite;
 import org.data.handle.Utils;
@@ -18,6 +22,13 @@ public class WeighingConvertor {
 		List<Weighingresult> wrs = wrsd.all(false);
 		for (Weighingresult ws : wrs) {
 			LinkedHashMap<String, Object> weighing = new LinkedHashMap<String, Object>();
+			
+			PlantDao pld = new PlantDao(wrsd.getConnect());
+			StudyDao std = new StudyDao(wrsd.getConnect());
+			Study st = std.singleFromName(ws.getStudyname());
+			Plant pl = pld.single(st.getStudyid(),ws.getPlantid());
+
+			
 			// dans platforme
 			weighing.put("platform", "http://www.phenome-fppn.fr/m3p/");
 			weighing.put("technicalPlateau",
@@ -30,8 +41,10 @@ public class WeighingConvertor {
 			weighing.put("genotypeAlias", "");
 			weighing.put("plant",
 					"http://www.phenome-fppn.fr/m3p/arch/2013/c13006199");
-			weighing.put("plantAlias",
-					"1605/22H3/ZM3597/MYB/WW/1/2745/ARCH2013-09-12");
+			if(pl!=null)
+				weighing.put("plantAlias",pl.getPlantCode());
+			else
+				weighing.put("plantAlias",  "");
 			
 			weighing.put("date", ws.getDate());
 			weighing.put("timestamp", ws.getTimestamps());

@@ -11,6 +11,7 @@ import org.data.form.PlantObservation;
 import org.data.form.PlantObservationCode;
 import org.data.form.Task;
 import org.data.handle.Utils;
+import org.data.connection.DAO;
 
 public class PlantObservationDao extends DAO<PlantObservation>{
 
