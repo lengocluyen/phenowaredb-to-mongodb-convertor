@@ -8,6 +8,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.data.form.Plant;
+import org.data.form.Study;
 import org.data.form.WeighingSetpoint;
 import org.data.form.Weighingresult;
 import org.data.handle.Utils;
@@ -59,8 +61,9 @@ public class WeighingresultDao extends DAO<Weighingresult> {
 	public List<Weighingresult> all() {
 		List<Weighingresult> wrs = new ArrayList<Weighingresult>();
 		try {
-			Statement statement = this.connect.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, 
-                    ResultSet.CONCUR_UPDATABLE);
+			Statement statement = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_UPDATABLE);
 			ResultSet result = statement
 					.executeQuery("Select * from weighingresults limit 10");
 
@@ -73,19 +76,21 @@ public class WeighingresultDao extends DAO<Weighingresult> {
 		}
 		return wrs;
 	}
+
 	public List<Weighingresult> all(boolean test) {
 		List<Weighingresult> wrs = new ArrayList<Weighingresult>();
 		try {
-			Statement statement = this.connect.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, 
-                    ResultSet.CONCUR_UPDATABLE);
+			Statement statement = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_UPDATABLE);
 			ResultSet result;
-			if(test)
-			result = statement
-					.executeQuery("Select * from weighingresults limit 10");
+			if (test)
+				result = statement
+						.executeQuery("Select * from weighingresults limit 10");
 			else
 				result = statement
-				.executeQuery("Select * from weighingresults");
-		
+						.executeQuery("Select * from weighingresults");
+
 			while (result.next()) {
 				Weighingresult temps = this.get(result);
 				wrs.add(temps);
@@ -95,13 +100,15 @@ public class WeighingresultDao extends DAO<Weighingresult> {
 		}
 		return wrs;
 	}
+
 	@Override
 	public ResultSet resultSet() {
 		Statement statement;
 		ResultSet result;
 		try {
-			statement = this.connect.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, 
-                    ResultSet.CONCUR_UPDATABLE);
+			statement = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_UPDATABLE);
 			result = statement
 					.executeQuery("Select * from weighingresults limit 10");
 		} catch (Exception ex) {
@@ -109,9 +116,12 @@ public class WeighingresultDao extends DAO<Weighingresult> {
 		}
 		return result;
 	}
+
 	WeighingSetpointDao wsd = new WeighingSetpointDao(null);
+	PlantDao pld = new PlantDao(null);
+	StudyDao std = new StudyDao(null);
 	@Override
-	public Weighingresult get (ResultSet result) {
+	public Weighingresult get(ResultSet result) {
 		Weighingresult temps = new Weighingresult();
 		try {
 			temps.setWeighingid(Utils.convertToInt(result.getInt("weighingid")));
@@ -121,6 +131,14 @@ public class WeighingresultDao extends DAO<Weighingresult> {
 			temps.setTaskid(Utils.convertToInt(result.getInt("taskid")));
 			temps.setTagname(Utils.convertToString(result.getString("tagname")));
 			temps.setPlantid(Utils.convertToInt(result.getInt("plantid")));
+
+			
+			Study st = std.singleFromName(temps.getStudyname());
+			if (st != null) {
+				Plant pl = pld.single(st.getStudyid(), temps.getPlantid());
+				if (pl != null)
+					temps.setPlant(pl);
+			}
 			temps.setResultdate(result.getTimestamp("resultdate"));
 			temps.setDate(Utils.convertToString(result.getString("resultdate")));
 			temps.setTimestamps(temps.getResultdate().getTime());
@@ -142,13 +160,15 @@ public class WeighingresultDao extends DAO<Weighingresult> {
 			temps.setLane(Utils.convertToInt(result.getInt("lane")));
 			temps.setRank(Utils.convertToInt(result.getInt("rank")));
 			temps.setLevel(Utils.convertToInt(result.getInt("level")));
-			
-			WeighingSetpoint ws = wsd.single(temps.getTaskid(), temps.getPlantid(), temps.getStudyname());
-			if(ws!=null)
-			temps.setSetpointscaletype(ws.getScaletypeid());
-			else 
+
+			WeighingSetpoint ws = wsd.single(temps.getTaskid(),
+					temps.getPlantid(), temps.getStudyname());
+			if (ws != null)
+				temps.setSetpointscaletype(ws.getScaletypeid());
+			else
 				temps.setSetpointscaletype(-1);
-			System.out.println("transacting... with weighingid " + temps.getWeighingid());
+			System.out.println("transacting... with weighingid "
+					+ temps.getWeighingid());
 			return temps;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -156,4 +176,5 @@ public class WeighingresultDao extends DAO<Weighingresult> {
 			return null;
 		}
 	}
+
 }

@@ -174,11 +174,29 @@ public class Weighingresult {
 		this.timestamps = timestamps;
 	}
 
+	public Plant getPlant() {
+		return plant;
+	}
+
+	public void setPlant(Plant plant) {
+		this.plant = plant;
+	}
+
+	public Study getStudy() {
+		return study;
+	}
+
+	public void setStudy(Study study) {
+		this.study = study;
+	}
+
 	int weighingid;
 	String studyname;
 	int taskid;
 	String tagname;
 	int plantid;
+	Plant plant;
+	Study study;
 	Timestamp resultdate;
 	String date;
 	long timestamps;

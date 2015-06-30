@@ -28,10 +28,8 @@ public class WeighingConvertor {
 			weighing.put("studyAlias", "");
 			weighing.put("genotype", "");
 			weighing.put("genotypeAlias", "");
-			weighing.put("plant",
-					"http://www.phenome-fppn.fr/m3p/arch/2013/c13006199");
-			weighing.put("plantAlias",
-					"1605/22H3/ZM3597/MYB/WW/1/2745/ARCH2013-09-12");
+			weighing.put("plant","");
+			weighing.put("plantAlias", ws.getPlant()==null?"":ws.getPlant().getPlantCode());
 			
 			weighing.put("date", ws.getDate());
 			weighing.put("timestamp", ws.getTimestamps());

@@ -1,6 +1,7 @@
 package org.data.jsonconvertor;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.data.form.Plant;
 import org.data.form.Study;
 import org.data.form.Wateringresult;
 import org.data.handle.JsonReadWrite;
+import org.data.handle.Utils;
 
 public class WateringConvertor {
 	
@@ -20,18 +22,19 @@ public class WateringConvertor {
 		WateringresultDao ward = new WateringresultDao(null);
 		
 		List<Wateringresult> war = ward.all();
-		
+		PlantDao pld = new PlantDao(ward.getConnect());
+		StudyDao std = new StudyDao(ward.getConnect());
 		for (Wateringresult ws : war) {
 			System.out.println("wateringid : "+ws.getWateringId());
 				LinkedHashMap<String, Object> watering = new LinkedHashMap<String, Object>();
-				
-				PlantDao pld = new PlantDao(ward.getConnect());
-				StudyDao std = new StudyDao(ward.getConnect());
-				Study st = std.singleFromName(ws.getStudyName());
-				Plant pl = pld.single(st.getStudyid(),ws.getPlantId());
+				Study st;
+				Plant pl = new Plant();		
+				st = std.singleFromName(ws.getStudyName());
+				if(st!=null)
+					pl = pld.single(st.getStudyid(),ws.getPlantId());
 				
 				watering.put("plant","");
-				watering.put("plantAlias",pl.getPlantCode());
+				watering.put("plantAlias",pl==null?"":pl.getPlantCode());
 				watering.put("genotype","");
 				watering.put("genotypeAlias","");
 				watering.put("experiment","");
@@ -129,7 +132,10 @@ public class WateringConvertor {
 	
 
 	public static void main(String[] args) {
-		ExportToFile("Data/Watering1.json");
+		Date start = new Date();
+		ExportToFile("Data/Watering.json");
+		Date end = new Date();
+		System.out.println(Utils.timePerformance(start, end));
 
 	}
 }
