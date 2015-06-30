@@ -34,7 +34,14 @@ public class WateringConvertor {
 					pl = pld.single(st.getStudyid(),ws.getPlantId());
 				
 				watering.put("plant","");
+<<<<<<< HEAD
 				watering.put("plantAlias",pl==null?"":pl.getPlantCode());
+=======
+				if(pl!=null)
+					watering.put("plantAlias",pl.getPlantCode());
+				else
+					watering.put("plantAlias",  "");
+>>>>>>> d84af8e5de80a58abd8bde3d80f07db41bba6756
 				watering.put("genotype","");
 				watering.put("genotypeAlias","");
 				watering.put("experiment","");

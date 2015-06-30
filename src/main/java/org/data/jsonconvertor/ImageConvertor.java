@@ -1,5 +1,9 @@
 package org.data.jsonconvertor;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -15,20 +19,25 @@ import org.data.handle.Utils;
 
 public class ImageConvertor {
 
-	public static List<LinkedHashMap<String, Object>> ImagesConvertToJson() {
-		List<LinkedHashMap<String, Object>> jsons = new ArrayList<LinkedHashMap<String, Object>>();
+	public static void ImagesConvertToJson(String filename, boolean formated) {
+		//List<LinkedHashMap<String, Object>> jsons = new ArrayList<LinkedHashMap<String, Object>>();
 		ImageDao id = new ImageDao(null);
-		List<Image> imgs = id.all(true);
-
-		for (Image img : imgs) {
+		//List<Image> imgs = id.all(false);
+		
+		try {
+			ResultSet rs = id.resultSet();
+		
+			FileWriter file = new FileWriter(filename);while(rs.next()){
+			Image img = id.get(rs);
 			LinkedHashMap<String, Object> image = new LinkedHashMap<String, Object>();
 			PlantDao pld = new PlantDao(id.getConnect());
 			Plant pl = pld.single(img.getStudyid(),img.getPlantid());
 			
-			image.put("plant",
-					"http://www.phenome-fppn.fr/m3p/arch/2013/c13006199");
-			image.put("plantAlias",
-					pl.getPlantCode());
+			image.put("plant", "");
+			if(pl!=null)
+				image.put("plantAlias", pl.getPlantCode());
+			else
+				image.put("plantAlias", "");
 			image.put("genotype", "");
 			image.put("genotypeAlias",  "");
 			image.put("experiment", "");
@@ -60,7 +69,11 @@ public class ImageConvertor {
 			image.put("configuration", configuration);
 			image.put("userValidation", img.isValid());
 			image.put("isReferenceImage", img.isRefimage());
-			image.put("viewType", img.getViewType().getViewtypelabel());
+			if( img.getViewType()!=null)
+				image.put("viewType", img.getViewType().getViewtypelabel());
+			else
+				image.put("viewType","");
+
 			image.put("cameraAngle", img.getImgangle());
 			image.put("fileName", img.getImgguid());
 			
@@ -73,20 +86,45 @@ public class ImageConvertor {
 			image.put("binaryWebPath", "unspecified");
 			image.put("md5", "unspecified");
 			    	
-			jsons.add(image);
+			// jsons.add(image);
+
+			String jsonString = new org.json.JSONObject(image)
+					.toString();
+			// file.write("Document json "+i+"\n");
+
+			if (formated)
+				file.write(Utils.prettyJsonFormat(jsonString) + "\n");
+			else
+				file.write(jsonString + "\n");
+			// System.out.println("Writing the document " + i+": " +
+			// jsonString);
+
+			file.flush();
+
 		}
-		return jsons;
+
+		System.out.println("Finish");
+		file.close();
+	} catch (IOException ie) {
+		ie.printStackTrace();
+	}
+	// return jsons;
+	catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	}
 
 	public static void ExportToFile(String filename) {
-		List<LinkedHashMap<String, Object>> jsons3 = ImagesConvertToJson();
-		JsonReadWrite jrw3 = new JsonReadWrite();
-		jrw3.WriteToFile(jsons3, filename, true);
+		//List<LinkedHashMap<String, Object>> jsons3 = ImagesConvertToJson();
+		//JsonReadWrite jrw3 = new JsonReadWrite();
+		//jrw3.WriteToFile(jsons3, filename, true);
 	}
 
 	public static void main(String[] args) {
 		Date start = new Date();
-		ExportToFile("Data/Image.json");
+		//ExportToFile("Data/Image.json");
+		ImagesConvertToJson("Data/Image.json", true);
 		Date end = new Date();
 		System.out.println(Utils.timePerformance(start, end));
 	}

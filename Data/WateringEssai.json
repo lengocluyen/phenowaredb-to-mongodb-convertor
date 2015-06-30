@@ -1,0 +1,67 @@
+{
+  "plant": "",
+  "plantAlias": "1070/EA1163/ZM3906/WW/1/18_50/ARCH2015-04-13",
+  "genotype": "",
+  "genotypeAlias": "",
+  "experiment": "",
+  "experimentAlias": "",
+  "study": "",
+  "studyAlias": "",
+  "platform": "http://www.phenome-fppn.fr/m3p/",
+  "technicalPlateau": "http://www.phenome-fppn.fr/m3p/phenoarch",
+  "timestamp": 1434153370192,
+  "date": "2015-06-13 01:56:10.192263",
+  "configuration": {
+    "provider": "phenowaredb",
+    "wateringid": 136779,
+    "plantid": 1070,
+    "studyname": "ARCH2015-04-13",
+    "taskid": 1236,
+    "calibration": 0,
+    "usedstationid": 7,
+    "usedscaleid": 1,
+    "usedpumpid": 1,
+    "nextLocation": {
+      "lane": 20,
+      "rank": 51,
+      "level": 0
+    }
+  },
+  "automatonSuccess": true,
+  "userValidation": true,
+  "setpoints": {
+    "product": "water",
+    "scaleType": "standard",
+    "pumpType": "normal",
+    "targetWeight": 7555,
+    "targetQuantity": 0,
+    "pumpSpeed": 3,
+    "maxQuantity": 600,
+    "minWeight": 4000,
+    "movePerch": true
+  },
+  "product": "water",
+  "scaleType": "standard",
+  "pumpType": "normal",
+  "pumpSpeed": 0,
+  "measures": {
+    "weightBefore": {
+      "value": 7515,
+      "unity": "",
+      "type": "automatic",
+      "confidence": "unspecified"
+    },
+    "weightAfter": {
+      "value": 7547,
+      "unity": "",
+      "type": "automatic",
+      "confidence": "unspecified"
+    },
+    "weightAmount": {
+      "value": 32,
+      "unity": "",
+      "type": "computed",
+      "confidence": "unspecified"
+    }
+  }
+}

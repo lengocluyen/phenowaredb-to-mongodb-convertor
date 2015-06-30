@@ -85,7 +85,7 @@ public class ImageDao extends DAO<Image>{
 			if(test)
 				query = "Select * from images limit 10";
 			else 
-				query = "Select * from images limit 10";
+				query = "Select * from images";
 			
 			ResultSet rs = statement.executeQuery(query);
 			List<Image> data = new ArrayList<Image>();
@@ -101,8 +101,18 @@ public class ImageDao extends DAO<Image>{
 	}
 	@Override
 	public ResultSet resultSet() {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			Statement statement = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_UPDATABLE);
+			String query = "Select * from images";
+			ResultSet rs = statement.executeQuery(query);
+			return rs;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
@@ -122,17 +132,17 @@ public class ImageDao extends DAO<Image>{
 			img.setImgangle(Utils.convertToInt(rs.getObject("imgangle")));
 			img.setSubfolder(Utils.convertToString(rs.getObject("subfolder")));
 			img.setAcquisitiondate(Utils.convertToString(rs.getObject("acquisitiondate")));
-			img.setTimestamps(rs.getTimestamp("acquisitiondate").getTime());
+			img.setTimestamps(rs.getTimestamp("acquisitiondate")==null?0:rs.getTimestamp("acquisitiondate").getTime());
 			img.setImgguid(Utils.convertToString(rs.getObject("imgguid")));
 			img.setImgid(Utils.convertToInt(rs.getObject("imgid")));
 			img.setLane(Utils.convertToInt(rs.getObject("lane")));
 			img.setRank(Utils.convertToInt(rs.getObject("rank")));
 			img.setLevel(Utils.convertToInt(rs.getObject("level")));
 			img.setRefimage(Utils.convertToBool(rs.getObject("refimage")));
-			ImageViewTypeDao ivtd = new ImageViewTypeDao(null);
+			ImageViewTypeDao ivtd = new ImageViewTypeDao(this.getConnect());
 			ImageViewType ivt= ivtd.single(img.getViewtypeid());
 			img.setViewType(ivt);
-			DirectoryPathDao dpd = new DirectoryPathDao(null);
+			DirectoryPathDao dpd = new DirectoryPathDao(this.getConnect());
 			DirectoryPath dp = dpd.single(img.getRootpathid());
 			img.setRootPath(dp);
 
