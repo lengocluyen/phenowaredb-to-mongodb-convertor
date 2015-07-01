@@ -10,6 +10,7 @@ import java.util.List;
 import org.data.form.DirectoryPath;
 import org.data.form.Image;
 import org.data.form.ImageViewType;
+import org.data.form.Study;
 import org.data.handle.Utils;
 
 public class ImageDao extends DAO<Image>{
@@ -105,7 +106,7 @@ public class ImageDao extends DAO<Image>{
 			Statement statement = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
 							ResultSet.CONCUR_UPDATABLE);
-			String query = "Select * from images";
+			String query = "Select * from images limit 10";
 			ResultSet rs = statement.executeQuery(query);
 			return rs;
 		} catch (SQLException e) {
@@ -122,6 +123,9 @@ public class ImageDao extends DAO<Image>{
 			img.setImgguid(Utils.convertToString(rs.getObject("imgguid")));
 			img.setPlantid(Utils.convertToInt(rs.getObject("plantid")));
 			img.setStudyid(Utils.convertToInt(rs.getObject("studyid")));
+			StudyDao std = new StudyDao(this.getConnect());
+			Study st = std.single(img.getStudyid());
+			img.setStudy(st);
 			img.setTaskid(Utils.convertToInt(rs.getObject("taskid")));
 			img.setTagid(Utils.convertToInt(rs.getObject("tagid")));
 			img.setImgacqprofileid(Utils.convertToInt(rs.getObject("imgacqprofileid")));

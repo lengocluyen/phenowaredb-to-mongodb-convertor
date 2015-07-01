@@ -37,7 +37,7 @@ public class WateringConvertor {
 					watering.put("plantAlias",  "");
 				watering.put("genotype","");
 				watering.put("genotypeAlias","");
-				watering.put("experiment","");
+				watering.put("experiment","http://www.phenome-fppn.fr/m3p/"+ws.getStudyName());
 				watering.put("experimentAlias","");
 				watering.put("study","");
 				watering.put("studyAlias","");
@@ -132,7 +132,7 @@ public class WateringConvertor {
 	
 
 	public static void main(String[] args) {
-		ExportToFile("Data/Watering1.json");
+		ExportToFile("Data/Watering.json");
 
 	}
 }

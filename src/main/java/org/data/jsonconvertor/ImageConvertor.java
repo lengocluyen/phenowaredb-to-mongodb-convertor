@@ -40,7 +40,10 @@ public class ImageConvertor {
 				image.put("plantAlias", "");
 			image.put("genotype", "");
 			image.put("genotypeAlias",  "");
-			image.put("experiment", "");
+			if(img.getStudy() != null)
+				image.put("experiment", "http://www.phenome-fppn.fr/m3p/" + img.getStudy().getName());
+			else
+				image.put("experiment", "");
 			image.put("experimentAlias", "");
 			image.put("study", "");
 			image.put("studyAlias", "");
@@ -57,6 +60,10 @@ public class ImageConvertor {
 			configuration.put("taskid", img.getTaskid());
 			configuration.put("stationid", img.getStationid());
 			configuration.put("imgacqprofileid", img.getImgacqprofileid());
+			if(img.getRootPath() != null)
+				configuration.put("rootpath",  img.getRootPath().getDirpath());
+			else
+				configuration.put("rootpath",  "");				
 			configuration.put("subfolder", img.getSubfolder());
 
 			Map<String, Object> nextLocation = new LinkedHashMap<String, Object>();
@@ -124,7 +131,7 @@ public class ImageConvertor {
 	public static void main(String[] args) {
 		Date start = new Date();
 		//ExportToFile("Data/Image.json");
-		ImagesConvertToJson("Data/Image.json", true);
+		ImagesConvertToJson("Data/ImageTest.json", true);
 		Date end = new Date();
 		System.out.println(Utils.timePerformance(start, end));
 	}
