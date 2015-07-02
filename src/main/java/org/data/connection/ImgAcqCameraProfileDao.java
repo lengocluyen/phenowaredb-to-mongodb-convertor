@@ -79,8 +79,18 @@ public class ImgAcqCameraProfileDao extends DAO<ImgAcqCameraProfile>{
 
 	@Override
 	public ResultSet resultSet() {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			Statement statement = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_UPDATABLE);
+			String query = "Select * from imgacqcameraprofiles";
+			ResultSet rs = statement.executeQuery(query);
+			return rs;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
@@ -120,6 +130,7 @@ public class ImgAcqCameraProfileDao extends DAO<ImgAcqCameraProfile>{
 			ImageViewType ivt = ivtd.single(iacp.getViewtype());
 			if(ivt!=null)
 				iacp.setImageViewType(ivt);
+			System.out.println("imqacqcameraprofileid: "+iacp.getImgacqcameraprofileid());
 			return iacp;
 		}
 		catch(SQLException e){

@@ -1,5 +1,9 @@
 package org.data.jsonconvertor;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -12,48 +16,73 @@ import org.data.handle.JsonReadWrite;
 import org.data.handle.Utils;
 
 public class ImgAcqStationProfileConvertor {
-	public static List<LinkedHashMap<String, Object>> ImgAcqStationProfileConvertToJson() {
-		List<LinkedHashMap<String, Object>> jsons = new ArrayList<LinkedHashMap<String, Object>>();
+	public static void ImgAcqStationProfileConvertToJson(String filename,
+			boolean formated) {
+		// List<LinkedHashMap<String, Object>> jsons = new
+		// ArrayList<LinkedHashMap<String, Object>>();
 		ImgAcqStationProfileDao iaspd = new ImgAcqStationProfileDao(null);
-		List<ImgAcqStationProfile> iasps = iaspd.all();
+		try {
+			ResultSet rs = iaspd.resultSet();
+			FileWriter file = new FileWriter(filename);
+			while (rs.next()) {
+				ImgAcqStationProfile iasp = iaspd.get(rs);
+				LinkedHashMap<String, Object> stationProfile = new LinkedHashMap<String, Object>();
+				LinkedHashMap<String, Object> configuration = new LinkedHashMap<String, Object>();
+				configuration.put("provider", "phenowaredb");
+				configuration.put("stationid", iasp.getStationid());
+				configuration.put("imgacqstationprofileid",
+						iasp.getImgacqstationprofileid());
+				configuration.put("imgacqstationprofilename",
+						iasp.getImgacqstationprofilename());
+				configuration.put("validatedProfile", iasp.isValidated());
+				configuration.put("deletedProfile", iasp.isDeleted());
+				stationProfile.put("configuration", configuration);
+				stationProfile.put("description", iasp.getDescription());
+				LinkedHashMap<String, Object> settings = new LinkedHashMap<String, Object>();
+				settings.put("verticalPosition", iasp.getIndexer());
+				settings.put("topLight", iasp.getToplight());
+				settings.put("sideLight", iasp.getSidelight());
+				settings.put("zoom", iasp.getZoom());
+				settings.put("focus", iasp.getFocus());
+				settings.put("aperture", iasp.getAperture());
+				settings.put("rotationSpeed", iasp.getRotationspeed());
+				settings.put("topViewCount", iasp.getTopviewcount());
+				settings.put("sideViewCount", iasp.getSideviewcount());
+				stationProfile.put("settings", settings);
+				String jsonString = new org.json.JSONObject(stationProfile)
+						.toString();
+				// file.write("Document json "+i+"\n");
 
-		for (ImgAcqStationProfile iasp : iasps) {
-			LinkedHashMap<String, Object> stationProfile = new LinkedHashMap<String, Object>();
-			stationProfile.put("imgacqstationprofileid", iasp.getImgacqstationprofileid());
-			stationProfile.put("imgacqstationprofilename", iasp.getImgacqstationprofilename());
-			stationProfile.put("validated", iasp.isValidated());
-			stationProfile.put("deleted", iasp.isDeleted());
-			Map<String, Object> profileType = new LinkedHashMap<String, Object>();
-			profileType.put("id", iasp.getProfileTypeObject()==null?"":iasp.getProfileTypeObject().getProfiletypeid());
-			profileType.put("name", iasp.getProfileTypeObject()==null?"":iasp.getProfileTypeObject().getProfiletypename());
-			stationProfile.put("profiletype", profileType);
-			stationProfile.put("description", iasp.getDescription());
-			stationProfile.put("imageryusertype", iasp.getImageryusertype());
+				if (formated)
+					file.write(Utils.prettyJsonFormat(jsonString) + "\n");
+				else
+					file.write(jsonString + "\n");
+				// System.out.println("Writing the document " + i+": " +
+				// jsonString);
 
-			stationProfile.put("stationid", iasp.getStationid());
-			stationProfile.put("indexer", iasp.getIndexer());
-			stationProfile.put("toplight", iasp.getToplight());
-			stationProfile.put("sidelight", iasp.getSidelight());
-			stationProfile.put("zoom", iasp.getZoom());
-			stationProfile.put("focus", iasp.getFocus());
-			stationProfile.put("aperture", iasp.getAperture());
-			stationProfile.put("rotationspeed", iasp.getRotationspeed());
-			stationProfile.put("topviewcount", iasp.getTopviewcount());
-			stationProfile.put("sideviewcount", iasp.getSideviewcount());
-			jsons.add(stationProfile);
+				file.flush();
+
+			}
+
+			System.out.println("Finish");
+			file.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return jsons;
 	}
 
 	public static void ExportToFile(String filename) {
-		List<LinkedHashMap<String, Object>> jsons3 = ImgAcqStationProfileConvertToJson();
-		JsonReadWrite jrw3 = new JsonReadWrite();
-		jrw3.WriteToFile(jsons3, filename, true);
+		//List<LinkedHashMap<String, Object>> jsons3 = ImgAcqStationProfileConvertToJson();
+		//JsonReadWrite jrw3 = new JsonReadWrite();
+		//jrw3.WriteToFile(jsons3, filename, true);
 	}
 
 	public static void main(String[] args) {
 		Date start = new Date();
-		ExportToFile("Data/ImgStationProfile.json");
+		ImgAcqStationProfileConvertToJson("Data/ImgStationProfile.json",true);
 		Date end = new Date();
 		System.out.println(Utils.timePerformance(start, end));
 	}

@@ -79,8 +79,18 @@ public class ImgAcqStationProfileDao extends DAO<ImgAcqStationProfile> {
 
 	@Override
 	public ResultSet resultSet() {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			Statement statement = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_UPDATABLE);
+			String query = "Select * from imgacqstationprofiles";
+			ResultSet rs = statement.executeQuery(query);
+			return rs;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
@@ -110,7 +120,7 @@ public class ImgAcqStationProfileDao extends DAO<ImgAcqStationProfile> {
 			iasp.setRotationspeed(Utils.convertToString(rs.getObject("rotationspeed")));
 			iasp.setTopviewcount(Utils.convertToInt(rs.getObject("topviewcount")));
 			iasp.setSideviewcount(Utils.convertToInt(rs.getObject("sideviewcount")));
-			
+			System.out.println("imageacqstationid: " +iasp.getImgacqstationprofileid());
 			return iasp;
 		}
 		catch(SQLException e){

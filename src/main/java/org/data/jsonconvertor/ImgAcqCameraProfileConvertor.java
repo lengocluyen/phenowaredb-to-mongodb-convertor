@@ -1,5 +1,9 @@
 package org.data.jsonconvertor;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -13,58 +17,81 @@ import org.data.handle.Utils;
 
 public class ImgAcqCameraProfileConvertor {
 
-	public static List<LinkedHashMap<String, Object>> ImgAcqCameraProfileConvertToJson() {
-		List<LinkedHashMap<String, Object>> jsons = new ArrayList<LinkedHashMap<String, Object>>();
+	public static void ImgAcqCameraProfileConvertToJson(String filename,
+			boolean formated) {
 		ImgAcqCameraProfileDao iacpd = new ImgAcqCameraProfileDao(null);
-		List<ImgAcqCameraProfile> iacps = iacpd.all();
+		try {
+			ResultSet rs = iacpd.resultSet();
+			FileWriter file = new FileWriter(filename);
+			while (rs.next()) {
+				ImgAcqCameraProfile iacp = iacpd.get(rs);
+				LinkedHashMap<String, Object> cameraProfile = new LinkedHashMap<String, Object>();
+				LinkedHashMap<String, Object> configuration = new LinkedHashMap<String, Object>();
+				configuration.put("provider", "phenowaredb");
+				configuration.put("stationid", iacp.getStationid());
+				configuration.put("imgacqcameraprofileid",
+						iacp.getImgacqcameraprofileid());
+				configuration.put("imgacqcameraprofilename",
+						iacp.getImgacqcameraprofilename());
+				configuration.put("validatedProfile", iacp.isValidated());
+				configuration.put("deletedProfile", iacp.isDeleted());
+				configuration
+						.put("intefaceacqtype", iacp.getInterfaceacqtype());
+				cameraProfile.put("configuration", configuration);
+				cameraProfile.put("description", iacp.getDescription());
 
-		for (ImgAcqCameraProfile iacp : iacps) {
-			LinkedHashMap<String, Object> cameraProfile = new LinkedHashMap<String, Object>();
-			cameraProfile.put("imgacqcameraprofileid", iacp.getImgacqcameraprofileid());
-			cameraProfile.put("imgacqcameraprofilename", iacp.getImgacqcameraprofilename());
-			cameraProfile.put("validated", iacp.isValidated());
-			cameraProfile.put("deleted", iacp.isDeleted());
-			Map<String, Object> profileType = new LinkedHashMap<String, Object>();
-			profileType.put("id", iacp.getProfileTypeObject().getProfiletypeid());
-			profileType.put("name", iacp.getProfileTypeObject().getProfiletypename());
-			cameraProfile.put("profiletype", profileType);
-			cameraProfile.put("description", iacp.getDescription());
-			cameraProfile.put("imageryusertype", iacp.getImageryusertype());
-			cameraProfile.put("intefaceacqtype", iacp.getInterfaceacqtype());
+				Map<String, Object> settings = new LinkedHashMap<String, Object>();
+				settings.put("viewcount", iacp.getViewcount());
+				settings.put("viewType", iacp.getImageViewType()
+						.getViewtypelabel());
+				settings.put("width", iacp.getWidth());
+				settings.put("height", iacp.getHeight());
+				settings.put("triggermode", iacp.getTriggermode());
+				settings.put("shutter", iacp.getShutter());
+				settings.put("gain", iacp.getGain());
+				settings.put("brightness", iacp.getBrightness());
+				settings.put("hue", iacp.getHue());
+				settings.put("gamma", iacp.getGamma());
+				settings.put("saturation", iacp.getSaturation());
+				settings.put("sharpness", iacp.getSharpness());
+				settings.put("whitebalance", iacp.getWhitebalance());
+				settings.put("pixeformat", iacp.getPixelformat());
+				cameraProfile.put("settings", settings);
+				String jsonString = new org.json.JSONObject(cameraProfile)
+						.toString();
+				// file.write("Document json "+i+"\n");
 
-			Map<String, Object> viewType = new LinkedHashMap<String, Object>();
-			viewType.put("id", iacp.getImageViewType().getViewtypeid());
-			viewType.put("label", iacp.getImageViewType().getViewtypelabel());
-			cameraProfile.put("viewType", viewType);
+				if (formated)
+					file.write(Utils.prettyJsonFormat(jsonString) + "\n");
+				else
+					file.write(jsonString + "\n");
+				// System.out.println("Writing the document " + i+": " +
+				// jsonString);
 
-			cameraProfile.put("stationid", iacp.getStationid());
-			cameraProfile.put("width", iacp.getWidth());
-			cameraProfile.put("height", iacp.getHeight());
-			cameraProfile.put("triggermode", iacp.getTriggermode());
-			cameraProfile.put("shutter", iacp.getShutter());
-			cameraProfile.put("gain", iacp.getGain());
-			cameraProfile.put("brightness", iacp.getBrightness());
-			cameraProfile.put("hue", iacp.getHue());
-			cameraProfile.put("gamma", iacp.getGamma());
-			cameraProfile.put("saturation", iacp.getSaturation());
-			cameraProfile.put("sharpness", iacp.getSharpness());
-			cameraProfile.put("whitebalance", iacp.getWhitebalance());
-			cameraProfile.put("viewcount",iacp.getViewcount());
-			cameraProfile.put("pixeformat", iacp.getPixelformat());
-			jsons.add(cameraProfile);
+				file.flush();
+
+			}
+
+			System.out.println("Finish");
+			file.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return jsons;
 	}
 
 	public static void ExportToFile(String filename) {
-		List<LinkedHashMap<String, Object>> jsons3 = ImgAcqCameraProfileConvertToJson();
-		JsonReadWrite jrw3 = new JsonReadWrite();
-		jrw3.WriteToFile(jsons3, filename, true);
+		// List<LinkedHashMap<String, Object>> jsons3 =
+		// ImgAcqCameraProfileConvertToJson();
+		// JsonReadWrite jrw3 = new JsonReadWrite();
+		// jrw3.WriteToFile(jsons3, filename, true);
 	}
 
 	public static void main(String[] args) {
 		Date start = new Date();
-		ExportToFile("Data/ImgCameraProfile.json");
+		ImgAcqCameraProfileConvertToJson("Data/ImgCameraProfile.json", true);
 		Date end = new Date();
 		System.out.println(Utils.timePerformance(start, end));
 	}
