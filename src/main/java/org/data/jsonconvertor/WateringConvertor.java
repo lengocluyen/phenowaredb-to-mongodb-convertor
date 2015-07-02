@@ -39,6 +39,7 @@ public class WateringConvertor {
 				Wateringresult ws = ward.get(rs);
 				System.out.println("wateringid : " + ws.getWateringId());
 				LinkedHashMap<String, Object> watering = new LinkedHashMap<String, Object>();
+<<<<<<< HEAD
 				Study st;
 				Plant pl = new Plant();
 				st = std.singleFromName(ws.getStudyName());
@@ -56,6 +57,27 @@ public class WateringConvertor {
 				watering.put("platform", "http://www.phenome-fppn.fr/m3p/");
 				watering.put("technicalPlateau",
 						"http://www.phenome-fppn.fr/m3p/phenoarch");
+=======
+				
+				PlantDao pld = new PlantDao(ward.getConnect());
+				StudyDao std = new StudyDao(ward.getConnect());
+				Study st = std.singleFromName(ws.getStudyName());
+				Plant pl = pld.single(st.getStudyid(),ws.getPlantId());
+				
+				watering.put("plant","");
+				if(pl!=null)
+					watering.put("plantAlias",pl.getPlantCode());
+				else
+					watering.put("plantAlias",  "");
+				watering.put("genotype","");
+				watering.put("genotypeAlias","");
+				watering.put("experiment","http://www.phenome-fppn.fr/m3p/"+ws.getStudyName());
+				watering.put("experimentAlias","");
+				watering.put("study","");
+				watering.put("studyAlias","");
+				watering.put("platform","http://www.phenome-fppn.fr/m3p/");
+				watering.put("technicalPlateau","http://www.phenome-fppn.fr/m3p/phenoarch");
+>>>>>>> cd05ebc1cbdc1922442862572d7731dd01749d7d
 				watering.put("timestamp", ws.getResultDate().getTime());
 				watering.put("date", ws.getResultDate());
 
@@ -162,10 +184,14 @@ public class WateringConvertor {
 	}
 
 	public static void main(String[] args) {
+<<<<<<< HEAD
 		Date start = new Date();
 		WateringResultConvertToJson("Data/Watering.json", true);
 		Date end = new Date();
 		System.out.println(Utils.timePerformance(start, end));
+=======
+		ExportToFile("Data/Watering.json");
+>>>>>>> cd05ebc1cbdc1922442862572d7731dd01749d7d
 
 	}
 }

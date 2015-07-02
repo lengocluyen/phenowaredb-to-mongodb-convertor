@@ -28,36 +28,43 @@ public class WeighingConvertor {
 			weighing.put("platform", "http://www.phenome-fppn.fr/m3p/");
 			weighing.put("technicalPlateau",
 					"http://www.phenome-fppn.fr/m3p/phenoarch");
-			weighing.put("experiment", "");
+			weighing.put("experiment", "http://www.phenome-fppn.fr/m3p/" + ws.getStudyname() );
 			weighing.put("experimentAlias", "");
 			weighing.put("study", "");
 			weighing.put("studyAlias", "");
 			weighing.put("genotype", "");
 			weighing.put("genotypeAlias", "");
 			weighing.put("plant","");
+<<<<<<< HEAD
 			weighing.put("plantAlias", ws.getPlant()==null?"":ws.getPlant().getPlantCode());
 
+=======
+			if(pl!=null)
+				weighing.put("plantAlias",pl.getPlantCode());
+			else
+				weighing.put("plantAlias",  "");
+>>>>>>> cd05ebc1cbdc1922442862572d7731dd01749d7d
 			
 			weighing.put("date", ws.getDate());
 			weighing.put("timestamp", ws.getTimestamps());
 			
-			Map<String, Object> configurations = new LinkedHashMap<String, Object>();
-			configurations.put("provider", "phenowaredb");
-			configurations.put("weighingid", ws.getWeighingid());
-			configurations.put("studyname", ws.getStudyname());
-			configurations.put("taskid", ws.getTaskid());
-			configurations.put("plantid", ws.getPlantid());
-			configurations.put("usedstationid", ws.getUsedstationid());
-			configurations.put("usedscaleid", ws.getUsedscaleid());
+			Map<String, Object> configuration = new LinkedHashMap<String, Object>();
+			configuration.put("provider", "phenowaredb");
+			configuration.put("weighingid", ws.getWeighingid());
+			configuration.put("studyname", ws.getStudyname());
+			configuration.put("taskid", ws.getTaskid());
+			configuration.put("plantid", ws.getPlantid());
+			configuration.put("usedstationid", ws.getUsedstationid());
+			configuration.put("usedscaleid", ws.getUsedscaleid());
 
 			Map<String, Object> nextLocation = new LinkedHashMap<String, Object>();
 			nextLocation.put("lane", ws.getLane());
 			nextLocation.put("rank", ws.getRank());
 			nextLocation.put("level", ws.getLevel());
 
-			configurations.put("nextLocation", nextLocation);
+			configuration.put("nextLocation", nextLocation);
 
-			weighing.put("configurations", configurations);
+			weighing.put("configuration", configuration);
 			weighing.put("automatonSuccess", ws.isSuccess());
 			weighing.put("userValidation", ws.isValid());
 
@@ -108,7 +115,7 @@ public class WeighingConvertor {
 	}
 	public static void main(String[] args) {
 		Date start = new Date();
-		ExportToFile("Data/Weigting.json");
+		ExportToFile("Data/Weighing.json");
 		Date end = new Date();
 		System.out.println(Utils.timePerformance(start, end));
 	}
