@@ -73,6 +73,28 @@ public class WateringresultDao extends DAO<Wateringresult>{
 		}
 		return wrs;
 	}
+	public List<Wateringresult> all(boolean test) {
+		List<Wateringresult> wrs = new ArrayList<Wateringresult>();
+		try {
+			Statement statement = this.connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE);
+			ResultSet result;
+			if(test)
+			result = statement
+					.executeQuery("Select * from wateringresults where wateringid < 20001");
+			else 
+				result = statement
+				.executeQuery("Select * from wateringresults");
+		
+				while (result.next()) {
+				Wateringresult temps = this.get(result);
+				wrs.add(temps);
+			}
+		} catch(Exception ex) {
+			return null;
+		}
+		return wrs;
+	}
 
 	@Override
 	public ResultSet resultSet() {
@@ -82,7 +104,7 @@ public class WateringresultDao extends DAO<Wateringresult>{
 			statement = this.connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, 
                     ResultSet.CONCUR_UPDATABLE);
 			result = statement
-					.executeQuery("Select * from wateringresults limit 10");
+					.executeQuery("Select * from wateringresults");
 		} catch(Exception ex) {
 			return null;
 		}

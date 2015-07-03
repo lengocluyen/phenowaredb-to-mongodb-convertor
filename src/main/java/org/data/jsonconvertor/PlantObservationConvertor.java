@@ -31,10 +31,8 @@ public class PlantObservationConvertor {
 			plantObservation.put("genotypeAlias", "");
 			plantObservation.put("study", "");
 			plantObservation.put("studyAlias", "");
-			plantObservation.put("plant",
-					"http://www.phenome-fppn.fr/m3p/arch/2013/c13006199");
-			plantObservation.put("plantAlias",
-					"1605/22H3/ZM3597/MYB/WW/1/2745/ARCH2013-09-12");
+			plantObservation.put("plant","");
+			plantObservation.put("plantAlias",po.getPlant()==null?"":po.getPlant().getPlantCode());
 			plantObservation.put("date", po.getDate());
 			plantObservation.put("timestamp", po.getTimestamps());
 			Map<String, Object> configurations = new LinkedHashMap<String, Object>();

@@ -23,11 +23,6 @@ public class WeighingConvertor {
 		for (Weighingresult ws : wrs) {
 			LinkedHashMap<String, Object> weighing = new LinkedHashMap<String, Object>();
 			
-			PlantDao pld = new PlantDao(wrsd.getConnect());
-			StudyDao std = new StudyDao(wrsd.getConnect());
-			Study st = std.singleFromName(ws.getStudyname());
-			Plant pl = pld.single(st.getStudyid(),ws.getPlantid());
-
 			
 			// dans platforme
 			weighing.put("platform", "http://www.phenome-fppn.fr/m3p/");
@@ -40,10 +35,8 @@ public class WeighingConvertor {
 			weighing.put("genotype", "");
 			weighing.put("genotypeAlias", "");
 			weighing.put("plant","");
-			if(pl!=null)
-				weighing.put("plantAlias",pl.getPlantCode());
-			else
-				weighing.put("plantAlias",  "");
+			weighing.put("plantAlias", ws.getPlant()==null?"":ws.getPlant().getPlantCode());
+
 			
 			weighing.put("date", ws.getDate());
 			weighing.put("timestamp", ws.getTimestamps());

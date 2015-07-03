@@ -7,8 +7,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.data.form.Plant;
 import org.data.form.PlantObservation;
 import org.data.form.PlantObservationCode;
+import org.data.form.Study;
 import org.data.form.Task;
 import org.data.handle.Utils;
 import org.data.connection.DAO;
@@ -102,6 +104,8 @@ public class PlantObservationDao extends DAO<PlantObservation>{
 		return null;
 	}
 
+	PlantDao pld = new PlantDao(null);
+	StudyDao std = new StudyDao(null);
 	@Override
 	public PlantObservation get(ResultSet rs) {
 		PlantObservation po = new PlantObservation();
@@ -121,6 +125,11 @@ public class PlantObservationDao extends DAO<PlantObservation>{
 			po.setLane(Utils.convertToInt(rs.getObject("lane")));
 			po.setRank(Utils.convertToInt(rs.getObject("rank")));
 			po.setLevel(Utils.convertToInt(rs.getObject("level")));
+
+			Study st = std.singleFromName(po.getStudyname());
+			Plant pl = pld.single(st.getStudyid(), po.getPlantid());
+			if (pl != null)
+				po.setPlant(pl);
 			
 			TaskDao td  = new TaskDao(null);
 			Task t = td.single(po.getTaskid());

@@ -5,7 +5,39 @@ public class PlantObservation {
 	String studyname;
 	int taskid;
 	Task taks;
+	String tagname;
+	int plantid;
+	Plant plant;
+	Study study;
+	String userlogin;
+	String resultdate;
+	String date;
+	long timestamps;
+	boolean valid;
+	String observationcode;
+	String observation;
+	int lane;
+	int rank;
+	int level;
+	int setpointsStationid;
 	
+	
+	public Plant getPlant() {
+		return plant;
+	}
+
+	public void setPlant(Plant plant) {
+		this.plant = plant;
+	}
+
+	public Study getStudy() {
+		return study;
+	}
+
+	public void setStudy(Study study) {
+		this.study = study;
+	}
+
 	public Task getTaks() {
 		return taks;
 	}
@@ -30,19 +62,6 @@ public class PlantObservation {
 		this.timestamps = timestamps;
 	}
 
-	String tagname;
-	int plantid;
-	String userlogin;
-	String resultdate;
-	String date;
-	long timestamps;
-	boolean valid;
-	String observationcode;
-	String observation;
-	int lane;
-	int rank;
-	int level;
-	int setpointsStationid;
 	
 	public int getSetpointsStationid() {
 		return setpointsStationid;
