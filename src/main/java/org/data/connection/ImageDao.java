@@ -106,7 +106,7 @@ public class ImageDao extends DAO<Image>{
 			Statement statement = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
 							ResultSet.CONCUR_UPDATABLE);
-			String query = "Select * from images limit 10";
+			String query = "Select * from images";
 			ResultSet rs = statement.executeQuery(query);
 			return rs;
 		} catch (SQLException e) {

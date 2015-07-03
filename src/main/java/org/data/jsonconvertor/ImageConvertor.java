@@ -131,7 +131,7 @@ public class ImageConvertor {
 	public static void main(String[] args) {
 		Date start = new Date();
 		//ExportToFile("Data/Image.json");
-		ImagesConvertToJson("Data/ImageTest.json", true);
+		ImagesConvertToJson("Data/Image2.json", true);
 		Date end = new Date();
 		System.out.println(Utils.timePerformance(start, end));
 	}
