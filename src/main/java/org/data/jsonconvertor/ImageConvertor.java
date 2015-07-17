@@ -4,122 +4,156 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
+import org.data.connection.CameraProfileDaoMongo;
 import org.data.connection.ImageDao;
+import org.data.connection.ImageDaoMongo;
 import org.data.connection.PlantDao;
+import org.data.connection.StationProfileDaoMongo;
 import org.data.form.Image;
 import org.data.form.Plant;
-import org.data.handle.JsonReadWrite;
+import org.data.handle.TechnicalPlateau;
 import org.data.handle.Utils;
 
 public class ImageConvertor {
+	private static String prefixe = "m3p:";
 
 	public static void ImagesConvertToJson(String filename, boolean formated) {
 		//List<LinkedHashMap<String, Object>> jsons = new ArrayList<LinkedHashMap<String, Object>>();
 		ImageDao id = new ImageDao(null);
 		//List<Image> imgs = id.all(false);
-		
+
 		try {
 			ResultSet rs = id.resultSet();
-		
-			FileWriter file = new FileWriter(filename);while(rs.next()){
-			Image img = id.get(rs);
-			LinkedHashMap<String, Object> image = new LinkedHashMap<String, Object>();
-			PlantDao pld = new PlantDao(id.getConnect());
-			Plant pl = pld.single(img.getStudyid(),img.getPlantid());
+			FileWriter file = new FileWriter(filename);
 			
-			image.put("plant", "");
-			if(pl!=null)
-				image.put("plantAlias", pl.getPlantCode());
-			else
-				image.put("plantAlias", "");
-			image.put("genotype", "");
-			image.put("genotypeAlias",  "");
-			if(img.getStudy() != null)
-				image.put("experiment", "http://www.phenome-fppn.fr/m3p/" + img.getStudy().getName());
-			else
-				image.put("experiment", "");
-			image.put("experimentAlias", "");
-			image.put("study", "");
-			image.put("studyAlias", "");
-			image.put("platform", "http://www.phenome-fppn.fr/m3p/");
-			image.put("technicalPlateau",
-					"http://www.phenome-fppn.fr/m3p/phenoarch");
-			image.put("timestamp", img.getTimestamps());
-			image.put("date", img.getAcquisitiondate());
+			ImageDaoMongo imgDaoMongo = new ImageDaoMongo();
+			//num incremental de l'uri du dernier document image insere dans la base mongodb
+			int numIncrUriImg = imgDaoMongo.getImageUriMax();   
+			CameraProfileDaoMongo camProfDaoMongo = new CameraProfileDaoMongo();
+			StationProfileDaoMongo statProfDaoMongo = new StationProfileDaoMongo();
 			
-			Map<String, Object> configuration = new LinkedHashMap<String, Object>();
-			configuration.put("provider", "phenowaredb");
-			configuration.put("imgid", img.getImgid());
-			configuration.put("plantid", img.getPlantid());
-			configuration.put("taskid", img.getTaskid());
-			configuration.put("stationid", img.getStationid());
-			configuration.put("imgacqprofileid", img.getImgacqprofileid());
-			if(img.getRootPath() != null)
-				configuration.put("rootpath",  img.getRootPath().getDirpath());
-			else
-				configuration.put("rootpath",  "");				
-			configuration.put("subfolder", img.getSubfolder());
+			while(rs.next())
+			{
+				numIncrUriImg ++;
+				Image img = id.get(rs);
+				LinkedHashMap<String, Object> image = new LinkedHashMap<String, Object>();
+				PlantDao pld = new PlantDao(id.getConnect());
+				Plant pl = pld.single(img.getStudyid(),img.getPlantid());
 
-			Map<String, Object> nextLocation = new LinkedHashMap<String, Object>();
-			nextLocation.put("lane", img.getLane());
-			nextLocation.put("rank", img.getRank());
-			nextLocation.put("level", img.getLevel());
+				image.put("uri", ImageConvertor.createUriImage(img.getTechnicalPlateau(), img.getAcquisitiondate(), numIncrUriImg));
+				image.put("plant", "");
+				if(pl!=null)
+					image.put("plantAlias", pl.getPlantCode());
+				else
+					image.put("plantAlias", "");
+				image.put("genotype", "");
+				image.put("genotypeAlias",  "");
+				if(img.getStudy() != null)
+					image.put("experiment", "http://www.phenome-fppn.fr/m3p/" + img.getStudy().getName());
+				else
+					image.put("experiment", "");
+				image.put("experimentAlias", "");
+				image.put("study", "");
+				image.put("studyAlias", "");
+				image.put("platform", "http://www.phenome-fppn.fr/m3p/");
+				image.put("technicalPlateau",
+						"http://www.phenome-fppn.fr/m3p/phenoarch");
+				image.put("timestamp", img.getTimestamps());
+				image.put("date", img.getAcquisitiondate());
+				image.put("imageCameraProfile", camProfDaoMongo.getCameraProfileUri(img.getImgacqprofileid())); //URI trouvee dans base mongo
+				image.put("imageStationProfile", statProfDaoMongo.getStationProfileUri(img.getImgacqprofileid()));//URI trouvee dans base mongo					
 
-			configuration.put("nextLocation", nextLocation);
+				Map<String, Object> configuration = new LinkedHashMap<String, Object>();
+				configuration.put("provider", "phenowaredb");
+				configuration.put("imgid", img.getImgid());
+				configuration.put("plantid", img.getPlantid());
+				configuration.put("studyname", img.getStudy().getName());  //pas tres utile (cf experiment)
+				configuration.put("taskid", img.getTaskid());
+				configuration.put("stationid", img.getStationid());
+				configuration.put("imgacqprofileid", img.getImgacqprofileid());
+				if(img.getRootPath() != null)
+					configuration.put("rootpath",  img.getRootPath().getDirpath());
+				else
+					configuration.put("rootpath",  "");				
+				configuration.put("subfolder", img.getSubfolder());
 
-			image.put("configuration", configuration);
-			image.put("userValidation", img.isValid());
-			image.put("isReferenceImage", img.isRefimage());
-			if( img.getViewType()!=null)
-				image.put("viewType", img.getViewType().getViewtypelabel());
-			else
-				image.put("viewType","");
+				Map<String, Object> nextLocation = new LinkedHashMap<String, Object>();
+				nextLocation.put("lane", img.getLane());
+				nextLocation.put("rank", img.getRank());
+				nextLocation.put("level", img.getLevel());
 
-			image.put("cameraAngle", img.getImgangle());
-			image.put("fileName", img.getImgguid());
-			
-			image.put("serverPath", "http://stck-lespe.supagro.inra.fr/");	
-			image.put("imageServerPath", "");
-			image.put("imageWebPath","");
-			image.put("thumbServerPath", ""); 
-			image.put("thumbWebPath", ""); 
-			image.put("binaryServerPath", "unspecified");
-			image.put("binaryWebPath", "unspecified");
-			image.put("md5", "unspecified");
-			    	
-			// jsons.add(image);
+				configuration.put("nextLocation", nextLocation);
 
-			String jsonString = new org.json.JSONObject(image)
-					.toString();
-			// file.write("Document json "+i+"\n");
+				image.put("configuration", configuration);
+				image.put("userValidation", img.isValid());
+				image.put("isReferenceImage", img.isRefimage());
+				if( img.getViewType()!=null)
+					image.put("viewType", img.getViewType().getViewtypelabel());
+				else
+					image.put("viewType","");
 
-			if (formated)
-				file.write(Utils.prettyJsonFormat(jsonString) + "\n");
-			else
-				file.write(jsonString + "\n");
-			// System.out.println("Writing the document " + i+": " +
-			// jsonString);
+				image.put("cameraAngle", img.getImgangle());
+				image.put("fileName", img.getImgguid());
 
-			file.flush();
+				image.put("serverPath", "http://stck-lespe.supagro.inra.fr/");	
+				image.put("imageServerPath", "http://stck-lespe.supagro.inra.fr/phenoarch/raw/"+img.getStudy().getName()+img.getTaskid()+img.getImgguid()+img.getFileFormat());
+				image.put("imageWebPath","http://lps-phis.supagro.inra.fr/phis/data/phenoarch/raw/"+img.getStudy().getName()+img.getTaskid()+img.getImgguid()+img.getFileFormat());
+				image.put("thumbServerPath", "http://stck-lespe.supagro.inra.fr/phenoarch/thumbs/"+img.getStudy().getName()+img.getTaskid()+img.getImgguid()); 
+				image.put("thumbWebPath", "http://lps-phis.supagro.inra.fr/phis/data/phenoarch/thumbs/"+img.getStudy().getName()+img.getTaskid()+img.getImgguid()); 
+				image.put("binaryServerPath", "unspecified");
+				image.put("binaryWebPath", "unspecified");
+				image.put("md5", "unspecified");
 
+				// jsons.add(image);
+
+				String jsonString = new org.json.JSONObject(image)
+				.toString();
+				// file.write("Document json "+i+"\n");
+
+				if (formated)
+					file.write(Utils.prettyJsonFormat(jsonString) + "\n");
+				else
+					file.write(jsonString + "\n");
+				// System.out.println("Writing the document " + i+": " +
+				// jsonString);
+
+				file.flush();
+
+			}
+
+			System.out.println("Finish");
+			file.close();
+		} catch (IOException ie) {
+			ie.printStackTrace();
 		}
+		// return jsons;
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
-		System.out.println("Finish");
-		file.close();
-	} catch (IOException ie) {
-		ie.printStackTrace();
-	}
-	// return jsons;
-	catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+	
+
+	private static String createUriImage(TechnicalPlateau tp, String date, int numIncr) {
+		String uri ;
+		String annee = date.substring(0, 4);
+		switch (tp) {
+        case Phenoarch:  uri = prefixe + "arch/" + annee + "/ic" + annee.substring(2) + String.format("%09d", numIncr) ;
+                 break;
+        case Phenopsis:  uri = prefixe + "psis/" +annee + "/ib" + annee.substring(2) + String.format("%09d", numIncr) ;
+                 break;
+        case Phenodyn:  uri = prefixe + "dyn/" +annee + "/ia" + annee.substring(2) + String.format("%09d", numIncr) ;
+                 break;
+        default: uri = "";
+                 break;
+		}
+		
+		return uri;
 	}
 
 	public static void ExportToFile(String filename) {
@@ -134,5 +168,6 @@ public class ImageConvertor {
 		ImagesConvertToJson("Data/Image2.json", true);
 		Date end = new Date();
 		System.out.println(Utils.timePerformance(start, end));
+		
 	}
 }

@@ -1,10 +1,15 @@
 package org.data.form;
 
+import org.data.handle.TechnicalPlateau;
+
 public class Image {
 	String imgguid;
 	int plantid;
 	int studyid;
 	Study study;
+	
+	private TechnicalPlateau technicalPlateau = TechnicalPlateau.Phenoarch ; //TODO : A modifier lorsqu'on s'occupera des imgs issues des autres plateaux  
+	String fileFormat;
 	
 	int taskid;
 	Task task;
@@ -60,6 +65,24 @@ public class Image {
 	}
 	public void setStudy(Study study) {
 		this.study = study;
+	}
+	public TechnicalPlateau getTechnicalPlateau() {
+		return technicalPlateau;
+	}
+	public void setTechnicalPlateau(TechnicalPlateau technicalPlateau) {
+		this.technicalPlateau = technicalPlateau;
+	}
+	public String getFileFormat() {
+		return fileFormat;
+	}
+	public void setFileFormat(String fileFormat) {
+		this.fileFormat = fileFormat;
+	}
+	public void setFileFormat(){
+		if(this.getTechnicalPlateau() == TechnicalPlateau.Phenoarch)
+			this.fileFormat = "png";
+		else
+			this.fileFormat = "unknown format";
 	}
 	public int getTaskid() {
 		return taskid;

@@ -15,7 +15,7 @@ import org.data.form.ImgProcResult;
 import org.data.handle.JsonReadWrite;
 import org.data.handle.Utils;
 
-public class ImageAnalysicProcessingConvertor {
+public class ImageAnalysisProcessingConvertor {
 	public static List<LinkedHashMap<String, Object>> ImageAnalysisProcessingConvertToJson() {
 		List<LinkedHashMap<String, Object>> jsons = new ArrayList<LinkedHashMap<String, Object>>();
 		ImgProcProfileDao ippd = new ImgProcProfileDao(null);
@@ -25,8 +25,8 @@ public class ImageAnalysicProcessingConvertor {
 			LinkedHashMap<String, Object> imageAnalysProcessing = new LinkedHashMap<String, Object>();
 			Map<String, Object> configuration = new LinkedHashMap<String, Object>();
 			configuration.put("provider", "phenowaredb");
-			configuration.put("imageAnalysisProcessingid", ipp.getImgProcProfileId());
-			configuration.put("imageAnalysisProcessingname", ipp.getImgProcProfileName());
+			configuration.put("imgprocprofileid", ipp.getImgProcProfileId());
+			configuration.put("imgprocprofilename", ipp.getImgProcProfileName());
 			imageAnalysProcessing.put("configuration",configuration);
 			
 			imageAnalysProcessing.put("validatedProcess", ipp.isValidated());

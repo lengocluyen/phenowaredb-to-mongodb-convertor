@@ -44,7 +44,7 @@ public class ImageDao extends DAO<Image>{
 			Statement statement = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
 							ResultSet.CONCUR_UPDATABLE);
-			String query = "Select * from images where  imgguid like "
+			String query = "Select * from images where  imgguid like "  //rq : requete par guid ici, pas forcement utile pr ns
 					+ id;
 			ResultSet rs = statement.executeQuery(query);
 			if (rs.first()) {

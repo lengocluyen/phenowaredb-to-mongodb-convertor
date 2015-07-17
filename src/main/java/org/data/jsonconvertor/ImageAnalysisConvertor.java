@@ -269,7 +269,7 @@ public class ImageAnalysisConvertor {
 				imageAnalysis.put("binaryImagePath", ipr.getBinaryimgguid());
 				imageAnalysis.put("userValidation", ipr.isValid());
 				imageAnalysis.put("isReprocessing", ipr.isOfflineprocessing());
-				imageAnalysis.put("unitscale", ipr.getUnitscale());
+				imageAnalysis.put("unitScale", ipr.getUnitscale());
 				imageAnalysis.put(
 						"imageAnalysisProccessing",
 						ipr.getImagProcProfile() == null ? ipr

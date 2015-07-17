@@ -123,6 +123,7 @@ public class ImgProcResultDao extends DAO<ImgProcResult> {
 			ipr.setStudyname(Utils.convertToString(rs.getObject("studyname")));
 			ipr.setTaskid(Utils.convertToInt(rs.getObject("taskid")));
 			ipr.setTagname(Utils.convertToString(rs.getObject("tagname")));
+			ipr.setPlantid(Utils.convertToInt(rs.getObject("plantid")));
 			ipr.setResultdate(Utils.convertToString(rs.getObject("resultdate")));
 			ipr.setTimeStampResult(rs.getTimestamp("resultdate") == null ? 0
 					: rs.getTimestamp("resultdate").getTime());

@@ -5,17 +5,22 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.data.connection.CameraProfileDaoMongo;
 import org.data.connection.ImgAcqCameraProfileDao;
 import org.data.form.ImgAcqCameraProfile;
 import org.data.handle.JsonReadWrite;
+import org.data.handle.TechnicalPlateau;
 import org.data.handle.Utils;
 
 public class ImgAcqCameraProfileConvertor {
+	private static String prefixe = "m3p:";
 
 	public static void ImgAcqCameraProfileConvertToJson(String filename,
 			boolean formated) {
@@ -23,9 +28,15 @@ public class ImgAcqCameraProfileConvertor {
 		try {
 			ResultSet rs = iacpd.resultSet();
 			FileWriter file = new FileWriter(filename);
+			
+			CameraProfileDaoMongo camProfDaoMongo = new CameraProfileDaoMongo();
+			int numIncrUriCamProf = camProfDaoMongo.getCameraProfileUriMax();
+			
 			while (rs.next()) {
+				numIncrUriCamProf ++;
 				ImgAcqCameraProfile iacp = iacpd.get(rs);
 				LinkedHashMap<String, Object> cameraProfile = new LinkedHashMap<String, Object>();
+				cameraProfile.put("uri", value);
 				LinkedHashMap<String, Object> configuration = new LinkedHashMap<String, Object>();
 				configuration.put("provider", "phenowaredb");
 				configuration.put("stationid", iacp.getStationid());
@@ -36,17 +47,17 @@ public class ImgAcqCameraProfileConvertor {
 				configuration.put("validatedProfile", iacp.isValidated());
 				configuration.put("deletedProfile", iacp.isDeleted());
 				configuration
-						.put("intefaceacqtype", iacp.getInterfaceacqtype());
+						.put("interfaceacqtype", iacp.getInterfaceacqtype());
 				cameraProfile.put("configuration", configuration);
 				cameraProfile.put("description", iacp.getDescription());
 
 				Map<String, Object> settings = new LinkedHashMap<String, Object>();
-				settings.put("viewcount", iacp.getViewcount());
+				settings.put("viewCount", iacp.getViewcount());
 				settings.put("viewType", iacp.getImageViewType()
 						.getViewtypelabel());
 				settings.put("width", iacp.getWidth());
 				settings.put("height", iacp.getHeight());
-				settings.put("triggermode", iacp.getTriggermode());
+				settings.put("triggerMode", iacp.getTriggermode());
 				settings.put("shutter", iacp.getShutter());
 				settings.put("gain", iacp.getGain());
 				settings.put("brightness", iacp.getBrightness());
@@ -54,8 +65,8 @@ public class ImgAcqCameraProfileConvertor {
 				settings.put("gamma", iacp.getGamma());
 				settings.put("saturation", iacp.getSaturation());
 				settings.put("sharpness", iacp.getSharpness());
-				settings.put("whitebalance", iacp.getWhitebalance());
-				settings.put("pixeformat", iacp.getPixelformat());
+				settings.put("whiteBalance", iacp.getWhitebalance());
+				settings.put("pixelFormat", iacp.getPixelformat());
 				cameraProfile.put("settings", settings);
 				String jsonString = new org.json.JSONObject(cameraProfile)
 						.toString();
@@ -81,6 +92,24 @@ public class ImgAcqCameraProfileConvertor {
 			e.printStackTrace();
 		}
 	}
+	
+	private static String createUriCameraProfile(int numIncr) {
+		String uri ;
+		Calendar c = new GregorianCalendar();
+		int annee = c.get(Calendar.YEAR);  //l'annee ou on insere ce nveau profil (ie : l'annee en cours)
+		switch (tp) {
+        case Phenoarch:  uri = prefixe + "arch/" + annee + "/pcc" + (annee-2000) + String.format("%03d", numIncr) ;
+                 break;
+        case Phenopsis:  uri = prefixe + "psis/" +annee + "/pcb" + (annee-2000) + String.format("%03d", numIncr) ;
+                 break;
+        case Phenodyn:  uri = prefixe + "dyn/" +annee + "/pca" + (annee-2000) + String.format("%03d", numIncr) ;
+                 break;
+        default: uri = "";
+                 break;
+		}
+		
+		return uri;
+	}
 
 	public static void ExportToFile(String filename) {
 		// List<LinkedHashMap<String, Object>> jsons3 =
@@ -94,6 +123,8 @@ public class ImgAcqCameraProfileConvertor {
 		ImgAcqCameraProfileConvertToJson("Data/ImgCameraProfile.json", true);
 		Date end = new Date();
 		System.out.println(Utils.timePerformance(start, end));
+		
+		
 	}
 
 }
