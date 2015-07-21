@@ -81,6 +81,12 @@ public class ImageViewTypeDao extends DAO<ImageViewType> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public ResultSet resultSet(String query) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public ImageViewType get(ResultSet rs) {
@@ -95,5 +101,7 @@ public class ImageViewTypeDao extends DAO<ImageViewType> {
 			return null;
 		}
 	}
+
+	
 
 }

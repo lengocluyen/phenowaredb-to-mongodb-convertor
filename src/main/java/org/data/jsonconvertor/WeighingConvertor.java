@@ -1,5 +1,9 @@
 package org.data.jsonconvertor;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -9,6 +13,7 @@ import java.util.Map;
 import org.data.connection.PlantDao;
 import org.data.connection.StudyDao;
 import org.data.connection.WeighingresultDao;
+import org.data.connection.WeighingresultDaoMongo;
 import org.data.form.Plant;
 import org.data.form.Study;
 import org.data.form.Weighingresult;
@@ -16,15 +21,26 @@ import org.data.handle.JsonReadWrite;
 import org.data.handle.Utils;
 
 public class WeighingConvertor {
-	public static List<LinkedHashMap<String, Object>> WeighingResultConvertToJson() {
-		List<LinkedHashMap<String, Object>> jsons = new ArrayList<LinkedHashMap<String, Object>>();
+	public static void WeighingResultConvertToJson(String filename, boolean formated) {
+		//List<LinkedHashMap<String, Object>> jsons = new ArrayList<LinkedHashMap<String, Object>>();
 		WeighingresultDao wrsd = new WeighingresultDao(null);
-		List<Weighingresult> wrs = wrsd.all(false);
-		for (Weighingresult ws : wrs) {
+		//List<Weighingresult> wrs = wrsd.all(false);
+		
+		try{
+			WeighingresultDaoMongo weighDaoMongo = new WeighingresultDaoMongo();
+			//id maximum des pesees deja presentes dans la base mongodb
+			//Rq : les docs ne sont p-e pas inseres dans l'ordre dans mongodb,
+			//par consequent, l'id max ne correspond pas forcement au dernier doc insere
+			int idMax = weighDaoMongo.getWeighingidMax();
+			
+			String query = " select * from weighingresults where weighingid > " + idMax + "limit 10;";
+			ResultSet rs = wrsd.resultSet(query);
+			FileWriter file = new FileWriter(filename);
+			
+		while(rs.next()) {
+			Weighingresult ws = wrsd.get(rs);
 			LinkedHashMap<String, Object> weighing = new LinkedHashMap<String, Object>();
 			
-			
-			// dans platforme
 			weighing.put("platform", "http://www.phenome-fppn.fr/m3p/");
 			weighing.put("technicalPlateau",
 					"http://www.phenome-fppn.fr/m3p/phenoarch");
@@ -93,22 +109,43 @@ public class WeighingConvertor {
 
 			weighing.put("measures", measures);
 
-			jsons.add(weighing);
+			//jsons.add(weighing);
+			String jsonString = new org.json.JSONObject(weighing)
+			.toString();
+			// file.write("Document json "+i+"\n");
+
+			if (formated)
+				file.write(Utils.prettyJsonFormat(jsonString) + "\n");
+			else
+				file.write(jsonString + "\n");
+			// System.out.println("Writing the document " + i+": " +
+			// jsonString);
+
+			file.flush();
 		}
-		
-		return jsons;
+		System.out.println("Finish");
+		file.close();
+	} catch (IOException ie) {
+		ie.printStackTrace();
 	}
+		//return jsons;
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public static int ComputedWeight(int before, int after){
 		return Math.abs(after-before);
 	}
 	public static void ExportToFile(String filename){
-		List<LinkedHashMap<String,Object>> jsons3 = WeighingResultConvertToJson();
-		JsonReadWrite jrw3 = new JsonReadWrite();
-		jrw3.WriteToFile(jsons3, filename,true);
+//		List<LinkedHashMap<String,Object>> jsons3 = WeighingResultConvertToJson();
+//		JsonReadWrite jrw3 = new JsonReadWrite();
+//		jrw3.WriteToFile(jsons3, filename,true);
 	}
 	public static void main(String[] args) {
 		Date start = new Date();
-		ExportToFile("Data/Weighing.json");
+		WeighingResultConvertToJson("Data/Weighing2.json", true);
 		Date end = new Date();
 		System.out.println(Utils.timePerformance(start, end));
 	}

@@ -24,19 +24,31 @@ public class ImgAcqCameraProfileConvertor {
 
 	public static void ImgAcqCameraProfileConvertToJson(String filename,
 			boolean formated) {
+	
 		ImgAcqCameraProfileDao iacpd = new ImgAcqCameraProfileDao(null);
+	
+		
 		try {
-			ResultSet rs = iacpd.resultSet();
-			FileWriter file = new FileWriter(filename);
-			
 			CameraProfileDaoMongo camProfDaoMongo = new CameraProfileDaoMongo();
-			int numIncrUriCamProf = camProfDaoMongo.getCameraProfileUriMax();
+			
+			//imgacqcameraprofileid maximum des profils camera deja presents dans la base mongodb
+			//Rq : les docs ne sont p-e pas inseres dans l'ordre dans mongodb,
+			//par consequent, l'imgacqcameraprofileid max ne correspond pas forcement au dernier doc insere
+			int idMax = camProfDaoMongo.getImgacqcameraprofileidMax();
+			
+			//num incremental de l'uri du dernier document profil camera insere dans la base mongodb
+			int numIncrUriCamProf = camProfDaoMongo.getCameraProfileUriNumIncrLastInserted();
+			
+			String query = " select * from imgacqcameraprofiles where imgacqcameraprofileid > " + idMax + ";";
+			ResultSet rs = iacpd.resultSet(query);
+			FileWriter file = new FileWriter(filename);
 			
 			while (rs.next()) {
 				numIncrUriCamProf ++;
 				ImgAcqCameraProfile iacp = iacpd.get(rs);
 				LinkedHashMap<String, Object> cameraProfile = new LinkedHashMap<String, Object>();
-				cameraProfile.put("uri", value);
+				cameraProfile.put("uri", ImgAcqCameraProfileConvertor.createUriCameraProfile(
+						iacp.getTechnicalPlateau(), numIncrUriCamProf));
 				LinkedHashMap<String, Object> configuration = new LinkedHashMap<String, Object>();
 				configuration.put("provider", "phenowaredb");
 				configuration.put("stationid", iacp.getStationid());
@@ -44,11 +56,11 @@ public class ImgAcqCameraProfileConvertor {
 						iacp.getImgacqcameraprofileid());
 				configuration.put("imgacqcameraprofilename",
 						iacp.getImgacqcameraprofilename());
-				configuration.put("validatedProfile", iacp.isValidated());
-				configuration.put("deletedProfile", iacp.isDeleted());
 				configuration
 						.put("interfaceacqtype", iacp.getInterfaceacqtype());
 				cameraProfile.put("configuration", configuration);
+				cameraProfile.put("validatedProfile", iacp.isValidated());
+				cameraProfile.put("deletedProfile", iacp.isDeleted());
 				cameraProfile.put("description", iacp.getDescription());
 
 				Map<String, Object> settings = new LinkedHashMap<String, Object>();
@@ -93,7 +105,7 @@ public class ImgAcqCameraProfileConvertor {
 		}
 	}
 	
-	private static String createUriCameraProfile(int numIncr) {
+	private static String createUriCameraProfile(TechnicalPlateau tp, int numIncr) {
 		String uri ;
 		Calendar c = new GregorianCalendar();
 		int annee = c.get(Calendar.YEAR);  //l'annee ou on insere ce nveau profil (ie : l'annee en cours)

@@ -24,7 +24,7 @@ public class CameraProfileDaoMongo extends DAOMongo<ImgAcqCameraProfile>{
 	}
 	
 	
-	public int getCameraProfileUriMax(){	
+	public int getCameraProfileUriNumIncrLastInserted(){	
 		Document doc = this.collection.find().sort(Sorts.descending("_id")).first(); // dernier document cameraprofile insere dans la base																	
 		System.out.println(doc);
 
@@ -39,6 +39,23 @@ public class CameraProfileDaoMongo extends DAOMongo<ImgAcqCameraProfile>{
 			System.out.println(numIncr);
 			return Integer.parseInt(numIncr); // conversion en int
 		}
+	}
+	
+	
+	public int getImgacqcameraprofileidMax(){
+		MongoCollection<Document> collection = this.getDatabase()
+				.getCollection("cameraprofile");
+
+		Document doc = collection.find().sort(Sorts.descending("configuration.imgacqcameraprofileid")).first(); //  document avec imgacqcameraprofileid max
+		
+		Integer imgacqcameraprofileid = ((Document) doc.get("configuration")).getInteger("imgacqcameraprofileid"); // recuperation de l'imgacqcameraprofileid
+				
+		if (imgacqcameraprofileid == null)  //pas encore de document stationprofile dans la base
+			return 0;
+		else {
+			return imgacqcameraprofileid;
+		}
+
 	}
 
 }

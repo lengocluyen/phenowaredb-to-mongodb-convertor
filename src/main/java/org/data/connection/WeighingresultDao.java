@@ -110,7 +110,23 @@ public class WeighingresultDao extends DAO<Weighingresult> {
 					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
 							ResultSet.CONCUR_UPDATABLE);
 			result = statement
-					.executeQuery("Select * from weighingresults limit 10");
+					.executeQuery("Select * from weighingresults");
+		} catch (Exception ex) {
+			return null;
+		}
+		return result;
+	}
+	
+	@Override
+	public ResultSet resultSet(String query) {
+		Statement statement;
+		ResultSet result;
+		try {
+			statement = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_UPDATABLE);
+			result = statement
+					.executeQuery(query);
 		} catch (Exception ex) {
 			return null;
 		}
@@ -176,5 +192,7 @@ public class WeighingresultDao extends DAO<Weighingresult> {
 			return null;
 		}
 	}
+
+	
 
 }

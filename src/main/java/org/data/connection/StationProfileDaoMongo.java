@@ -24,7 +24,7 @@ public class StationProfileDaoMongo extends DAOMongo<ImgAcqStationProfile>{
 	}
 	
 	
-	public int getStationProfileUriMax(){	
+	public int getStationProfileUriNumIncrLastInserted(){	
 		Document doc = this.collection.find().sort(Sorts.descending("_id")).first(); // dernier document stationprofile insere dans la base																	
 		System.out.println(doc);
 
@@ -39,5 +39,22 @@ public class StationProfileDaoMongo extends DAOMongo<ImgAcqStationProfile>{
 			System.out.println(numIncr);
 			return Integer.parseInt(numIncr); // conversion en int
 		}
+	}
+	
+	
+	public int getImgacqstationprofileidMax(){
+		MongoCollection<Document> collection = this.getDatabase()
+				.getCollection("stationprofile");
+
+		Document doc = collection.find().sort(Sorts.descending("configuration.imgacqstationprofileid")).first(); //  document avec imgacqstationprofileid max
+		
+		Integer imgacqstationprofileid = ((Document) doc.get("configuration")).getInteger("imgacqstationprofileid"); // recuperation de l'imgacqstationprofileid
+				
+		if (imgacqstationprofileid == null)  //pas encore de document stationprofile dans la base
+			return 0;
+		else {
+			return imgacqstationprofileid;
+		}
+
 	}
 }

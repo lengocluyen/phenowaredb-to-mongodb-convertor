@@ -146,4 +146,10 @@ public class PlantObservationDao extends DAO<PlantObservation>{
 		}
 	}
 
+	@Override
+	public ResultSet resultSet(String query) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

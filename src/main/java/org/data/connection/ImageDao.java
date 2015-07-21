@@ -44,8 +44,27 @@ public class ImageDao extends DAO<Image>{
 			Statement statement = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
 							ResultSet.CONCUR_UPDATABLE);
-			String query = "Select * from images where  imgguid like "  //rq : requete par guid ici, pas forcement utile pr ns
+			String query = "Select * from images where  imgid = "  
 					+ id;
+			ResultSet rs = statement.executeQuery(query);
+			if (rs.first()) {
+				return this.get(rs);
+			}
+			return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public Image single(String guid) {
+		try {
+			Statement statement = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_UPDATABLE);
+			String query = "Select * from images where  imgguid like "  //rq : requete par guid ici
+					+ guid;
 			ResultSet rs = statement.executeQuery(query);
 			if (rs.first()) {
 				return this.get(rs);
@@ -115,7 +134,23 @@ public class ImageDao extends DAO<Image>{
 			return null;
 		}
 	}
+	
+	@Override
+	public ResultSet resultSet(String query) {
+		try {
+			Statement statement = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_UPDATABLE);
+			ResultSet rs = statement.executeQuery(query);
+			return rs;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
 
+	
 	@Override
 	public Image get(ResultSet rs) {
 		Image img = new Image();
@@ -159,5 +194,7 @@ public class ImageDao extends DAO<Image>{
 			
 		}
 	}
+
+	
 
 }

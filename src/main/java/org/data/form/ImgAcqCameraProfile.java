@@ -1,6 +1,11 @@
 package org.data.form;
 
+import org.data.handle.TechnicalPlateau;
+
+
 public class ImgAcqCameraProfile {
+	private TechnicalPlateau technicalPlateau = TechnicalPlateau.Phenoarch ; //TODO : A modifier lorsqu'on s'occupera des imgs issues des autres plateaux  
+	
 	int imgacqcameraprofileid;
 	String imgacqcameraprofilename;
 	boolean validated;
@@ -30,7 +35,14 @@ public class ImgAcqCameraProfile {
 	String pixelformat;
 	String mode;
 	
+	public ImgAcqCameraProfile(){}
 	
+	public TechnicalPlateau getTechnicalPlateau() {
+		return technicalPlateau;
+	}
+	public void setTechnicalPlateau(TechnicalPlateau technicalPlateau) {
+		this.technicalPlateau = technicalPlateau;
+	}	
 	public ImageViewType getImageViewType() {
 		return imageViewType;
 	}

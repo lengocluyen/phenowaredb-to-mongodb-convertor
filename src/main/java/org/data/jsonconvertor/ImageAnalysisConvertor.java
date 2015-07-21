@@ -10,22 +10,32 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.data.connection.ImageDaoMongo;
 import org.data.connection.ImgProcResultDao;
+import org.data.connection.ImgProcResultDaoMongo;
 import org.data.form.ImgProcResult;
 import org.data.handle.JsonReadWrite;
 import org.data.handle.Utils;
 
 public class ImageAnalysisConvertor {
 	public static void ImageAnalysisConvertToJson(
-			String fileName) {
+			String fileName, boolean formated) {
 		// List<LinkedHashMap<String, Object>> jsons = new
 		// ArrayList<LinkedHashMap<String, Object>>();
 		ImgProcResultDao iprd = new ImgProcResultDao(null);
 		//List<ImgProcResult> iprs = iprd.all(false);
-		ResultSet rs = iprd.resultSet();
+		
 		try {
+			ImgProcResultDaoMongo procResDaoMongo = new ImgProcResultDaoMongo();
+			//resultid maximum des analyses deja presentes dans la base mongodb
+			//Rq : les docs ne sont p-e pas inseres dans l'ordre dans mongodb,
+			//par consequent, le resultid max ne correspond pas forcement au dernier doc insere
+			int idMax = procResDaoMongo.getResultidMax();
+			
+			String query = " select * from imgprocresults where resultid > " + idMax + ";";
+			ResultSet rs = iprd.resultSet(query);
 			FileWriter file = new FileWriter(fileName);
-			boolean formated = false;
+			
 			while (rs.next()) {
 				ImgProcResult ipr = iprd.get(rs);
 				LinkedHashMap<String, Object> imageAnalysis = new LinkedHashMap<String, Object>();
@@ -280,6 +290,12 @@ public class ImageAnalysisConvertor {
 				imageAnalysis.put("imageAnalysisDate", ipr.getResultdate());
 				imageAnalysis.put("imageAnalysisTimestamp",
 						ipr.getTimeStampResult());
+				
+				Map<String, Object> images = new LinkedHashMap<String, Object>();
+				ImageDaoMongo idm = new ImageDaoMongo();
+				//pour l'instant une analyse est associee a une unique image
+				images.put("1", idm.getImageUriFromGuid(ipr.getImgguid()) );
+				imageAnalysis.put("images", images);
 			
 				// jsons.add(imageAnalysis);
 
@@ -311,7 +327,6 @@ public class ImageAnalysisConvertor {
 	}
 
 	public static void ExportToFile(String filename) {
-		ImageAnalysisConvertToJson(filename);
 		//List<LinkedHashMap<String, Object>> jsons3 = ImageAnalysisConvertToJson(filename);
 		// JsonReadWrite jrw3 = new JsonReadWrite();
 		// jrw3.WriteToFile(jsons3, filename, true);
@@ -319,7 +334,7 @@ public class ImageAnalysisConvertor {
 
 	public static void main(String[] args) {
 		Date start = new Date();
-		ExportToFile("Data/ImageAnalysis2.json");
+		ImageAnalysisConvertToJson("Data/ImageAnalysis2.json", true);
 		Date end = new Date();
 		System.out.println(Utils.timePerformance(start, end));
 	}

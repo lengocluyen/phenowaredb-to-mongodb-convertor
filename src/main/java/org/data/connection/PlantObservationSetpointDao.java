@@ -110,5 +110,11 @@ public class PlantObservationSetpointDao extends DAO<PlantObservationSetpoint>{
 			return null;
 		}
 	}
+
+	@Override
+	public ResultSet resultSet(String query) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

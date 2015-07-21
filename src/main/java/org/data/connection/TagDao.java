@@ -101,4 +101,10 @@ public class TagDao extends DAO<Tag>{
 		}
 	}
 
+	@Override
+	public ResultSet resultSet(String query) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

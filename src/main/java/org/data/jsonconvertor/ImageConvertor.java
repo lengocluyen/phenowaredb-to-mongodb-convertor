@@ -20,6 +20,9 @@ import org.data.handle.Utils;
 
 public class ImageConvertor {
 	private static String prefixe = "m3p:";
+	private static String m3p = "http://www.phenome-fppn.fr/m3p/";
+	private static String serverPath = "http://stck-lespe.supagro.inra.fr/";
+	private static String webPath = "http://lps-phis.supagro.inra.fr/phis/data/";
 
 	public static void ImagesConvertToJson(String filename, boolean formated) {
 		//List<LinkedHashMap<String, Object>> jsons = new ArrayList<LinkedHashMap<String, Object>>();
@@ -27,14 +30,21 @@ public class ImageConvertor {
 		//List<Image> imgs = id.all(false);
 
 		try {
-			ResultSet rs = id.resultSet();
-			FileWriter file = new FileWriter(filename);
-			
+		
 			ImageDaoMongo imgDaoMongo = new ImageDaoMongo();
+			//imgid maximum des images deja presentes dans la base mongodb
+			//Rq : les docs images ne sont p-e pas inseres dans l'ordre dans mongodb,
+			//par consequent, l'imgid max ne correspond pas forcement au dernier doc insere
+			int imgidMax = imgDaoMongo.getImgidMax();
+			
 			//num incremental de l'uri du dernier document image insere dans la base mongodb
-			int numIncrUriImg = imgDaoMongo.getImageUriMax();   
+			int numIncrUriImg = imgDaoMongo.getImageUriNumIncrLastInserted();   
 			CameraProfileDaoMongo camProfDaoMongo = new CameraProfileDaoMongo();
 			StationProfileDaoMongo statProfDaoMongo = new StationProfileDaoMongo();
+			
+			String query = " select * from images where imgid > " + imgidMax + "limit 10;";
+			ResultSet rs = id.resultSet(query);
+			FileWriter file = new FileWriter(filename);
 			
 			while(rs.next())
 			{
@@ -53,15 +63,15 @@ public class ImageConvertor {
 				image.put("genotype", "");
 				image.put("genotypeAlias",  "");
 				if(img.getStudy() != null)
-					image.put("experiment", "http://www.phenome-fppn.fr/m3p/" + img.getStudy().getName());
+					image.put("experiment", m3p + img.getStudy().getName());
 				else
 					image.put("experiment", "");
 				image.put("experimentAlias", "");
 				image.put("study", "");
 				image.put("studyAlias", "");
-				image.put("platform", "http://www.phenome-fppn.fr/m3p/");
+				image.put("platform", m3p);
 				image.put("technicalPlateau",
-						"http://www.phenome-fppn.fr/m3p/phenoarch");
+						m3p + "phenoarch");
 				image.put("timestamp", img.getTimestamps());
 				image.put("date", img.getAcquisitiondate());
 				image.put("imageCameraProfile", camProfDaoMongo.getCameraProfileUri(img.getImgacqprofileid())); //URI trouvee dans base mongo
@@ -99,11 +109,11 @@ public class ImageConvertor {
 				image.put("cameraAngle", img.getImgangle());
 				image.put("fileName", img.getImgguid());
 
-				image.put("serverPath", "http://stck-lespe.supagro.inra.fr/");	
-				image.put("imageServerPath", "http://stck-lespe.supagro.inra.fr/phenoarch/raw/"+img.getStudy().getName()+img.getTaskid()+img.getImgguid()+img.getFileFormat());
-				image.put("imageWebPath","http://lps-phis.supagro.inra.fr/phis/data/phenoarch/raw/"+img.getStudy().getName()+img.getTaskid()+img.getImgguid()+img.getFileFormat());
-				image.put("thumbServerPath", "http://stck-lespe.supagro.inra.fr/phenoarch/thumbs/"+img.getStudy().getName()+img.getTaskid()+img.getImgguid()); 
-				image.put("thumbWebPath", "http://lps-phis.supagro.inra.fr/phis/data/phenoarch/thumbs/"+img.getStudy().getName()+img.getTaskid()+img.getImgguid()); 
+				image.put("serverPath", serverPath);	
+				image.put("imageServerPath", serverPath + "phenoarch/raw/"+img.getStudy().getName()+img.getTaskid()+img.getImgguid()+img.getFileFormat());
+				image.put("imageWebPath", webPath + "phenoarch/raw/"+img.getStudy().getName()+img.getTaskid()+img.getImgguid()+img.getFileFormat());
+				image.put("thumbServerPath", serverPath + "phenoarch/thumbs/"+img.getStudy().getName()+img.getTaskid()+img.getImgguid()); 
+				image.put("thumbWebPath", webPath + "phenoarch/thumbs/"+img.getStudy().getName()+img.getTaskid()+img.getImgguid()); 
 				image.put("binaryServerPath", "unspecified");
 				image.put("binaryWebPath", "unspecified");
 				image.put("md5", "unspecified");

@@ -13,6 +13,7 @@ import java.util.Map;
 import org.data.connection.PlantDao;
 import org.data.connection.StudyDao;
 import org.data.connection.WateringresultDao;
+import org.data.connection.WateringresultDaoMongo;
 import org.data.form.Image;
 import org.data.form.Plant;
 import org.data.form.Study;
@@ -32,9 +33,15 @@ public class WateringConvertor {
 		PlantDao pld = new PlantDao(ward.getConnect());
 		StudyDao std = new StudyDao(ward.getConnect());
 		try {
-			ResultSet rs = ward.resultSet();
-
+			WateringresultDaoMongo watDaoMongo = new WateringresultDaoMongo();
+			//id maximum des waterings deja presents dans la base mongodb
+			//Rq : les docs ne sont p-e pas inseres dans l'ordre dans mongodb,
+			//par consequent, l'id max ne correspond pas forcement au dernier doc insere
+			int idMax = watDaoMongo.getWateringidMax();
+			String query = " select * from wateringresults where wateringid > " + idMax + "limit 10;";
+			ResultSet rs = ward.resultSet(query);
 			FileWriter file = new FileWriter(filename);
+
 			while (rs.next()) {
 				Wateringresult ws = ward.get(rs);
 				System.out.println("wateringid : " + ws.getWateringId());
@@ -166,7 +173,7 @@ public class WateringConvertor {
 	public static void main(String[] args) {
 
 		Date start = new Date();
-		WateringResultConvertToJson("Data/Watering.json", true);
+		WateringResultConvertToJson("Data/Watering2.json", true);
 		Date end = new Date();
 		System.out.println(Utils.timePerformance(start, end));
 

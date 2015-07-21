@@ -58,6 +58,8 @@ public abstract class DAO<T> {
 	public abstract List<T> all();
 
 	public abstract ResultSet resultSet();
+	
+	public abstract ResultSet resultSet(String query);
 
 	public abstract T get(ResultSet result);
 }

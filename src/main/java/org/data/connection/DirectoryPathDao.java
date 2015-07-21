@@ -97,4 +97,10 @@ public class DirectoryPathDao extends DAO<DirectoryPath>{
 		}
 	}
 
+	@Override
+	public ResultSet resultSet(String query) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

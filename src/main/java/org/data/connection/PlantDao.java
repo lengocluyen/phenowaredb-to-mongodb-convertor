@@ -96,6 +96,12 @@ public class PlantDao extends DAO<Plant> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public ResultSet resultSet(String query) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public Plant get(ResultSet rs) {
@@ -129,5 +135,7 @@ public class PlantDao extends DAO<Plant> {
 			return null;
 		}
 	}
+
+	
 
 }

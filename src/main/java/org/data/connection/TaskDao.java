@@ -81,6 +81,12 @@ public class TaskDao extends DAO<Task>{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public ResultSet resultSet(String query) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public Task get(ResultSet rs) {
@@ -126,5 +132,7 @@ public class TaskDao extends DAO<Task>{
 			return null;
 		}
 	}
+
+	
 
 }

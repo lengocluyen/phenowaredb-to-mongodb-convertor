@@ -5,28 +5,51 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.data.connection.ImgAcqStationProfileDao;
+import org.data.connection.StationProfileDaoMongo;
 import org.data.form.ImgAcqStationProfile;
 import org.data.handle.JsonReadWrite;
+import org.data.handle.TechnicalPlateau;
 import org.data.handle.Utils;
 
 public class ImgAcqStationProfileConvertor {
+	private static String prefixe = "m3p:";
+	
 	public static void ImgAcqStationProfileConvertToJson(String filename,
 			boolean formated) {
 		// List<LinkedHashMap<String, Object>> jsons = new
 		// ArrayList<LinkedHashMap<String, Object>>();
+		
 		ImgAcqStationProfileDao iaspd = new ImgAcqStationProfileDao(null);
+		
 		try {
-			ResultSet rs = iaspd.resultSet();
+			StationProfileDaoMongo statProfDaoMongo = new StationProfileDaoMongo();
+			
+			//imgacqstationprofileid maximum des profils station deja presents dans la base mongodb
+			//Rq : les docs ne sont p-e pas inseres dans l'ordre dans mongodb,
+			//par consequent, l'imgacqstationprofileid max ne correspond pas forcement au dernier doc insere
+			int idMax = statProfDaoMongo.getImgacqstationprofileidMax();
+			
+			//num incremental de l'uri du dernier document profil station insere dans la base mongodb
+			int numIncrUriStatProf = statProfDaoMongo.getStationProfileUriNumIncrLastInserted();
+			
+			String query = " select * from imgacqstationprofiles where imgacqstationprofileid > " + idMax +  ";";
+			ResultSet rs = iaspd.resultSet(query);
 			FileWriter file = new FileWriter(filename);
+			
 			while (rs.next()) {
+				numIncrUriStatProf ++;
 				ImgAcqStationProfile iasp = iaspd.get(rs);
 				LinkedHashMap<String, Object> stationProfile = new LinkedHashMap<String, Object>();
+				stationProfile.put("uri",  ImgAcqStationProfileConvertor.createUriStationProfile(
+						iasp.getTechnicalPlateau(), numIncrUriStatProf));
 				LinkedHashMap<String, Object> configuration = new LinkedHashMap<String, Object>();
 				configuration.put("provider", "phenowaredb");
 				configuration.put("stationid", iasp.getStationid());
@@ -34,9 +57,9 @@ public class ImgAcqStationProfileConvertor {
 						iasp.getImgacqstationprofileid());
 				configuration.put("imgacqstationprofilename",
 						iasp.getImgacqstationprofilename());
-				configuration.put("validatedProfile", iasp.isValidated());
-				configuration.put("deletedProfile", iasp.isDeleted());
 				stationProfile.put("configuration", configuration);
+				stationProfile.put("validatedProfile", iasp.isValidated());
+				stationProfile.put("deletedProfile", iasp.isDeleted());
 				stationProfile.put("description", iasp.getDescription());
 				LinkedHashMap<String, Object> settings = new LinkedHashMap<String, Object>();
 				settings.put("verticalPosition", iasp.getIndexer());
@@ -72,6 +95,25 @@ public class ImgAcqStationProfileConvertor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	
+	private static String createUriStationProfile(TechnicalPlateau tp, int numIncr) {
+		String uri ;
+		Calendar c = new GregorianCalendar();
+		int annee = c.get(Calendar.YEAR);  //l'annee ou on insere ce nveau profil (ie : l'annee en cours)
+		switch (tp) {
+        case Phenoarch:  uri = prefixe + "arch/" + annee + "/psc" + (annee-2000) + String.format("%03d", numIncr) ;
+                 break;
+        case Phenopsis:  uri = prefixe + "psis/" +annee + "/psb" + (annee-2000) + String.format("%03d", numIncr) ;
+                 break;
+        case Phenodyn:  uri = prefixe + "dyn/" +annee + "/psa" + (annee-2000) + String.format("%03d", numIncr) ;
+                 break;
+        default: uri = "";
+                 break;
+		}
+		
+		return uri;
 	}
 
 	public static void ExportToFile(String filename) {

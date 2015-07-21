@@ -85,4 +85,10 @@ public class UserInfoDao extends DAO<UserInfo> {
 		}
 	}
 
+	@Override
+	public ResultSet resultSet(String query) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -108,4 +108,10 @@ public class TaskTypeDao extends DAO<TaskType>{
 		}
 	}
 
+	@Override
+	public ResultSet resultSet(String query) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

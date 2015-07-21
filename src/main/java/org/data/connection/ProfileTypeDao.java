@@ -92,4 +92,10 @@ public class ProfileTypeDao extends DAO<ProfileType>{
 		}
 	}
 
+	@Override
+	public ResultSet resultSet(String query) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

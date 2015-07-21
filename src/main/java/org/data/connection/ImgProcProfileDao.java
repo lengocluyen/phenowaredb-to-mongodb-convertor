@@ -104,7 +104,7 @@ public class ImgProcProfileDao extends DAO<ImgProcProfile> {
 		try {
 			statement = this.connect.createStatement();
 			result = statement
-					.executeQuery("Select * from imgprocprofiles limit 10");
+					.executeQuery("Select * from imgprocprofiles");
 
 		} catch (Exception ex) {
 
@@ -113,6 +113,22 @@ public class ImgProcProfileDao extends DAO<ImgProcProfile> {
 		return result;
 	}
 
+	@Override
+	public ResultSet resultSet(String query) {
+		Statement statement;
+		ResultSet result;
+		try {
+			statement = this.connect.createStatement();
+			result = statement
+					.executeQuery(query);
+
+		} catch (Exception ex) {
+
+			return null;
+		}
+		return result;
+	}
+	
 	@Override
 	public ImgProcProfile get(ResultSet result) {
 
@@ -138,5 +154,7 @@ public class ImgProcProfileDao extends DAO<ImgProcProfile> {
 			return null;
 		}
 	}
+
+
 
 }

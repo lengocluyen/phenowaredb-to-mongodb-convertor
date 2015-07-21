@@ -110,6 +110,21 @@ public class WateringresultDao extends DAO<Wateringresult>{
 		}
 		return result;
 	}
+	
+	@Override
+	public ResultSet resultSet(String query) {
+		Statement statement;
+		ResultSet result;
+		try {
+			statement = this.connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE);
+			result = statement
+					.executeQuery(query);
+		} catch(Exception ex) {
+			return null;
+		}
+		return result;
+	}
 
 	@Override
 	public Wateringresult get(ResultSet result) {
@@ -158,5 +173,7 @@ public class WateringresultDao extends DAO<Wateringresult>{
 			return null;
 		}
 	}
+
+	
 
 }

@@ -1,6 +1,11 @@
 package org.data.form;
 
+import org.data.handle.TechnicalPlateau;
+
 public class ImgAcqStationProfile {
+	
+	private TechnicalPlateau technicalPlateau = TechnicalPlateau.Phenoarch ; //TODO : A modifier lorsqu'on s'occupera des imgs issues des autres plateaux  
+	
 	int imgacqstationprofileid;
 	String imgacqstationprofilename;
 	boolean validated;
@@ -8,12 +13,6 @@ public class ImgAcqStationProfile {
 	int profiletype;
 	ProfileType profileTypeObject;
 	
-	public ProfileType getProfileTypeObject() {
-		return profileTypeObject;
-	}
-	public void setProfileTypeObject(ProfileType profileTypeObject) {
-		this.profileTypeObject = profileTypeObject;
-	}
 	String description;
 	int imageryusertype;
 	
@@ -27,6 +26,15 @@ public class ImgAcqStationProfile {
 	String rotationspeed;
 	int topviewcount;
 	int sideviewcount;
+	
+	public ImgAcqStationProfile(){}
+	
+	public TechnicalPlateau getTechnicalPlateau() {
+		return technicalPlateau;
+	}
+	public void setTechnicalPlateau(TechnicalPlateau technicalPlateau) {
+		this.technicalPlateau = technicalPlateau;
+	}	
 	public int getImgacqstationprofileid() {
 		return imgacqstationprofileid;
 	}
@@ -56,6 +64,12 @@ public class ImgAcqStationProfile {
 	}
 	public void setProfiletype(int profiletype) {
 		this.profiletype = profiletype;
+	}
+	public ProfileType getProfileTypeObject() {
+		return profileTypeObject;
+	}
+	public void setProfileTypeObject(ProfileType profileTypeObject) {
+		this.profileTypeObject = profileTypeObject;
 	}
 	public String getDescription() {
 		return description;

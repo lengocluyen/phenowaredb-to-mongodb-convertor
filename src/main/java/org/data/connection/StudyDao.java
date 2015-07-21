@@ -113,6 +113,13 @@ public class StudyDao extends DAO<Study>{
 			return null;
 		}
 	}
+	
+	@Override
+	public ResultSet resultSet(String query) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	@Override
 	public Study get(ResultSet rs) {
 		Study study = new Study();
@@ -145,5 +152,7 @@ public class StudyDao extends DAO<Study>{
 			return null;
 		}
 	}
+
+	
 
 }

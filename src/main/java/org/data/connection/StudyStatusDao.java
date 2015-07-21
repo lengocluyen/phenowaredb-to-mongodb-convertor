@@ -81,4 +81,10 @@ public class StudyStatusDao extends DAO<StudyStatus> {
 		}
 	}
 
+	@Override
+	public ResultSet resultSet(String query) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

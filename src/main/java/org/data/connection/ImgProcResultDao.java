@@ -102,13 +102,26 @@ public class ImgProcResultDao extends DAO<ImgProcResult> {
 
 	@Override
 	public ResultSet resultSet() {
-		// TODO Auto-generated method stub
 		try {
 			Statement statement = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
 							ResultSet.CONCUR_UPDATABLE);
 			ResultSet result = statement
 					.executeQuery("Select * from imgprocresults");
+			return result;
+		} catch (Exception ex) {
+			return null;
+		}
+	}
+	
+	@Override
+	public ResultSet resultSet(String query) {
+		try {
+			Statement statement = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_UPDATABLE);
+			ResultSet result = statement
+					.executeQuery(query);
 			return result;
 		} catch (Exception ex) {
 			return null;
@@ -205,5 +218,7 @@ public class ImgProcResultDao extends DAO<ImgProcResult> {
 			return null;
 		}
 	}
+
+	
 
 }

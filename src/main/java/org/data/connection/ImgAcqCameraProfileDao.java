@@ -94,6 +94,21 @@ public class ImgAcqCameraProfileDao extends DAO<ImgAcqCameraProfile>{
 	}
 
 	@Override
+	public ResultSet resultSet(String query) {
+		try {
+			Statement statement = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_UPDATABLE);
+			ResultSet rs = statement.executeQuery(query);
+			return rs;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@Override
 	public ImgAcqCameraProfile get(ResultSet rs) {
 		ImgAcqCameraProfile iacp = new ImgAcqCameraProfile();
 		try{
@@ -138,5 +153,7 @@ public class ImgAcqCameraProfileDao extends DAO<ImgAcqCameraProfile>{
 			return null;
 		}
 	}
+
+	
 
 }

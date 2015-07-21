@@ -32,7 +32,7 @@ public class Utils {
 	public static boolean convertToBool (Object value){
 		if(value==null)
 			return false;
-		return true;
+		return (Boolean) value;
 	}
 	public static Timestamp convertToTimestamp (Object value){
 		if(value ==null)

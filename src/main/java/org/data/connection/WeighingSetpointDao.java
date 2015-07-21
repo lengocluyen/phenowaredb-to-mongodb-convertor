@@ -110,5 +110,11 @@ public class WeighingSetpointDao extends DAO<WeighingSetpoint>{
 			return null;
 		}
 	}
+
+	@Override
+	public ResultSet resultSet(String query) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
