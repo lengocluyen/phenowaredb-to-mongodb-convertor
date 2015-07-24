@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.data.connection.PlantDao;
+import org.data.connection.PlantDaoSesame;
 import org.data.connection.StudyDao;
 import org.data.connection.WeighingresultDao;
 import org.data.connection.WeighingresultDaoMongo;
@@ -32,27 +33,48 @@ public class WeighingConvertor {
 			//Rq : les docs ne sont p-e pas inseres dans l'ordre dans mongodb,
 			//par consequent, l'id max ne correspond pas forcement au dernier doc insere
 			int idMax = weighDaoMongo.getWeighingidMax();
-			
+		
 			String query = " select * from weighingresults where weighingid > " + idMax + "limit 10;";
 			ResultSet rs = wrsd.resultSet(query);
+
 			FileWriter file = new FileWriter(filename);
 			
 		while(rs.next()) {
 			Weighingresult ws = wrsd.get(rs);
 			LinkedHashMap<String, Object> weighing = new LinkedHashMap<String, Object>();
 			
-			weighing.put("platform", "http://www.phenome-fppn.fr/m3p/");
-			weighing.put("technicalPlateau",
+			Map<String, Object> context = new LinkedHashMap<String, Object>();
+			try{
+				PlantDaoSesame pds = new PlantDaoSesame();
+				try{
+					if(ws.getPlant()!=null){
+						context.put("plant", pds.getURIFromAlias(ws.getPlant().getPlantCode()));
+					}
+					else{
+						context.put("plant", "");
+					}
+				}
+				catch(Exception e){
+					e.printStackTrace();
+				}
+				finally {
+					pds.getConnection().close();
+				}
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+			context.put("plantAlias", ws.getPlant()==null?"":ws.getPlant().getPlantCode());
+			context.put("genotype", "");
+			context.put("genotypeAlias", "");
+			context.put("experiment", "http://www.phenome-fppn.fr/m3p/" + ws.getStudyname() );
+			context.put("experimentAlias", ws.getStudyname());
+			context.put("study", "");
+			context.put("studyAlias", "");
+			context.put("platform", "http://www.phenome-fppn.fr/m3p/");
+			context.put("technicalPlateau",
 					"http://www.phenome-fppn.fr/m3p/phenoarch");
-			weighing.put("experiment", "http://www.phenome-fppn.fr/m3p/" + ws.getStudyname() );
-			weighing.put("experimentAlias", "");
-			weighing.put("study", "");
-			weighing.put("studyAlias", "");
-			weighing.put("genotype", "");
-			weighing.put("genotypeAlias", "");
-			weighing.put("plant","");
-			weighing.put("plantAlias", ws.getPlant()==null?"":ws.getPlant().getPlantCode());
-
+			weighing.put("context", context);
 			
 			weighing.put("date", ws.getDate());
 			weighing.put("timestamp", ws.getTimestamps());

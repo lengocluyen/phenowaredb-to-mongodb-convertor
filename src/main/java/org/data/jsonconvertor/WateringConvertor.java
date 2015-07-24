@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.data.connection.PlantDao;
+import org.data.connection.PlantDaoSesame;
 import org.data.connection.StudyDao;
 import org.data.connection.WateringresultDao;
 import org.data.connection.WateringresultDaoMongo;
@@ -52,18 +53,39 @@ public class WateringConvertor {
 				st = std.singleFromName(ws.getStudyName());
 				if (st != null)
 					pl = pld.single(st.getStudyid(), ws.getPlantId());
-
-				watering.put("plant", "");
-				watering.put("plantAlias", pl == null ? "" : pl.getPlantCode());
-				watering.put("genotype", "");
-				watering.put("genotypeAlias", "");
-				watering.put("experiment", "http://www.phenome-fppn.fr/m3p/"+ws.getStudyName());
-				watering.put("experimentAlias", "");
-				watering.put("study", "");
-				watering.put("studyAlias", "");
-				watering.put("platform", "http://www.phenome-fppn.fr/m3p/");
-				watering.put("technicalPlateau",
+				
+				Map<String, Object> context = new LinkedHashMap<String, Object>();
+				try{
+					PlantDaoSesame pds = new PlantDaoSesame();
+					try{
+						if(pl!=null){
+							context.put("plant", pds.getURIFromAlias(pl.getPlantCode()));
+						}
+						else{
+							context.put("plant", "");
+						}
+					}
+					catch(Exception e){
+						e.printStackTrace();
+					}
+					finally {
+						pds.getConnection().close();
+					}
+				}
+				catch(Exception e){
+					e.printStackTrace();
+				}
+				context.put("plantAlias", pl == null ? "" : pl.getPlantCode());
+				context.put("genotype", "");
+				context.put("genotypeAlias", "");
+				context.put("experiment", "http://www.phenome-fppn.fr/m3p/"+ws.getStudyName());
+				context.put("experimentAlias", ws.getStudyName());
+				context.put("study", "");
+				context.put("studyAlias", "");
+				context.put("platform", "http://www.phenome-fppn.fr/m3p/");
+				context.put("technicalPlateau",
 						"http://www.phenome-fppn.fr/m3p/phenoarch");
+				watering.put("context",  context);
 
 				watering.put("timestamp", ws.getResultDate().getTime());
 				watering.put("date", ws.getResultDate());

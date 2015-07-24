@@ -10,15 +10,23 @@ import com.mongodb.client.model.Sorts;
 
 
 public class ImageDaoMongo extends DAOMongo<Image>{
+	private MongoCollection<Document> collection ;
 
 	public ImageDaoMongo(){
 		super();
+		this.setCollection(this.getDatabase()
+				.getCollection("image"));
 	}
 	
-	public int getImageUriNumIncrLastInserted() {
-		MongoCollection<Document> collection = this.getDatabase()
-				.getCollection("image");
+	public MongoCollection<Document> getCollection() {
+		return collection;
+	}
 
+	public void setCollection(MongoCollection<Document> collection) {
+		this.collection = collection;
+	}
+
+	public int getImageUriNumIncrLastInserted() {
 		Document doc = collection.find().sort(Sorts.descending("_id")).first(); // dernier document image insere dans la base
 
 		String uri = doc.getString("uri"); // recuperation de l'uri
@@ -34,9 +42,6 @@ public class ImageDaoMongo extends DAOMongo<Image>{
 	}
 	
 	public int getImgidMax(){
-		MongoCollection<Document> collection = this.getDatabase()
-				.getCollection("image");
-
 		Document doc = collection.find().sort(Sorts.descending("configuration.imgid")).first(); // document avec imgid max
 		
 		Integer imgid = ((Document) doc.get("configuration")).getInteger("imgid"); // recuperation de l'imgid
@@ -50,9 +55,6 @@ public class ImageDaoMongo extends DAOMongo<Image>{
 	}
 	
 	public String getImageUriFromId(int id){
-		MongoCollection<Document> collection = this.getDatabase()
-				.getCollection("image");
-		
 		Document doc = collection.find(Filters.eq("configuration.imgid", id)).first();
 		if(doc == null)  //cet id est absent dans la base mongodb
 			return "";
@@ -66,9 +68,6 @@ public class ImageDaoMongo extends DAOMongo<Image>{
 	}
 	
 	public String getImageUriFromGuid(String guid){
-		MongoCollection<Document> collection = this.getDatabase()
-				.getCollection("image");
-		
 		Document doc = collection.find(Filters.eq("fileName", guid)).first();
 		if(doc == null)  //guid absent dans la base mongodb
 			return "";

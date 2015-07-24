@@ -8,15 +8,19 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.bson.Document;
 import org.data.connection.CameraProfileDaoMongo;
 import org.data.connection.ImageDao;
 import org.data.connection.ImageDaoMongo;
 import org.data.connection.PlantDao;
+import org.data.connection.PlantDaoSesame;
 import org.data.connection.StationProfileDaoMongo;
 import org.data.form.Image;
 import org.data.form.Plant;
 import org.data.handle.TechnicalPlateau;
 import org.data.handle.Utils;
+
+import com.mongodb.BasicDBObject;
 
 public class ImageConvertor {
 	private static String prefixe = "m3p:";
@@ -55,23 +59,44 @@ public class ImageConvertor {
 				Plant pl = pld.single(img.getStudyid(),img.getPlantid());
 
 				image.put("uri", ImageConvertor.createUriImage(img.getTechnicalPlateau(), img.getAcquisitiondate(), numIncrUriImg));
-				image.put("plant", "");
-				if(pl!=null)
-					image.put("plantAlias", pl.getPlantCode());
-				else
-					image.put("plantAlias", "");
-				image.put("genotype", "");
-				image.put("genotypeAlias",  "");
+				
+				Map<String, Object> context = new LinkedHashMap<String, Object>();
+				try{
+					PlantDaoSesame pds = new PlantDaoSesame();
+					try{
+						if(pl!=null){
+							context.put("plant", pds.getURIFromAlias(pl.getPlantCode()));
+							context.put("plantAlias", pl.getPlantCode());
+						}
+						else{
+							context.put("plant", "");
+							context.put("plantAlias", "");
+						}
+					}
+					catch(Exception e){
+						e.printStackTrace();
+					}
+					finally {
+						pds.getConnection().close();
+					}
+				}
+				catch(Exception e){
+					e.printStackTrace();
+				}
+				context.put("genotype", "");
+				context.put("genotypeAlias",  "");
 				if(img.getStudy() != null)
-					image.put("experiment", m3p + img.getStudy().getName());
+					context.put("experiment", m3p + img.getStudy().getName());
 				else
-					image.put("experiment", "");
-				image.put("experimentAlias", "");
-				image.put("study", "");
-				image.put("studyAlias", "");
-				image.put("platform", m3p);
-				image.put("technicalPlateau",
+					context.put("experiment", "");
+				context.put("experimentAlias", img.getStudy().getName());
+				context.put("study", "");
+				context.put("studyAlias", "");
+				context.put("platform", m3p);
+				context.put("technicalPlateau",
 						m3p + "phenoarch");
+				image.put("context", context);
+				
 				image.put("timestamp", img.getTimestamps());
 				image.put("date", img.getAcquisitiondate());
 				image.put("imageCameraProfile", camProfDaoMongo.getCameraProfileUri(img.getImgacqprofileid())); //URI trouvee dans base mongo
@@ -81,7 +106,7 @@ public class ImageConvertor {
 				configuration.put("provider", "phenowaredb");
 				configuration.put("imgid", img.getImgid());
 				configuration.put("plantid", img.getPlantid());
-				configuration.put("studyname", img.getStudy().getName());  //pas tres utile (cf experiment)
+				configuration.put("studyname", img.getStudy().getName());  //pas tres utile (cf experiment et surtout experimentAlias)
 				configuration.put("taskid", img.getTaskid());
 				configuration.put("stationid", img.getStationid());
 				configuration.put("imgacqprofileid", img.getImgacqprofileid());
@@ -133,6 +158,7 @@ public class ImageConvertor {
 
 				file.flush();
 
+				//imgDaoMongo.getCollection().insertOne(new Document(image));
 			}
 
 			System.out.println("Finish");

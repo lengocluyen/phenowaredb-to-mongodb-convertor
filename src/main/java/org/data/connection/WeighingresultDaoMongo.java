@@ -19,12 +19,12 @@ public class WeighingresultDaoMongo extends DAOMongo<Weighingresult>{
 
 			Document doc = collection.find().sort(Sorts.descending("configuration.weighingid")).first(); // document avec weighingid max
 
-			Integer weighingid = ((Document) doc.get("configuration")).getInteger("weighingid"); // recuperation du weighingid
 
-			if (weighingid == null)  //pas encore de document pesee dans la base
+			if (doc == null)  //pas encore de document pesee dans la base
 				return 0;
 			else {
-				return weighingid;
+				Integer weighingid= ((Document) doc.get("configuration")).getInteger("weighingid"); // recuperation du weighingid
+				return weighingid ;
 			}
 		}
 		catch (Exception e) {
