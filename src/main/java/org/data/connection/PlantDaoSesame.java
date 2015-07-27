@@ -4,6 +4,8 @@ import org.data.form.Plant;
 import org.openrdf.OpenRDFException;
 import org.openrdf.model.ValueFactory;
 import org.openrdf.query.BindingSet;
+import org.openrdf.query.MalformedQueryException;
+import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.query.QueryLanguage;
 import org.openrdf.query.TupleQuery;
 import org.openrdf.query.TupleQueryResult;
@@ -15,32 +17,28 @@ public class PlantDaoSesame extends DAOSesame<Plant>{
 		super();
 	}
 	
-	public String getURIFromAlias(String alias){
+	public String getURIFromAlias(String alias) throws RepositoryException, MalformedQueryException, QueryEvaluationException{
 		String uri ="";
-		try {
-			   ValueFactory factory = this.getRep().getValueFactory();
-			  
-				  String query = "SELECT ?plant  WHERE { ?plant <http://www.phenome-fppn.fr/object#hasAlias> ?alias } ";
-				  TupleQuery tupleQuery = this.getConnection().prepareTupleQuery(QueryLanguage.SPARQL, query);
-				  tupleQuery.setBinding("alias", factory.createLiteral(alias));
-				  TupleQueryResult result = tupleQuery.evaluate();
-				  try {
-			              //while (result.hasNext()) {  // iterate over the result
-						BindingSet bindingSet = result.next();
-						uri = bindingSet.getValue("plant").stringValue();
-			             // }
-				  }
-				  catch(Exception e){
-					  System.out.println("plantAlias : " + alias);
-					  e.printStackTrace();
-				  }
-				  finally {
-				      result.close();
-				  }
-			}
-			catch (OpenRDFException e) {
-				e.printStackTrace();
-			}
+		ValueFactory factory = this.getRep().getValueFactory();
+
+		String query = "SELECT ?plant  WHERE { ?plant <http://www.phenome-fppn.fr/object#hasAlias> ?alias } ";
+		TupleQuery tupleQuery = this.getConnection().prepareTupleQuery(QueryLanguage.SPARQL, query);
+		tupleQuery.setBinding("alias", factory.createLiteral(alias));
+		TupleQueryResult result = tupleQuery.evaluate();
+		if (result == null)
+			System.out.println("Erreur  : pas d'URI pour plantAlias : " + alias);
+
+		if (result.hasNext()) { 
+			BindingSet bindingSet = result.next();
+			uri = bindingSet.getValue("plant").stringValue();
+		}
+		else
+			System.out.println("Erreur  : pas d'URI pour plantAlias : " + alias);
+
+
+		result.close();
+
+
 		return uri ;
 	}
 	

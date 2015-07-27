@@ -10,35 +10,86 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.Document;
 import org.data.connection.ImageDaoMongo;
 import org.data.connection.ImgProcResultDao;
 import org.data.connection.ImgProcResultDaoMongo;
+import org.data.connection.PlantDao;
+import org.data.connection.PlantDaoSesame;
+import org.data.connection.StudyDao;
 import org.data.form.ImgProcResult;
+import org.data.form.Plant;
+import org.data.form.Study;
 import org.data.handle.JsonReadWrite;
 import org.data.handle.Utils;
+import org.openrdf.query.MalformedQueryException;
+import org.openrdf.query.QueryEvaluationException;
+import org.openrdf.repository.RepositoryException;
 
 public class ImageAnalysisConvertor {
+	private static String m3p = "http://www.phenome-fppn.fr/m3p/";
+
+	
 	public static void ImageAnalysisConvertToJson(
-			String fileName, boolean formated) {
+			String fileName, boolean formated) throws RepositoryException, MalformedQueryException, QueryEvaluationException {
 		// List<LinkedHashMap<String, Object>> jsons = new
 		// ArrayList<LinkedHashMap<String, Object>>();
 		ImgProcResultDao iprd = new ImgProcResultDao(null);
 		//List<ImgProcResult> iprs = iprd.all(false);
-		
+
+		PlantDao pld = new PlantDao(iprd.getConnect());
+		StudyDao std = new StudyDao(iprd.getConnect());
+		ImageDaoMongo idm = new ImageDaoMongo();
+
 		try {
 			ImgProcResultDaoMongo procResDaoMongo = new ImgProcResultDaoMongo();
 			//resultid maximum des analyses deja presentes dans la base mongodb
 			//Rq : les docs ne sont p-e pas inseres dans l'ordre dans mongodb,
 			//par consequent, le resultid max ne correspond pas forcement au dernier doc insere
 			int idMax = procResDaoMongo.getResultidMax();
-			
-			String query = " select * from imgprocresults where resultid > " + idMax + ";";
+			System.out.println("IdMax ImageAnalysis dans mongodb " + idMax);
+
+
+			String query = " select * from imgprocresults where resultid > " + idMax + " order by resultid;";
 			ResultSet rs = iprd.resultSet(query);
 			FileWriter file = new FileWriter(fileName);
-			
+
+			PlantDaoSesame pds = new PlantDaoSesame();
+
 			while (rs.next()) {
 				ImgProcResult ipr = iprd.get(rs);
 				LinkedHashMap<String, Object> imageAnalysis = new LinkedHashMap<String, Object>();
+
+				Study st;
+				Plant pl = new Plant();
+				st = std.singleFromName(ipr.getStudyname());
+				if (st != null)
+					pl = pld.single(st.getStudyid(), ipr.getPlantid());
+
+				Map<String, Object> context = new LinkedHashMap<String, Object>();
+
+				if(pl!=null){
+					context.put("plant", pds.getURIFromAlias(pl.getPlantCode()));
+					context.put("plantAlias", pl.getPlantCode());
+				}
+				else{
+					System.out.println("Erreur  : pas de plante pr l'analyse "+ ipr.getResultid());
+					context.put("plant", "");
+					context.put("plantAlias", "");
+				}
+
+				context.put("genotype", "");
+				context.put("genotypeAlias",  "");
+				context.put("experiment", m3p + ipr.getStudyname());
+				context.put("experiment", "");
+				context.put("experimentAlias", ipr.getStudyname());
+				context.put("study", "");
+				context.put("studyAlias", "");
+				context.put("platform", m3p);
+				context.put("technicalPlateau",
+						m3p + "phenoarch");
+				imageAnalysis.put("context", context);
+
 				Map<String, Object> configuration = new LinkedHashMap<String, Object>();
 				configuration.put("provider", "phenowaredb");
 				configuration.put("resultid", ipr.getResultid());
@@ -77,12 +128,12 @@ public class ImageAnalysisConvertor {
 				Map<String, Object> parallelBoudingBoxweight = new LinkedHashMap<String, Object>();
 				Map<String, Object> parallelBoudingBoxarea = new LinkedHashMap<String, Object>();
 				parallelBoudingBoxx
-						.put("value", ipr.getParallelboundingbox_x());
+				.put("value", ipr.getParallelboundingbox_x());
 				parallelBoudingBoxx.put("unity", "");
 				parallelBoudingBoxx.put("type", "computed");
 				parallelBoudingBoxx.put("confidence", "unspecified");
 				parallelBoudingBoxy
-						.put("value", ipr.getParallelboundingbox_y());
+				.put("value", ipr.getParallelboundingbox_y());
 				parallelBoudingBoxy.put("unity", "");
 				parallelBoudingBoxy.put("type", "computed");
 				parallelBoudingBoxy.put("confidence", "unspecified");
@@ -151,7 +202,7 @@ public class ImageAnalysisConvertor {
 				nonParallelBoudingBox.put("x", nonParallelBoudingBoxx);
 				nonParallelBoudingBox.put("y", nonParallelBoudingBoxy);
 				nonParallelBoudingBox
-						.put("height", nonParallelBoudingBoxheight);
+				.put("height", nonParallelBoudingBoxheight);
 				nonParallelBoudingBox.put("width", nonParallelBoudingBoxweight);
 				nonParallelBoudingBox.put("area", nonParallelBoudingBoxarea);
 				nonParallelBoudingBox.put("teta", nonParallelBoudingBoxteta);
@@ -290,17 +341,16 @@ public class ImageAnalysisConvertor {
 				imageAnalysis.put("imageAnalysisDate", ipr.getResultdate());
 				imageAnalysis.put("imageAnalysisTimestamp",
 						ipr.getTimeStampResult());
-				
+
 				Map<String, Object> images = new LinkedHashMap<String, Object>();
-				ImageDaoMongo idm = new ImageDaoMongo();
 				//pour l'instant une analyse est associee a une unique image
 				images.put("1", idm.getImageUriFromGuid(ipr.getImgguid()) );
 				imageAnalysis.put("images", images);
-			
+
 				// jsons.add(imageAnalysis);
 
 				String jsonString = new org.json.JSONObject(imageAnalysis)
-						.toString();
+				.toString();
 				// file.write("Document json "+i+"\n");
 
 				if (formated)
@@ -312,9 +362,13 @@ public class ImageAnalysisConvertor {
 
 				file.flush();
 
+				//Insertion du document JSON dans Mongodb
+				procResDaoMongo.getCollection().insertOne(new Document(imageAnalysis));
+
 			}
 
 			System.out.println("Finish");
+			pds.getConnection().close();
 			file.close();
 		} catch (IOException ie) {
 			ie.printStackTrace();
@@ -334,7 +388,18 @@ public class ImageAnalysisConvertor {
 
 	public static void main(String[] args) {
 		Date start = new Date();
-		ImageAnalysisConvertToJson("Data/ImageAnalysis2.json", true);
+		try {
+			ImageAnalysisConvertToJson("Data/ImageAnalysis2.json", true);
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Date end = new Date();
 		System.out.println(Utils.timePerformance(start, end));
 	}

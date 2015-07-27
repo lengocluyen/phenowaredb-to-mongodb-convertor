@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.Document;
 import org.data.connection.PlantDao;
 import org.data.connection.PlantDaoSesame;
 import org.data.connection.StudyDao;
@@ -21,11 +22,14 @@ import org.data.form.Study;
 import org.data.form.Wateringresult;
 import org.data.handle.JsonReadWrite;
 import org.data.handle.Utils;
+import org.openrdf.query.MalformedQueryException;
+import org.openrdf.query.QueryEvaluationException;
+import org.openrdf.repository.RepositoryException;
 
 public class WateringConvertor {
 
 	public static void WateringResultConvertToJson(String filename,
-			boolean formated) {
+			boolean formated) throws RepositoryException, MalformedQueryException, QueryEvaluationException {
 		// List<LinkedHashMap<String,Object>> jsons = new
 		// ArrayList<LinkedHashMap<String,Object>>();
 		WateringresultDao ward = new WateringresultDao(null);
@@ -39,9 +43,12 @@ public class WateringConvertor {
 			//Rq : les docs ne sont p-e pas inseres dans l'ordre dans mongodb,
 			//par consequent, l'id max ne correspond pas forcement au dernier doc insere
 			int idMax = watDaoMongo.getWateringidMax();
-			String query = " select * from wateringresults where wateringid > " + idMax + "limit 10;";
+			System.out.println("IdMax Watering dans mongodb " + idMax);
+			String query = " select * from wateringresults where wateringid > " + idMax + " order by wateringid;";
 			ResultSet rs = ward.resultSet(query);
 			FileWriter file = new FileWriter(filename);
+			
+			PlantDaoSesame pds = new PlantDaoSesame();
 
 			while (rs.next()) {
 				Wateringresult ws = ward.get(rs);
@@ -55,26 +62,15 @@ public class WateringConvertor {
 					pl = pld.single(st.getStudyid(), ws.getPlantId());
 				
 				Map<String, Object> context = new LinkedHashMap<String, Object>();
-				try{
-					PlantDaoSesame pds = new PlantDaoSesame();
-					try{
-						if(pl!=null){
-							context.put("plant", pds.getURIFromAlias(pl.getPlantCode()));
-						}
-						else{
-							context.put("plant", "");
-						}
-					}
-					catch(Exception e){
-						e.printStackTrace();
-					}
-					finally {
-						pds.getConnection().close();
-					}
+
+				if(pl!=null){
+					context.put("plant", pds.getURIFromAlias(pl.getPlantCode()));
 				}
-				catch(Exception e){
-					e.printStackTrace();
+				else{
+					System.out.println("Erreur  : pas de plante pr le wateringid "+ ws.getWateringId());
+					context.put("plant", "");
 				}
+
 				context.put("plantAlias", pl == null ? "" : pl.getPlantCode());
 				context.put("genotype", "");
 				context.put("genotypeAlias", "");
@@ -87,8 +83,8 @@ public class WateringConvertor {
 						"http://www.phenome-fppn.fr/m3p/phenoarch");
 				watering.put("context",  context);
 
-				watering.put("timestamp", ws.getResultDate().getTime());
-				watering.put("date", ws.getResultDate());
+				watering.put("timestamp", ws.getTimestamp());
+				watering.put("date", ws.getDate());
 
 				Map<String, Object> config = new LinkedHashMap<String, Object>();
 				config.put("provider", "phenowaredb");
@@ -104,10 +100,8 @@ public class WateringConvertor {
 				nextLoc.put("lane", ws.getLane());
 				nextLoc.put("rank", ws.getRank());
 				nextLoc.put("level", ws.getLevel());
-				org.json.JSONObject childjson = new org.json.JSONObject(nextLoc);
-				config.put("nextLocation", childjson);
-				childjson = new org.json.JSONObject(config);
-				watering.put("configuration", childjson);
+				config.put("nextLocation", nextLoc);
+				watering.put("configuration", config);
 
 				// dans wateringresult
 				watering.put("automatonSuccess", ws.isSuccess());
@@ -123,8 +117,7 @@ public class WateringConvertor {
 				setpoints.put("maxQuantity", ws.getRequiredMaxQuantity());
 				setpoints.put("minWeight", ws.getRequiredMinWeight());
 				setpoints.put("movePerch", ws.isRequiredMovePerch());
-				childjson = new org.json.JSONObject(setpoints);
-				watering.put("setpoints", childjson);
+				watering.put("setpoints", setpoints);
 
 				watering.put("product", ws.getUsedProduct());
 				watering.put("scaleType", ws.getUsedScaleType());
@@ -138,25 +131,21 @@ public class WateringConvertor {
 				meas.put("unity", "");
 				meas.put("type", "automatic");
 				meas.put("confidence", "unspecified");
-				childjson = new org.json.JSONObject(meas);
-				measures.put("weightBefore", childjson);
+				measures.put("weightBefore", meas);
 				meas = new LinkedHashMap<String, Object>();
 				meas.put("value", ws.getWeightAfter());
 				meas.put("unity", "");
 				meas.put("type", "automatic");
 				meas.put("confidence", "unspecified");
-				childjson = new org.json.JSONObject(meas);
-				measures.put("weightAfter", childjson);
+				measures.put("weightAfter", meas);
 				meas = new LinkedHashMap<String, Object>();
 				meas.put("value", ws.getWeightAfter() - ws.getWeightBefore());
 				meas.put("unity", "");
 				meas.put("type", "computed");
 				meas.put("confidence", "unspecified");
-				childjson = new org.json.JSONObject(meas);
-				measures.put("weightAmount", childjson);
+				measures.put("weightAmount", meas);
 
-				childjson = new org.json.JSONObject(measures);
-				watering.put("measures", childjson);
+				watering.put("measures", measures);
 
 				// jsons.add(image);
 
@@ -171,10 +160,14 @@ public class WateringConvertor {
 				// jsonString);
 
 				file.flush();
+				
+				//Insertion du document JSON dans Mongodb
+				watDaoMongo.getCollection().insertOne(new Document(watering));
 
 			}
 
 			System.out.println("Finish");
+			pds.getConnection().close();
 			file.close();
 		} catch (IOException ie) {
 			ie.printStackTrace();
@@ -195,7 +188,18 @@ public class WateringConvertor {
 	public static void main(String[] args) {
 
 		Date start = new Date();
-		WateringResultConvertToJson("Data/Watering2.json", true);
+		try {
+			WateringResultConvertToJson("Data/Watering2.json", true);
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Date end = new Date();
 		System.out.println(Utils.timePerformance(start, end));
 

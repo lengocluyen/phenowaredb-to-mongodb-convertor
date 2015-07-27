@@ -9,6 +9,8 @@ public class Wateringresult {
 	private String tagName;  // necessaire ?
 	private int plantId;
 	private Timestamp resultDate;
+	private long timestamp;
+	private String date ;
 
 	private boolean valid;
 	private boolean success;
@@ -81,6 +83,22 @@ public class Wateringresult {
 		public void setResultDate(Timestamp resultDate) {
 			this.resultDate = resultDate;
 		}
+		public long getTimestamp() {
+			return timestamp;
+		}
+
+		public void setTimestamp(long timestamp) {
+			this.timestamp = timestamp;
+		}
+
+		public String getDate() {
+			return date;
+		}
+
+		public void setDate(String date) {
+			this.date = date;
+		}
+
 		public boolean isValid() {
 			return valid;
 		}

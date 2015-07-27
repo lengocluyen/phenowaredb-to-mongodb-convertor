@@ -136,6 +136,8 @@ public class WateringresultDao extends DAO<Wateringresult>{
 		temps.setTagName (Utils.convertToString(result.getString("tagname")));
 		temps.setPlantId ( Utils.convertToInt(result.getInt("plantid")));
 		temps.setResultDate(result.getTimestamp("resultdate"));
+		temps.setTimestamp(temps.getResultDate().getTime());
+		temps.setDate(Utils.convertToString(result.getString("resultdate")));
 		
 		temps.setValid ( Utils.convertToBool(result.getBoolean("valid")));
 		temps.setSuccess(Utils.convertToBool(result.getBoolean("success")));

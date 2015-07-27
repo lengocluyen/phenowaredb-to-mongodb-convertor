@@ -12,6 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.Document;
 import org.data.connection.ImgAcqStationProfileDao;
 import org.data.connection.StationProfileDaoMongo;
 import org.data.form.ImgAcqStationProfile;
@@ -40,7 +41,7 @@ public class ImgAcqStationProfileConvertor {
 			//num incremental de l'uri du dernier document profil station insere dans la base mongodb
 			int numIncrUriStatProf = statProfDaoMongo.getStationProfileUriNumIncrLastInserted();
 			
-			String query = " select * from imgacqstationprofiles where imgacqstationprofileid > " + idMax +  ";";
+			String query = " select * from imgacqstationprofiles where imgacqstationprofileid > " + idMax +  " order by imgacqstationprofileid;";
 			ResultSet rs = iaspd.resultSet(query);
 			FileWriter file = new FileWriter(filename);
 			
@@ -84,6 +85,9 @@ public class ImgAcqStationProfileConvertor {
 				// jsonString);
 
 				file.flush();
+				
+				//Insertion du document JSON dans Mongodb
+				statProfDaoMongo.getCollection().insertOne(new Document(stationProfile));
 
 			}
 

@@ -80,9 +80,9 @@ public class Image {
 	}
 	public void setFileFormat(){
 		if(this.getTechnicalPlateau() == TechnicalPlateau.Phenoarch)
-			this.fileFormat = "png";
+			this.fileFormat = ".png";
 		else
-			this.fileFormat = "unknown format";
+			this.fileFormat = "";  //TODO : modifier pour autres plateaux
 	}
 	public int getTaskid() {
 		return taskid;

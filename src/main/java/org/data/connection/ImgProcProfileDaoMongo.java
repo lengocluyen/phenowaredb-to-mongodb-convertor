@@ -7,16 +7,27 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Sorts;
 
 public class ImgProcProfileDaoMongo extends DAOMongo<ImgProcProfile>{
-
+	private MongoCollection<Document> collection ;
+	
 	public ImgProcProfileDaoMongo(){
 		super();
+		this.setCollection(this.getDatabase()
+				.getCollection("imageanalysisprocessing"));
 	}
 	
-	public int getImgprocprofileidMax(){
-		MongoCollection<Document> collection = this.getDatabase()
-				.getCollection("imageanalysisprocessing");
+	public MongoCollection<Document> getCollection() {
+		return collection;
+	}
 
+	public void setCollection(MongoCollection<Document> collection) {
+		this.collection = collection;
+	}
+
+	public int getImgprocprofileidMax(){
 		Document doc = collection.find().sort(Sorts.descending("configuration.imgprocprofileid")).first(); // document avec imgprocprofileid max
+		
+		if (doc == null)
+			return 0;
 		
 		Integer imgprocprofileid = ((Document) doc.get("configuration")).getInteger("imgprocprofileid"); // recuperation de l'imgprocprofileid
 				

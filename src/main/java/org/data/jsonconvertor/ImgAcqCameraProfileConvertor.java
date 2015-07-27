@@ -12,6 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.Document;
 import org.data.connection.CameraProfileDaoMongo;
 import org.data.connection.ImgAcqCameraProfileDao;
 import org.data.form.ImgAcqCameraProfile;
@@ -39,7 +40,7 @@ public class ImgAcqCameraProfileConvertor {
 			//num incremental de l'uri du dernier document profil camera insere dans la base mongodb
 			int numIncrUriCamProf = camProfDaoMongo.getCameraProfileUriNumIncrLastInserted();
 			
-			String query = " select * from imgacqcameraprofiles where imgacqcameraprofileid > " + idMax + ";";
+			String query = " select * from imgacqcameraprofiles where imgacqcameraprofileid > " + idMax + " order by imgacqcameraprofileid;";
 			ResultSet rs = iacpd.resultSet(query);
 			FileWriter file = new FileWriter(filename);
 			
@@ -93,6 +94,8 @@ public class ImgAcqCameraProfileConvertor {
 
 				file.flush();
 
+				//Insertion du document JSON dans Mongodb
+				camProfDaoMongo.getCollection().insertOne(new Document(cameraProfile));
 			}
 
 			System.out.println("Finish");

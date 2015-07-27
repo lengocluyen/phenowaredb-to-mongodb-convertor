@@ -29,9 +29,12 @@ public class ImageDaoMongo extends DAOMongo<Image>{
 	public int getImageUriNumIncrLastInserted() {
 		Document doc = collection.find().sort(Sorts.descending("_id")).first(); // dernier document image insere dans la base
 
+		if (doc == null)   //pas encore de document image dans la base
+			return 0;
+		
 		String uri = doc.getString("uri"); // recuperation de l'uri
 
-		if (uri == null)  //pas encore de document image dans la base
+		if (uri == null)  //pas de champ "uri"
 			return 0;
 		else {
 
@@ -44,9 +47,12 @@ public class ImageDaoMongo extends DAOMongo<Image>{
 	public int getImgidMax(){
 		Document doc = collection.find().sort(Sorts.descending("configuration.imgid")).first(); // document avec imgid max
 		
+		if (doc == null)  //pas encore de document image dans la base
+			return 0;
+		
 		Integer imgid = ((Document) doc.get("configuration")).getInteger("imgid"); // recuperation de l'imgid
 				
-		if (imgid == null)  //pas encore de document image dans la base
+		if (imgid == null)  
 			return 0;
 		else {
 			return imgid;

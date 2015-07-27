@@ -19,6 +19,9 @@ import org.data.form.Image;
 import org.data.form.Plant;
 import org.data.handle.TechnicalPlateau;
 import org.data.handle.Utils;
+import org.openrdf.query.MalformedQueryException;
+import org.openrdf.query.QueryEvaluationException;
+import org.openrdf.repository.RepositoryException;
 
 import com.mongodb.BasicDBObject;
 
@@ -28,7 +31,7 @@ public class ImageConvertor {
 	private static String serverPath = "http://stck-lespe.supagro.inra.fr/";
 	private static String webPath = "http://lps-phis.supagro.inra.fr/phis/data/";
 
-	public static void ImagesConvertToJson(String filename, boolean formated) {
+	public static void ImagesConvertToJson(String filename, boolean formated) throws RepositoryException, MalformedQueryException, QueryEvaluationException {
 		//List<LinkedHashMap<String, Object>> jsons = new ArrayList<LinkedHashMap<String, Object>>();
 		ImageDao id = new ImageDao(null);
 		//List<Image> imgs = id.all(false);
@@ -40,15 +43,18 @@ public class ImageConvertor {
 			//Rq : les docs images ne sont p-e pas inseres dans l'ordre dans mongodb,
 			//par consequent, l'imgid max ne correspond pas forcement au dernier doc insere
 			int imgidMax = imgDaoMongo.getImgidMax();
-			
+			System.out.println("ImgidMax dans mongodb " + imgidMax);
+
 			//num incremental de l'uri du dernier document image insere dans la base mongodb
 			int numIncrUriImg = imgDaoMongo.getImageUriNumIncrLastInserted();   
 			CameraProfileDaoMongo camProfDaoMongo = new CameraProfileDaoMongo();
 			StationProfileDaoMongo statProfDaoMongo = new StationProfileDaoMongo();
 			
-			String query = " select * from images where imgid > " + imgidMax + "limit 10;";
+			String query = " select * from images where imgid > " + imgidMax + " order by imgid;";
 			ResultSet rs = id.resultSet(query);
 			FileWriter file = new FileWriter(filename);
+			
+			PlantDaoSesame pds = new PlantDaoSesame();
 			
 			while(rs.next())
 			{
@@ -59,30 +65,19 @@ public class ImageConvertor {
 				Plant pl = pld.single(img.getStudyid(),img.getPlantid());
 
 				image.put("uri", ImageConvertor.createUriImage(img.getTechnicalPlateau(), img.getAcquisitiondate(), numIncrUriImg));
-				
+
 				Map<String, Object> context = new LinkedHashMap<String, Object>();
-				try{
-					PlantDaoSesame pds = new PlantDaoSesame();
-					try{
-						if(pl!=null){
-							context.put("plant", pds.getURIFromAlias(pl.getPlantCode()));
-							context.put("plantAlias", pl.getPlantCode());
-						}
-						else{
-							context.put("plant", "");
-							context.put("plantAlias", "");
-						}
-					}
-					catch(Exception e){
-						e.printStackTrace();
-					}
-					finally {
-						pds.getConnection().close();
-					}
+
+				if(pl!=null){
+					context.put("plant", pds.getURIFromAlias(pl.getPlantCode()));
+					context.put("plantAlias", pl.getPlantCode());
 				}
-				catch(Exception e){
-					e.printStackTrace();
+				else{
+					System.out.println("Erreur  : pas de plante pr l'image "+ img.getImgid());
+					context.put("plant", "");
+					context.put("plantAlias", "");
 				}
+
 				context.put("genotype", "");
 				context.put("genotypeAlias",  "");
 				if(img.getStudy() != null)
@@ -96,7 +91,7 @@ public class ImageConvertor {
 				context.put("technicalPlateau",
 						m3p + "phenoarch");
 				image.put("context", context);
-				
+
 				image.put("timestamp", img.getTimestamps());
 				image.put("date", img.getAcquisitiondate());
 				image.put("imageCameraProfile", camProfDaoMongo.getCameraProfileUri(img.getImgacqprofileid())); //URI trouvee dans base mongo
@@ -135,10 +130,10 @@ public class ImageConvertor {
 				image.put("fileName", img.getImgguid());
 
 				image.put("serverPath", serverPath);	
-				image.put("imageServerPath", serverPath + "phenoarch/raw/"+img.getStudy().getName()+img.getTaskid()+img.getImgguid()+img.getFileFormat());
-				image.put("imageWebPath", webPath + "phenoarch/raw/"+img.getStudy().getName()+img.getTaskid()+img.getImgguid()+img.getFileFormat());
-				image.put("thumbServerPath", serverPath + "phenoarch/thumbs/"+img.getStudy().getName()+img.getTaskid()+img.getImgguid()); 
-				image.put("thumbWebPath", webPath + "phenoarch/thumbs/"+img.getStudy().getName()+img.getTaskid()+img.getImgguid()); 
+				image.put("imageServerPath", serverPath + "phenoarch/raw/"+img.getStudy().getName()+"/"+img.getTaskid()+"/"+img.getImgguid()+img.getFileFormat());
+				image.put("imageWebPath", webPath + "phenoarch/raw/"+img.getStudy().getName()+"/"+img.getTaskid()+"/"+img.getImgguid()+img.getFileFormat());
+				image.put("thumbServerPath", serverPath + "phenoarch/thumbs/"+img.getStudy().getName()+"/"+img.getTaskid()+"/"+img.getImgguid()); 
+				image.put("thumbWebPath", webPath + "phenoarch/thumbs/"+img.getStudy().getName()+"/"+img.getTaskid()+"/"+img.getImgguid()); 
 				image.put("binaryServerPath", "unspecified");
 				image.put("binaryWebPath", "unspecified");
 				image.put("md5", "unspecified");
@@ -158,10 +153,12 @@ public class ImageConvertor {
 
 				file.flush();
 
-				//imgDaoMongo.getCollection().insertOne(new Document(image));
+				//Insertion du document JSON dans Mongodb
+				imgDaoMongo.getCollection().insertOne(new Document(image));
 			}
 
 			System.out.println("Finish");
+			pds.getConnection().close();
 			file.close();
 		} catch (IOException ie) {
 			ie.printStackTrace();
@@ -201,7 +198,18 @@ public class ImageConvertor {
 	public static void main(String[] args) {
 		Date start = new Date();
 		//ExportToFile("Data/Image.json");
-		ImagesConvertToJson("Data/Image2.json", true);
+		try {
+			ImagesConvertToJson("Data/Image2.json", true);
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Date end = new Date();
 		System.out.println(Utils.timePerformance(start, end));
 		

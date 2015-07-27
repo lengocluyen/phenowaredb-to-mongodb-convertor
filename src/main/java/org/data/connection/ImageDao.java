@@ -11,6 +11,7 @@ import org.data.form.DirectoryPath;
 import org.data.form.Image;
 import org.data.form.ImageViewType;
 import org.data.form.Study;
+import org.data.handle.TechnicalPlateau;
 import org.data.handle.Utils;
 
 public class ImageDao extends DAO<Image>{
@@ -161,6 +162,8 @@ public class ImageDao extends DAO<Image>{
 			StudyDao std = new StudyDao(this.getConnect());
 			Study st = std.single(img.getStudyid());
 			img.setStudy(st);
+			img.setTechnicalPlateau(TechnicalPlateau.Phenoarch);        //TODO : a modifier si autres plateaux
+			img.setFileFormat();
 			img.setTaskid(Utils.convertToInt(rs.getObject("taskid")));
 			img.setTagid(Utils.convertToInt(rs.getObject("tagid")));
 			img.setImgacqprofileid(Utils.convertToInt(rs.getObject("imgacqprofileid")));

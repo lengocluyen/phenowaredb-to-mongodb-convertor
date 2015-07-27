@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.Document;
 import org.data.connection.ImageDao;
 import org.data.connection.ImgProcProfileDao;
 import org.data.connection.ImgProcProfileDaoMongo;
@@ -32,8 +33,9 @@ public class ImageAnalysisProcessingConvertor {
 			//Rq : les docs ne sont p-e pas inseres dans l'ordre dans mongodb,
 			//par consequent, l'imgprocprofileid max ne correspond pas forcement au dernier doc insere
 			int idMax = procProfDaoMongo.getImgprocprofileidMax();
+			System.out.println("IdMax ImageAnalysisProcessing dans mongodb " + idMax);
 			
-			String query = " select * from imgprocprofiles where imgprocprofileid > " + idMax + ";";
+			String query = " select * from imgprocprofiles where imgprocprofileid > " + idMax + " order by imgprocprofileid;";
 			ResultSet rs = ippd.resultSet(query);
 			FileWriter file = new FileWriter(filename);
 			
@@ -60,6 +62,9 @@ public class ImageAnalysisProcessingConvertor {
 			else
 				file.write(jsonString + "\n");
 			file.flush();
+			
+			//Insertion du document JSON dans Mongodb
+			procProfDaoMongo.getCollection().insertOne(new Document (imageAnalysProcessing));
 		}
 		
 		//return jsons;

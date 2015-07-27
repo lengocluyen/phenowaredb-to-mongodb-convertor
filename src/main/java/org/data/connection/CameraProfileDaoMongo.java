@@ -8,19 +8,35 @@ import com.mongodb.client.model.Sorts;
 import com.mongodb.client.model.Filters;
 
 public class CameraProfileDaoMongo extends DAOMongo<ImgAcqCameraProfile>{
-	MongoCollection<Document> collection = this.getDatabase()
-			.getCollection("cameraprofile");
+	private MongoCollection<Document> collection ;
 	
 	public CameraProfileDaoMongo(){
 		super();
+		this.setCollection(this.getDatabase()
+			.getCollection("cameraprofile"));
 	}
 	
+	public MongoCollection<Document> getCollection() {
+		return collection;
+	}
+
+
+	public void setCollection(MongoCollection<Document> collection) {
+		this.collection = collection;
+	}
+
+
+
 	public String getCameraProfileUri(int cameraProfileId){
 		Document doc = this.collection.find(Filters.eq("imgacqcameraprofileid", cameraProfileId)).first();
 		if(doc == null)
 			return "";
+		
+		String uri = doc.getString("uri"); // recuperation de l'uri
+		if (uri == null)
+			return "";
 		else
-			return doc.getString("uri");
+			return uri;
 	}
 	
 	
@@ -28,32 +44,29 @@ public class CameraProfileDaoMongo extends DAOMongo<ImgAcqCameraProfile>{
 		Document doc = this.collection.find().sort(Sorts.descending("_id")).first(); // dernier document cameraprofile insere dans la base																	
 		System.out.println(doc);
 
-		String uri = doc.getString("uri"); // recuperation de l'uri
-		System.out.println(uri);
-
-		if (uri == null)  //pas encore de document cameraprofile dans la base
+		if (doc == null)  //pas encore de document cameraprofile dans la base
 			return 0;
 		else {
-
-			String numIncr = uri.substring(uri.length() - 3); // recuperation du numero incremente										
-			System.out.println(numIncr);
-			return Integer.parseInt(numIncr); // conversion en int
+			String uri = doc.getString("uri"); // recuperation de l'uri
+			System.out.println(uri);
+			if(uri == null)
+				return 0;
+			else{
+				String numIncr = uri.substring(uri.length() - 3); // recuperation du numero incremente										
+				System.out.println(numIncr);
+				return Integer.parseInt(numIncr); // conversion en int
+			}
 		}
 	}
 	
 	
 	public int getImgacqcameraprofileidMax(){
-		MongoCollection<Document> collection = this.getDatabase()
-				.getCollection("cameraprofile");
-
 		Document doc = collection.find().sort(Sorts.descending("configuration.imgacqcameraprofileid")).first(); //  document avec imgacqcameraprofileid max
-		
-		Integer imgacqcameraprofileid = ((Document) doc.get("configuration")).getInteger("imgacqcameraprofileid"); // recuperation de l'imgacqcameraprofileid
 				
-		if (imgacqcameraprofileid == null)  //pas encore de document stationprofile dans la base
+		if (doc == null)  //pas encore de document stationprofile dans la base
 			return 0;
 		else {
-			return imgacqcameraprofileid;
+			return ((Document) doc.get("configuration")).getInteger("imgacqcameraprofileid"); // recuperation de l'imgacqcameraprofileid
 		}
 
 	}
