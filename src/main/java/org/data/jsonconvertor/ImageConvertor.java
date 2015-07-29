@@ -4,7 +4,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -45,8 +47,7 @@ public class ImageConvertor {
 			int imgidMax = imgDaoMongo.getImgidMax();
 			System.out.println("ImgidMax dans mongodb " + imgidMax);
 
-			//num incremental de l'uri du dernier document image insere dans la base mongodb
-			int numIncrUriImg = imgDaoMongo.getImageUriNumIncrLastInserted();   
+			 
 			CameraProfileDaoMongo camProfDaoMongo = new CameraProfileDaoMongo();
 			StationProfileDaoMongo statProfDaoMongo = new StationProfileDaoMongo();
 			
@@ -58,8 +59,12 @@ public class ImageConvertor {
 			
 			while(rs.next())
 			{
-				numIncrUriImg ++;
 				Image img = id.get(rs);
+				
+				//num incremental de l'uri du dernier document image insere dans la base mongodb
+				int numIncrUriImg = imgDaoMongo.getImageUriNumIncrLastInserted(img.getAcquisitiondate());  
+				numIncrUriImg ++;
+				
 				LinkedHashMap<String, Object> image = new LinkedHashMap<String, Object>();
 				PlantDao pld = new PlantDao(id.getConnect());
 				Plant pl = pld.single(img.getStudyid(),img.getPlantid());
@@ -174,7 +179,13 @@ public class ImageConvertor {
 
 	private static String createUriImage(TechnicalPlateau tp, String date, int numIncr) {
 		String uri ;
-		String annee = date.substring(0, 4);
+		String annee;
+		if (date == null || date.isEmpty()){ 
+			Calendar c = new GregorianCalendar();
+			annee = String.valueOf(c.get(Calendar.YEAR));  //si pas de date : l'annee en cours
+		}
+		else
+			annee = date.substring(0, 4);
 		switch (tp) {
         case Phenoarch:  uri = prefixe + "arch/" + annee + "/ic" + annee.substring(2) + String.format("%09d", numIncr) ;
                  break;

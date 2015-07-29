@@ -28,9 +28,10 @@ public class CameraProfileDaoMongo extends DAOMongo<ImgAcqCameraProfile>{
 
 
 	public String getCameraProfileUri(int cameraProfileId){
-		Document doc = this.collection.find(Filters.eq("imgacqcameraprofileid", cameraProfileId)).first();
+		Document doc = this.collection.find(Filters.eq("configuration.imgacqcameraprofileid", cameraProfileId)).first();
 		if(doc == null)
 			return "";
+		
 		
 		String uri = doc.getString("uri"); // recuperation de l'uri
 		if (uri == null)
@@ -71,4 +72,8 @@ public class CameraProfileDaoMongo extends DAOMongo<ImgAcqCameraProfile>{
 
 	}
 
+	public static void main(String[] args) {
+		CameraProfileDaoMongo cpdm = new CameraProfileDaoMongo();
+		System.out.println(cpdm.getCameraProfileUri(15));
+	}
 }

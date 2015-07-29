@@ -25,7 +25,7 @@ public class StationProfileDaoMongo extends DAOMongo<ImgAcqStationProfile>{
 	}
 
 	public String getStationProfileUri(int stationProfileId){
-		Document doc = this.collection.find(Filters.eq("imgacqstationprofileid", stationProfileId)).first();
+		Document doc = this.collection.find(Filters.eq("configuration.imgacqstationprofileid", stationProfileId)).first();
 		if(doc == null)
 			return "";
 		
@@ -69,5 +69,10 @@ public class StationProfileDaoMongo extends DAOMongo<ImgAcqStationProfile>{
 			return ((Document) doc.get("configuration")).getInteger("imgacqstationprofileid"); // recuperation de l'imgacqstationprofileid
 		}
 
+	}
+	
+	public static void main(String[] args) {
+		StationProfileDaoMongo cpdm = new StationProfileDaoMongo();
+		System.out.println(cpdm.getStationProfileUri(15));
 	}
 }

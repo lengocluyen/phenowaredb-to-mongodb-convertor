@@ -18,13 +18,14 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		//TODO rediriger plutot l'output vers un fichier dans le script de lancement
+		//TODO rediriger plutot l'output et les erreurs vers un fichier dans le script de lancement
 		File file = new File("Data/logs.txt");
 		FileOutputStream fis;
 		try {
 			fis = new FileOutputStream(file);
 			PrintStream out = new PrintStream(fis);
 			System.setOut(out);
+			//System.setErr(out);
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -65,7 +66,6 @@ public class Main {
 		}
 		catch(Exception e){
 			e.printStackTrace();
-			//TODO : ecrire exceptions dans un fichier log
 		}
 		
 		
@@ -80,7 +80,6 @@ public class Main {
 		}
 		catch(Exception e){
 			e.printStackTrace();
-			//TODO : ecrire exceptions dans un fichier log
 		}
 		try{
 			Date start = new Date();
@@ -90,7 +89,6 @@ public class Main {
 		}
 		catch(Exception e){
 			e.printStackTrace();
-			//TODO : ecrire exceptions dans un fichier log
 		}
 	}
 }

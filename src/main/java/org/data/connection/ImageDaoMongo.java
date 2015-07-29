@@ -1,5 +1,12 @@
 package org.data.connection;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+
 import org.bson.Document;
 import org.data.form.Image;
 
@@ -26,9 +33,31 @@ public class ImageDaoMongo extends DAOMongo<Image>{
 		this.collection = collection;
 	}
 
-	public int getImageUriNumIncrLastInserted() {
-		Document doc = collection.find().sort(Sorts.descending("_id")).first(); // dernier document image insere dans la base
+	public int getImageUriNumIncrLastInserted(String datestr) {
+		Document doc = null;
+		//Document doc = collection.find().sort(Sorts.descending("_id")).first(); // dernier document image insere dans la base
+		Calendar date = new GregorianCalendar();
+		Date thedate;
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS", Locale.ENGLISH);
+		try {
+			thedate = fmt.parse(datestr);
+			System.out.println("datestr : "+datestr);
+			System.out.println("thedate : "+fmt.format(thedate));
+			date.setTime(thedate);
+			Calendar dateStartYear = new GregorianCalendar(date.get(Calendar.YEAR), Calendar.JANUARY, 1, 0, 0, 0);  // premier jour de l'annee de date
+			Calendar dateEndYear = new GregorianCalendar(date.get(Calendar.YEAR), Calendar.DECEMBER, 31, 23, 59, 59); // dernier jour de l'annee de date
+			System.out.println("date : "+fmt.format(date.getTime())+"\n dateStartYear : "+fmt.format(dateStartYear.getTime())+"\n dateEndYear : "+fmt.format(dateEndYear.getTime()));
+			doc = collection.find(Filters.and(
+					Filters.gte("date", fmt.format(dateStartYear.getTime())),
+					Filters.lte("date", fmt.format(dateEndYear.getTime())))
+					).sort(Sorts.descending("_id")).first(); // dernier document image insere dans la base pour l'annee de datestr
 
+			
+		} catch (ParseException e) {
+			System.out.println("Erreur : format de la date " + datestr + " incorrect. Par défaut, l'URI de cette image va être défini par rapport à l'année courante.");
+			e.printStackTrace();
+			doc = collection.find().sort(Sorts.descending("_id")).first(); // dernier document image insere dans la base
+		}
 		if (doc == null)   //pas encore de document image dans la base
 			return 0;
 		
@@ -88,9 +117,9 @@ public class ImageDaoMongo extends DAOMongo<Image>{
 	
 	public static void main(String[] args) {
 		ImageDaoMongo idm = new ImageDaoMongo();
-		System.out.println(idm.getImageUriNumIncrLastInserted());
-		System.out.println("uri : "+idm.getImageUriFromId(903038));
-		System.out.println(idm.getImgidMax());
+		System.out.println(idm.getImageUriNumIncrLastInserted("2015-03-12 12:00:08.342879"));
+//		System.out.println("uri : "+idm.getImageUriFromId(903038));
+//		System.out.println(idm.getImgidMax());
 	}
 }
 
