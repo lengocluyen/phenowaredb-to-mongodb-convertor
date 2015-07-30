@@ -1,5 +1,8 @@
 package org.data.connection;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import org.bson.Document;
 import org.data.form.ImgAcqCameraProfile;
 
@@ -42,9 +45,17 @@ public class CameraProfileDaoMongo extends DAOMongo<ImgAcqCameraProfile>{
 	
 	
 	public int getCameraProfileUriNumIncrLastInserted(){	
-		Document doc = this.collection.find().sort(Sorts.descending("_id")).first(); // dernier document cameraprofile insere dans la base																	
-		System.out.println(doc);
+		//Document doc = this.collection.find().sort(Sorts.descending("_id")).first(); // dernier document cameraprofile insere dans la base																	
 
+		//on recupere le num a incrementer dans l'uri du dernier profil insere
+				// dans l'annee courante. Pb : pas de date dans le JSON
+				//-> requete sur les uris avec regexps (raisonnable car peu de profils)
+				Calendar c = new GregorianCalendar();
+				int annee = c.get(Calendar.YEAR);  //l'annee ou on insere ce nveau profil (ie : l'annee en cours)
+				Document doc = this.collection.find(
+						Filters.regex("uri", "m3p:arch/"+annee+".*")
+						).sort(Sorts.descending("_id")).first(); // dernier document cameraprofile insere dans la base cette annee						
+				
 		if (doc == null)  //pas encore de document cameraprofile dans la base
 			return 0;
 		else {
@@ -75,5 +86,6 @@ public class CameraProfileDaoMongo extends DAOMongo<ImgAcqCameraProfile>{
 	public static void main(String[] args) {
 		CameraProfileDaoMongo cpdm = new CameraProfileDaoMongo();
 		System.out.println(cpdm.getCameraProfileUri(15));
+		System.out.println(cpdm.getCameraProfileUriNumIncrLastInserted());
 	}
 }

@@ -41,17 +41,15 @@ public class ImageConvertor {
 		try {
 		
 			ImageDaoMongo imgDaoMongo = new ImageDaoMongo();
-			//imgid maximum des images deja presentes dans la base mongodb
-			//Rq : les docs images ne sont p-e pas inseres dans l'ordre dans mongodb,
-			//par consequent, l'imgid max ne correspond pas forcement au dernier doc insere
-			int imgidMax = imgDaoMongo.getImgidMax();
-			System.out.println("ImgidMax dans mongodb " + imgidMax);
+			//date maximum des images deja presentes dans la base mongodb
+			String dateMax = imgDaoMongo.getDateMax();
+			System.out.println("DateMax dans mongodb " + dateMax);
 
 			 
 			CameraProfileDaoMongo camProfDaoMongo = new CameraProfileDaoMongo();
 			StationProfileDaoMongo statProfDaoMongo = new StationProfileDaoMongo();
 			
-			String query = " select * from images where imgid > " + imgidMax + " order by imgid;";
+			String query = " select * from images where acquisitiondate > '" + dateMax + "' order by acquisitiondate;";
 			ResultSet rs = id.resultSet(query);
 			FileWriter file = new FileWriter(filename);
 			

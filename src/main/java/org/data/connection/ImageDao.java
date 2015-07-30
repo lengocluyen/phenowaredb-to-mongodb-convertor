@@ -121,34 +121,26 @@ public class ImageDao extends DAO<Image>{
 		}
 	}
 	@Override
-	public ResultSet resultSet() {
-		try {
-			Statement statement = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-							ResultSet.CONCUR_UPDATABLE);
-			String query = "Select * from images";
-			ResultSet rs = statement.executeQuery(query);
-			return rs;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
+	public ResultSet resultSet() throws SQLException {
+
+		Statement statement = this.connect
+				.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+						ResultSet.CONCUR_UPDATABLE);
+		String query = "Select * from images";
+		ResultSet rs = statement.executeQuery(query);
+		return rs;
+
 	}
-	
+
 	@Override
-	public ResultSet resultSet(String query) {
-		try {
-			Statement statement = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-							ResultSet.CONCUR_UPDATABLE);
-			ResultSet rs = statement.executeQuery(query);
-			return rs;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
+	public ResultSet resultSet(String query) throws SQLException {
+
+		Statement statement = this.connect
+				.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+						ResultSet.CONCUR_UPDATABLE);
+		ResultSet rs = statement.executeQuery(query);
+		return rs;
+
 	}
 
 	

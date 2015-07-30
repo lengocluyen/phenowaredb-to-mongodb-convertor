@@ -3,6 +3,7 @@ package org.data.connection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public abstract class DAO<T> {
@@ -57,9 +58,9 @@ public abstract class DAO<T> {
 
 	public abstract List<T> all();
 
-	public abstract ResultSet resultSet();
+	public abstract ResultSet resultSet() throws SQLException;
 	
-	public abstract ResultSet resultSet(String query);
+	public abstract ResultSet resultSet(String query) throws SQLException;
 
 	public abstract T get(ResultSet result);
 }

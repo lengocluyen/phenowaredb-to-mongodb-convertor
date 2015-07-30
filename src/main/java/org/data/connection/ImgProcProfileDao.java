@@ -98,34 +98,26 @@ public class ImgProcProfileDao extends DAO<ImgProcProfile> {
 	}
 
 	@Override
-	public ResultSet resultSet() {
+	public ResultSet resultSet() throws SQLException {
 		Statement statement;
 		ResultSet result;
-		try {
-			statement = this.connect.createStatement();
-			result = statement
-					.executeQuery("Select * from imgprocprofiles");
 
-		} catch (Exception ex) {
+		statement = this.connect.createStatement();
+		result = statement
+				.executeQuery("Select * from imgprocprofiles");
 
-			return null;
-		}
 		return result;
 	}
 
 	@Override
-	public ResultSet resultSet(String query) {
+	public ResultSet resultSet(String query) throws SQLException {
 		Statement statement;
 		ResultSet result;
-		try {
-			statement = this.connect.createStatement();
-			result = statement
-					.executeQuery(query);
 
-		} catch (Exception ex) {
+		statement = this.connect.createStatement();
+		result = statement
+				.executeQuery(query);
 
-			return null;
-		}
 		return result;
 	}
 	

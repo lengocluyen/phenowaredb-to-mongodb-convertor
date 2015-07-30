@@ -38,9 +38,9 @@ public class ImageDaoMongo extends DAOMongo<Image>{
 		//Document doc = collection.find().sort(Sorts.descending("_id")).first(); // dernier document image insere dans la base
 		Calendar date = new GregorianCalendar();
 		Date thedate;
-		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS", Locale.ENGLISH);
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.ENGLISH);
 		try {
-			thedate = fmt.parse(datestr);
+			thedate = fmt.parse(datestr.substring(0,23)); //rq : parse ne supporte par les microsecondes
 			System.out.println("datestr : "+datestr);
 			System.out.println("thedate : "+fmt.format(thedate));
 			date.setTime(thedate);
@@ -89,6 +89,22 @@ public class ImageDaoMongo extends DAOMongo<Image>{
 
 	}
 	
+	public String getDateMax(){
+		//Document doc = collection.find().sort(Sorts.descending("date")).first(); // document avec date max
+		Document doc = collection.find().sort(Sorts.descending("_id")).first(); //document avec date max puisque les docs sont inseres par ordre de date
+		
+		if (doc == null)  //pas encore de document image dans la base
+			return "1900-01-01";
+		
+		String date = doc.getString("date"); // recuperation de la date
+				
+		if (date == null)  
+			return "1900-01-01";
+		else {
+			return date;
+		}
+	}
+	
 	public String getImageUriFromId(int id){
 		Document doc = collection.find(Filters.eq("configuration.imgid", id)).first();
 		if(doc == null)  //cet id est absent dans la base mongodb
@@ -117,9 +133,10 @@ public class ImageDaoMongo extends DAOMongo<Image>{
 	
 	public static void main(String[] args) {
 		ImageDaoMongo idm = new ImageDaoMongo();
-		System.out.println(idm.getImageUriNumIncrLastInserted("2015-03-12 12:00:08.342879"));
+//		System.out.println(idm.getImageUriNumIncrLastInserted("2015-03-12 12:00:08.342879"));
 //		System.out.println("uri : "+idm.getImageUriFromId(903038));
 //		System.out.println(idm.getImgidMax());
+		System.out.println(idm.getDateMax());
 	}
 }
 

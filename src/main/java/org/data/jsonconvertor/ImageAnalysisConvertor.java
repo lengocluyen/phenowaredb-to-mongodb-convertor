@@ -43,14 +43,12 @@ public class ImageAnalysisConvertor {
 
 		try {
 			ImgProcResultDaoMongo procResDaoMongo = new ImgProcResultDaoMongo();
-			//resultid maximum des analyses deja presentes dans la base mongodb
-			//Rq : les docs ne sont p-e pas inseres dans l'ordre dans mongodb,
-			//par consequent, le resultid max ne correspond pas forcement au dernier doc insere
-			int idMax = procResDaoMongo.getResultidMax();
-			System.out.println("IdMax ImageAnalysis dans mongodb " + idMax);
+			//date maximum des analyses deja presentes dans la base mongodb
+			String dateMax = procResDaoMongo.getDateMax();
+			System.out.println("Date Max ImageAnalysis dans mongodb " + dateMax);
 
 
-			String query = " select * from imgprocresults where resultid > " + idMax + " order by resultid;";
+			String query = " select * from imgprocresults where resultdate > '" + dateMax + "' order by resultdate;";
 			ResultSet rs = iprd.resultSet(query);
 			FileWriter file = new FileWriter(fileName);
 

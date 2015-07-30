@@ -33,40 +33,40 @@ public class Main {
 		
 		
 
-		try{
-			//Rq : l'ordre de traitement est important (profils, puis imgs, puis analyses)
-			
-			Date start = new Date();
-			ImgAcqCameraProfileConvertor.ImgAcqCameraProfileConvertToJson("Data/ImgCameraProfile.json", true);
-			Date end = new Date();
-			System.out.println(Utils.timePerformance(start, end));
-	
-
-			start = new Date();
-			ImgAcqStationProfileConvertor.ImgAcqStationProfileConvertToJson("Data/ImgStationProfile.json",true);
-			end = new Date();
-			System.out.println(Utils.timePerformance(start, end));
-		
-			
-			start = new Date();
-			ImageConvertor.ImagesConvertToJson("Data/Image.json",true);
-			end = new Date();
-			System.out.println(Utils.timePerformance(start, end));
-			
-			start = new Date();
-			ImageAnalysisProcessingConvertor.ImageAnalysisProcessingConvertToJson(
-					"Data/ImageAnalysisProcessing.json",true);
-			end = new Date();
-			System.out.println(Utils.timePerformance(start, end));
-			
-			start = new Date();
-			ImageAnalysisConvertor.ImageAnalysisConvertToJson("Data/ImageAnalysis.json",true);
-			end = new Date();
-			System.out.println(Utils.timePerformance(start, end));
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
+//		try{
+//			//Rq : l'ordre de traitement est important (profils, puis imgs, puis analyses)
+//			
+//			Date start = new Date();
+//			ImgAcqCameraProfileConvertor.ImgAcqCameraProfileConvertToJson("Data/ImgCameraProfile.json", true);
+//			Date end = new Date();
+//			System.out.println(Utils.timePerformance(start, end));
+//	
+//
+//			start = new Date();
+//			ImgAcqStationProfileConvertor.ImgAcqStationProfileConvertToJson("Data/ImgStationProfile.json",true);
+//			end = new Date();
+//			System.out.println(Utils.timePerformance(start, end));
+//		
+//			
+//			start = new Date();
+//			ImageConvertor.ImagesConvertToJson("Data/Image.json",true);
+//			end = new Date();
+//			System.out.println(Utils.timePerformance(start, end));
+//			
+//			start = new Date();
+//			ImageAnalysisProcessingConvertor.ImageAnalysisProcessingConvertToJson(
+//					"Data/ImageAnalysisProcessing.json",true);
+//			end = new Date();
+//			System.out.println(Utils.timePerformance(start, end));
+//			
+//			start = new Date();
+//			ImageAnalysisConvertor.ImageAnalysisConvertToJson("Data/ImageAnalysis.json",true);
+//			end = new Date();
+//			System.out.println(Utils.timePerformance(start, end));
+//		}
+//		catch(Exception e){
+//			e.printStackTrace();
+//		}
 		
 		
 		//Waterings et Weighings sont independants des données Images,

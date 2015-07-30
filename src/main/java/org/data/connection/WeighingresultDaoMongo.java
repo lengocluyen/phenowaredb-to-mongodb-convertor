@@ -38,4 +38,18 @@ public class WeighingresultDaoMongo extends DAOMongo<Weighingresult>{
 		}
 	}
 
+	public String getDateMax(){
+		Document doc = collection.find().sort(Sorts.descending("_id")).first(); //document avec date max puisque les docs sont inseres par ordre de date
+
+		if (doc == null)  //pas encore de document pesee dans la base
+			return "1900-01-01";
+
+		String date = doc.getString("date"); // recuperation de la date
+
+		if (date == null)  
+			return "1900-01-01";
+		else {
+			return date;
+		}
+	}
 }

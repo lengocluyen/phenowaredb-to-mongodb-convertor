@@ -101,31 +101,27 @@ public class ImgProcResultDao extends DAO<ImgProcResult> {
 	}
 
 	@Override
-	public ResultSet resultSet() {
-		try {
-			Statement statement = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-							ResultSet.CONCUR_UPDATABLE);
-			ResultSet result = statement
-					.executeQuery("Select * from imgprocresults");
-			return result;
-		} catch (Exception ex) {
-			return null;
-		}
+	public ResultSet resultSet() throws SQLException {
+
+		Statement statement = this.connect
+				.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+						ResultSet.CONCUR_UPDATABLE);
+		ResultSet result = statement
+				.executeQuery("Select * from imgprocresults");
+		return result;
+
 	}
-	
+
 	@Override
-	public ResultSet resultSet(String query) {
-		try {
-			Statement statement = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-							ResultSet.CONCUR_UPDATABLE);
-			ResultSet result = statement
-					.executeQuery(query);
-			return result;
-		} catch (Exception ex) {
-			return null;
-		}
+	public ResultSet resultSet(String query) throws SQLException {
+
+		Statement statement = this.connect
+				.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+						ResultSet.CONCUR_UPDATABLE);
+		ResultSet result = statement
+				.executeQuery(query);
+		return result;
+
 	}
 
 	@Override

@@ -39,4 +39,19 @@ public class ImgProcResultDaoMongo extends DAOMongo<ImgProcResult>{
 			return resultid;
 		}
 	}
+	
+	public String getDateMax(){
+		Document doc = collection.find().sort(Sorts.descending("_id")).first(); //document avec date max puisque les docs sont inseres par ordre de date
+
+		if (doc == null)  //pas encore de document analyse dans la base
+			return "1900-01-01";
+
+		String date = doc.getString("imageAnalysisDate"); // recuperation de la date
+
+		if (date == null)  
+			return "1900-01-01";
+		else {
+			return date;
+		}
+	}
 }

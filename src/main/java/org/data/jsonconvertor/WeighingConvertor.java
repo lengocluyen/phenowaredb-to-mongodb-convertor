@@ -33,12 +33,10 @@ public class WeighingConvertor {
 
 		try{
 			WeighingresultDaoMongo weighDaoMongo = new WeighingresultDaoMongo();
-			//id maximum des pesees deja presentes dans la base mongodb
-			//Rq : les docs ne sont p-e pas inseres dans l'ordre dans mongodb,
-			//par consequent, l'id max ne correspond pas forcement au dernier doc insere
-			int idMax = weighDaoMongo.getWeighingidMax();
-			System.out.println("IdMax Weighing dans mongodb " + idMax);
-			String query = " select * from weighingresults where weighingid > " + idMax + " order by weighingid ;";
+			//date maximum des pesees deja presentes dans la base mongodb
+			String dateMax = weighDaoMongo.getDateMax();
+			System.out.println("Date max Weighing dans mongodb " + dateMax);
+			String query = " select * from weighingresults where resultdate > '" + dateMax + "' order by resultdate ;";
 			ResultSet rs = wrsd.resultSet(query);
 
 			FileWriter file = new FileWriter(filename);

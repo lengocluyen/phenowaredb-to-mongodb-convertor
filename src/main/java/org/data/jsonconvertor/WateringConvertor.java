@@ -40,12 +40,10 @@ public class WateringConvertor {
 		StudyDao std = new StudyDao(ward.getConnect());
 		try {
 			WateringresultDaoMongo watDaoMongo = new WateringresultDaoMongo();
-			//id maximum des waterings deja presents dans la base mongodb
-			//Rq : les docs ne sont p-e pas inseres dans l'ordre dans mongodb,
-			//par consequent, l'id max ne correspond pas forcement au dernier doc insere
-			int idMax = watDaoMongo.getWateringidMax();
-			System.out.println("IdMax Watering dans mongodb " + idMax);
-			String query = " select * from wateringresults where wateringid > " + idMax + " order by wateringid;";
+			//date maximum des waterings deja presents dans la base mongodb
+			String dateMax = watDaoMongo.getDateMax();
+			System.out.println("Date max Watering dans mongodb " + dateMax);
+			String query = " select * from wateringresults where resultdate > '" + dateMax + "' order by resultdate;";
 			ResultSet rs = ward.resultSet(query);
 			FileWriter file = new FileWriter(filename);
 
