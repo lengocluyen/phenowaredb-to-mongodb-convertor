@@ -24,7 +24,7 @@ public class ImgAcqCameraProfileConvertor {
 	private static String prefixe = "m3p:";
 
 	public static void ImgAcqCameraProfileConvertToJson(String filename,
-			boolean formated) {
+			boolean writeInFile, boolean formated) {
 	
 		ImgAcqCameraProfileDao iacpd = new ImgAcqCameraProfileDao(null);
 	
@@ -81,18 +81,21 @@ public class ImgAcqCameraProfileConvertor {
 				settings.put("whiteBalance", iacp.getWhitebalance());
 				settings.put("pixelFormat", iacp.getPixelformat());
 				cameraProfile.put("settings", settings);
-				String jsonString = new org.json.JSONObject(cameraProfile)
-						.toString();
-				// file.write("Document json "+i+"\n");
+				
+				if (writeInFile){
+					String jsonString = new org.json.JSONObject(cameraProfile)
+					.toString();
+					// file.write("Document json "+i+"\n");
 
-				if (formated)
-					file.write(Utils.prettyJsonFormat(jsonString) + "\n");
-				else
-					file.write(jsonString + "\n");
-				// System.out.println("Writing the document " + i+": " +
-				// jsonString);
+					if (formated)
+						file.write(Utils.prettyJsonFormat(jsonString) + "\n");
+					else
+						file.write(jsonString + "\n");
+					// System.out.println("Writing the document " + i+": " +
+					// jsonString);
 
-				file.flush();
+					file.flush();
+				}
 
 				//Insertion du document JSON dans Mongodb
 				camProfDaoMongo.getCollection().insertOne(new Document(cameraProfile));
@@ -106,6 +109,13 @@ public class ImgAcqCameraProfileConvertor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		try {
+			iacpd.getConnect().close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 	
 	private static String createUriCameraProfile(TechnicalPlateau tp, int numIncr) {
@@ -135,7 +145,7 @@ public class ImgAcqCameraProfileConvertor {
 
 	public static void main(String[] args) {
 		Date start = new Date();
-		ImgAcqCameraProfileConvertToJson("Data/ImgCameraProfile.json", true);
+		ImgAcqCameraProfileConvertToJson("Data/ImgCameraProfile.json", true, true);
 		Date end = new Date();
 		System.out.println(Utils.timePerformance(start, end));
 		

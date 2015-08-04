@@ -24,7 +24,7 @@ public class ImgAcqStationProfileConvertor {
 	private static String prefixe = "m3p:";
 	
 	public static void ImgAcqStationProfileConvertToJson(String filename,
-			boolean formated) {
+			boolean writeInFile, boolean formated) {
 		// List<LinkedHashMap<String, Object>> jsons = new
 		// ArrayList<LinkedHashMap<String, Object>>();
 		
@@ -73,18 +73,21 @@ public class ImgAcqStationProfileConvertor {
 				settings.put("topViewCount", iasp.getTopviewcount());
 				settings.put("sideViewCount", iasp.getSideviewcount());
 				stationProfile.put("settings", settings);
-				String jsonString = new org.json.JSONObject(stationProfile)
-						.toString();
-				// file.write("Document json "+i+"\n");
+				
+				if (writeInFile){
+					String jsonString = new org.json.JSONObject(stationProfile)
+					.toString();
+					// file.write("Document json "+i+"\n");
 
-				if (formated)
-					file.write(Utils.prettyJsonFormat(jsonString) + "\n");
-				else
-					file.write(jsonString + "\n");
-				// System.out.println("Writing the document " + i+": " +
-				// jsonString);
+					if (formated)
+						file.write(Utils.prettyJsonFormat(jsonString) + "\n");
+					else
+						file.write(jsonString + "\n");
+					// System.out.println("Writing the document " + i+": " +
+					// jsonString);
 
-				file.flush();
+					file.flush();
+				}
 				
 				//Insertion du document JSON dans Mongodb
 				statProfDaoMongo.getCollection().insertOne(new Document(stationProfile));
@@ -99,6 +102,13 @@ public class ImgAcqStationProfileConvertor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		try {
+			iaspd.getConnect().close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 	
 	
@@ -128,7 +138,7 @@ public class ImgAcqStationProfileConvertor {
 
 	public static void main(String[] args) {
 		Date start = new Date();
-		ImgAcqStationProfileConvertToJson("Data/ImgStationProfile.json",true);
+		ImgAcqStationProfileConvertToJson("Data/ImgStationProfile.json", true, true);
 		Date end = new Date();
 		System.out.println(Utils.timePerformance(start, end));
 	}

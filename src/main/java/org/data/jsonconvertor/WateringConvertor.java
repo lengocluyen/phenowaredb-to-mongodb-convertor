@@ -30,7 +30,7 @@ import org.openrdf.repository.RepositoryException;
 public class WateringConvertor {
 
 	public static void WateringResultConvertToJson(String filename,
-			boolean formated) throws RepositoryException, MalformedQueryException, QueryEvaluationException {
+			boolean writeInFile, boolean formated) throws RepositoryException, MalformedQueryException, QueryEvaluationException {
 		// List<LinkedHashMap<String,Object>> jsons = new
 		// ArrayList<LinkedHashMap<String,Object>>();
 		WateringresultDao ward = new WateringresultDao(null);
@@ -148,18 +148,19 @@ public class WateringConvertor {
 					watering.put("measures", measures);
 
 					// jsons.add(image);
+					if (writeInFile){
+						String jsonString = new org.json.JSONObject(watering).toString();
+						// file.write("Document json "+i+"\n");
 
-					String jsonString = new org.json.JSONObject(watering).toString();
-					// file.write("Document json "+i+"\n");
+						if (formated)
+							file.write(Utils.prettyJsonFormat(jsonString) + "\n");
+						else
+							file.write(jsonString + "\n");
+						// System.out.println("Writing the document " + i+": " +
+						// jsonString);
 
-					if (formated)
-						file.write(Utils.prettyJsonFormat(jsonString) + "\n");
-					else
-						file.write(jsonString + "\n");
-					// System.out.println("Writing the document " + i+": " +
-					// jsonString);
-
-					file.flush();
+						file.flush();
+					}
 
 					//Insertion du document JSON dans Mongodb
 					watDaoMongo.getCollection().insertOne(new Document(watering));
@@ -184,6 +185,13 @@ public class WateringConvertor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		try {
+			ward.getConnect().close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 
 
 	}
@@ -198,7 +206,7 @@ public class WateringConvertor {
 
 		Date start = new Date();
 		try {
-			WateringResultConvertToJson("Data/Watering2.json", true);
+			WateringResultConvertToJson("Data/Watering2.json", true, true);
 		} catch (RepositoryException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

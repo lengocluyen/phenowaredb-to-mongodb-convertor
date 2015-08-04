@@ -110,7 +110,7 @@ public class ImgAcqStationProfileDao extends DAO<ImgAcqStationProfile> {
 			iasp.setDeleted(Utils.convertToBool(rs.getObject("deleted")));
 			iasp.setProfiletype(Utils.convertToInt(rs.getObject("profiletype")));
 			
-			ProfileTypeDao ptd = new ProfileTypeDao(null);
+			ProfileTypeDao ptd = new ProfileTypeDao(this.getConnect());
 			ProfileType pt = ptd.single(iasp.getProfiletype());
 			if(pt!=null)
 				iasp.setProfileTypeObject(pt);

@@ -128,12 +128,12 @@ public class ImgAcqCameraProfileDao extends DAO<ImgAcqCameraProfile>{
 			iacp.setViewcount(Utils.convertToInt(rs.getObject("viewcount")));
 			iacp.setPixelformat(Utils.convertToString(rs.getObject("pixelformat")));
 			iacp.setMode(Utils.convertToString(rs.getObject("mode")));
-			ProfileTypeDao ptd = new ProfileTypeDao(null);
+			ProfileTypeDao ptd = new ProfileTypeDao(this.getConnect());
 			ProfileType pt = ptd.single(iacp.getProfiletype());
 			if(pt!=null)
 				iacp.setProfileTypeObject(pt);
 			
-			ImageViewTypeDao ivtd = new ImageViewTypeDao(null);
+			ImageViewTypeDao ivtd = new ImageViewTypeDao(this.getConnect());
 			ImageViewType ivt = ivtd.single(iacp.getViewtype());
 			if(ivt!=null)
 				iacp.setImageViewType(ivt);

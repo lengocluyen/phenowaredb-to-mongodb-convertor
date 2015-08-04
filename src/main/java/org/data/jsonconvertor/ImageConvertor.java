@@ -33,7 +33,8 @@ public class ImageConvertor {
 	private static String serverPath = "http://stck-lespe.supagro.inra.fr/";
 	private static String webPath = "http://lps-phis.supagro.inra.fr/phis/data/";
 
-	public static void ImagesConvertToJson(String filename, boolean formated) throws RepositoryException, MalformedQueryException, QueryEvaluationException {
+	public static void ImagesConvertToJson(String filename, 
+			boolean writeInFile, boolean formated) throws RepositoryException, MalformedQueryException, QueryEvaluationException {
 		//List<LinkedHashMap<String, Object>> jsons = new ArrayList<LinkedHashMap<String, Object>>();
 		ImageDao id = new ImageDao(null);
 		//List<Image> imgs = id.all(false);
@@ -55,12 +56,16 @@ public class ImageConvertor {
 			
 			PlantDaoSesame pds = new PlantDaoSesame();
 			
+			int numIncrUriImg =-1;
+			
 			while(rs.next())
 			{
 				Image img = id.get(rs);
 				
 				//num incremental de l'uri du dernier document image insere dans la base mongodb
-				int numIncrUriImg = imgDaoMongo.getImageUriNumIncrLastInserted(img.getAcquisitiondate());  
+				if (numIncrUriImg < 0)   //pour ne faire la recherche qu'une seule fois
+					numIncrUriImg = imgDaoMongo.getImageUriNumIncrLastInserted(img.getAcquisitiondate());  
+				
 				numIncrUriImg ++;
 				
 				LinkedHashMap<String, Object> image = new LinkedHashMap<String, Object>();
@@ -143,31 +148,39 @@ public class ImageConvertor {
 
 				// jsons.add(image);
 
-				String jsonString = new org.json.JSONObject(image)
-				.toString();
-				// file.write("Document json "+i+"\n");
+				if (writeInFile){
+					String jsonString = new org.json.JSONObject(image)
+					.toString();
+					// file.write("Document json "+i+"\n");
 
-				if (formated)
-					file.write(Utils.prettyJsonFormat(jsonString) + "\n");
-				else
-					file.write(jsonString + "\n");
-				// System.out.println("Writing the document " + i+": " +
-				// jsonString);
+					if (formated)
+						file.write(Utils.prettyJsonFormat(jsonString) + "\n");
+					else
+						file.write(jsonString + "\n");
+					// System.out.println("Writing the document " + i+": " +
+					// jsonString);
 
-				file.flush();
-
+					file.flush();
+				}
 				//Insertion du document JSON dans Mongodb
 				imgDaoMongo.getCollection().insertOne(new Document(image));
 			}
 
 			System.out.println("Finish");
 			pds.getConnection().close();
+			
 			file.close();
 		} catch (IOException ie) {
 			ie.printStackTrace();
 		}
 		// return jsons;
 		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			id.getConnect().close();
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -208,7 +221,7 @@ public class ImageConvertor {
 		Date start = new Date();
 		//ExportToFile("Data/Image.json");
 		try {
-			ImagesConvertToJson("Data/Image2.json", true);
+			ImagesConvertToJson("Data/Image2.json", true, true);
 		} catch (RepositoryException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

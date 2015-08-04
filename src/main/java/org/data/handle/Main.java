@@ -33,40 +33,40 @@ public class Main {
 		
 		
 
-//		try{
-//			//Rq : l'ordre de traitement est important (profils, puis imgs, puis analyses)
-//			
-//			Date start = new Date();
-//			ImgAcqCameraProfileConvertor.ImgAcqCameraProfileConvertToJson("Data/ImgCameraProfile.json", true);
-//			Date end = new Date();
-//			System.out.println(Utils.timePerformance(start, end));
-//	
-//
+		try{
+			//Rq : l'ordre de traitement est important (profils, puis imgs, puis analyses)
+			
+			Date start = new Date();
+			ImgAcqCameraProfileConvertor.ImgAcqCameraProfileConvertToJson("Data/ImgCameraProfile.json", false, true);
+			Date end = new Date();
+			System.out.println(Utils.timePerformance(start, end));
+	
+
+			start = new Date();
+			ImgAcqStationProfileConvertor.ImgAcqStationProfileConvertToJson("Data/ImgStationProfile.json",false,true);
+			end = new Date();
+			System.out.println(Utils.timePerformance(start, end));
+		
+			
 //			start = new Date();
-//			ImgAcqStationProfileConvertor.ImgAcqStationProfileConvertToJson("Data/ImgStationProfile.json",true);
-//			end = new Date();
-//			System.out.println(Utils.timePerformance(start, end));
-//		
-//			
-//			start = new Date();
-//			ImageConvertor.ImagesConvertToJson("Data/Image.json",true);
+//			ImageConvertor.ImagesConvertToJson("Data/Image.json",false, true);
 //			end = new Date();
 //			System.out.println(Utils.timePerformance(start, end));
 //			
 //			start = new Date();
 //			ImageAnalysisProcessingConvertor.ImageAnalysisProcessingConvertToJson(
-//					"Data/ImageAnalysisProcessing.json",true);
+//					"Data/ImageAnalysisProcessing.json",false,true);
 //			end = new Date();
 //			System.out.println(Utils.timePerformance(start, end));
 //			
 //			start = new Date();
-//			ImageAnalysisConvertor.ImageAnalysisConvertToJson("Data/ImageAnalysis.json",true);
+//			ImageAnalysisConvertor.ImageAnalysisConvertToJson("Data/ImageAnalysis.json",false, true);
 //			end = new Date();
 //			System.out.println(Utils.timePerformance(start, end));
-//		}
-//		catch(Exception e){
-//			e.printStackTrace();
-//		}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 		
 		
 		//Waterings et Weighings sont independants des données Images,
@@ -74,7 +74,7 @@ public class Main {
 		//pour les images
 		try{
 			Date start = new Date();
-			WateringConvertor.WateringResultConvertToJson("Data/Watering2.json", true);
+			WateringConvertor.WateringResultConvertToJson("Data/Watering2.json", false, true);
 			Date end = new Date();
 			System.out.println(Utils.timePerformance(start, end));
 		}
@@ -83,7 +83,7 @@ public class Main {
 		}
 		try{
 			Date start = new Date();
-			WeighingConvertor.WeighingResultConvertToJson("Data/Weighing2.json", true);
+			WeighingConvertor.WeighingResultConvertToJson("Data/Weighing2.json", false, true);
 			Date end = new Date();
 			System.out.println(Utils.timePerformance(start, end));	
 		}

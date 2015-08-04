@@ -30,8 +30,8 @@ public class ImageAnalysisConvertor {
 	private static String m3p = "http://www.phenome-fppn.fr/m3p/";
 
 	
-	public static void ImageAnalysisConvertToJson(
-			String fileName, boolean formated) throws RepositoryException, MalformedQueryException, QueryEvaluationException {
+	public static void ImageAnalysisConvertToJson(String fileName, 
+			boolean writeInFile, boolean formated) throws RepositoryException, MalformedQueryException, QueryEvaluationException {
 		// List<LinkedHashMap<String, Object>> jsons = new
 		// ArrayList<LinkedHashMap<String, Object>>();
 		ImgProcResultDao iprd = new ImgProcResultDao(null);
@@ -347,18 +347,20 @@ public class ImageAnalysisConvertor {
 
 				// jsons.add(imageAnalysis);
 
-				String jsonString = new org.json.JSONObject(imageAnalysis)
-				.toString();
-				// file.write("Document json "+i+"\n");
+				if (writeInFile){
+					String jsonString = new org.json.JSONObject(imageAnalysis)
+					.toString();
+					// file.write("Document json "+i+"\n");
 
-				if (formated)
-					file.write(Utils.prettyJsonFormat(jsonString) + "\n");
-				else
-					file.write(jsonString + "\n");
-				// System.out.println("Writing the document " + i+": " +
-				// jsonString);
+					if (formated)
+						file.write(Utils.prettyJsonFormat(jsonString) + "\n");
+					else
+						file.write(jsonString + "\n");
+					// System.out.println("Writing the document " + i+": " +
+					// jsonString);
 
-				file.flush();
+					file.flush();
+				}
 
 				//Insertion du document JSON dans Mongodb
 				procResDaoMongo.getCollection().insertOne(new Document(imageAnalysis));
@@ -376,6 +378,13 @@ public class ImageAnalysisConvertor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		try {
+			iprd.getConnect().close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public static void ExportToFile(String filename) {
@@ -387,7 +396,7 @@ public class ImageAnalysisConvertor {
 	public static void main(String[] args) {
 		Date start = new Date();
 		try {
-			ImageAnalysisConvertToJson("Data/ImageAnalysis2.json", true);
+			ImageAnalysisConvertToJson("Data/ImageAnalysis2.json", true, true);
 		} catch (RepositoryException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

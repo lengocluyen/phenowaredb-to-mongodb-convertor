@@ -22,7 +22,7 @@ import org.data.handle.JsonReadWrite;
 import org.data.handle.Utils;
 
 public class ImageAnalysisProcessingConvertor {
-	public static void ImageAnalysisProcessingConvertToJson(String filename, boolean formated) {
+	public static void ImageAnalysisProcessingConvertToJson(String filename, boolean writeInFile, boolean formated) {
 		//List<LinkedHashMap<String, Object>> jsons = new ArrayList<LinkedHashMap<String, Object>>();
 		ImgProcProfileDao ippd = new ImgProcProfileDao(null);
 		//List<ImgProcProfile> ipps = ippd.all();
@@ -55,13 +55,15 @@ public class ImageAnalysisProcessingConvertor {
 			imageAnalysProcessing.put("processingScript", ipp.getImgProcScript());
 			//jsons.add(imageAnalysProcessing);
 			
-			String jsonString = new org.json.JSONObject(imageAnalysProcessing)
-			.toString();
-			if (formated)
-				file.write(Utils.prettyJsonFormat(jsonString) + "\n");
-			else
-				file.write(jsonString + "\n");
-			file.flush();
+			if (writeInFile){
+				String jsonString = new org.json.JSONObject(imageAnalysProcessing)
+				.toString();
+				if (formated)
+					file.write(Utils.prettyJsonFormat(jsonString) + "\n");
+				else
+					file.write(jsonString + "\n");
+				file.flush();
+			}
 			
 			//Insertion du document JSON dans Mongodb
 			procProfDaoMongo.getCollection().insertOne(new Document (imageAnalysProcessing));
@@ -78,6 +80,13 @@ public class ImageAnalysisProcessingConvertor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		try {
+			ippd.getConnect().close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public static void ExportToFile(String filename) {
@@ -89,7 +98,7 @@ public class ImageAnalysisProcessingConvertor {
 	public static void main(String[] args) {
 		Date start = new Date();
 		//ExportToFile("Data/ImageAnalysisProcessing.json");
-		ImageAnalysisProcessingConvertToJson("Data/ImageAnalysisProcessing.json", true);
+		ImageAnalysisProcessingConvertToJson("Data/ImageAnalysisProcessing.json", true, true);
 		Date end = new Date();
 		System.out.println(Utils.timePerformance(start, end));
 	}

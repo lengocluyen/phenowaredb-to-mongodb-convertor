@@ -26,7 +26,8 @@ import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.repository.RepositoryException;
 
 public class WeighingConvertor {
-	public static void WeighingResultConvertToJson(String filename, boolean formated) throws RepositoryException, MalformedQueryException, QueryEvaluationException {
+	public static void WeighingResultConvertToJson(String filename, 
+			boolean writeInFile, boolean formated) throws RepositoryException, MalformedQueryException, QueryEvaluationException {
 		//List<LinkedHashMap<String, Object>> jsons = new ArrayList<LinkedHashMap<String, Object>>();
 		WeighingresultDao wrsd = new WeighingresultDao(null);
 		//List<Weighingresult> wrs = wrsd.all(false);
@@ -127,19 +128,21 @@ public class WeighingConvertor {
 				weighing.put("measures", measures);
 
 				//jsons.add(weighing);
-				String jsonString = new org.json.JSONObject(weighing)
-				.toString();
-				// file.write("Document json "+i+"\n");
+				if (writeInFile){
+					String jsonString = new org.json.JSONObject(weighing)
+					.toString();
+					// file.write("Document json "+i+"\n");
 
-				if (formated)
-					file.write(Utils.prettyJsonFormat(jsonString) + "\n");
-				else
-					file.write(jsonString + "\n");
-				// System.out.println("Writing the document " + i+": " +
-				// jsonString);
+					if (formated)
+						file.write(Utils.prettyJsonFormat(jsonString) + "\n");
+					else
+						file.write(jsonString + "\n");
+					// System.out.println("Writing the document " + i+": " +
+					// jsonString);
 
-				file.flush();
-
+					file.flush();
+				}
+				
 				//Insertion du document JSON dans Mongodb
 				weighDaoMongo.getCollection().insertOne(new Document (weighing));
 			}
@@ -156,6 +159,13 @@ public class WeighingConvertor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		try {
+			wrsd.getConnect().close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 
 	}
 	
@@ -170,7 +180,7 @@ public class WeighingConvertor {
 	public static void main(String[] args) {
 		Date start = new Date();
 		try {
-			WeighingResultConvertToJson("Data/Weighing2.json", true);
+			WeighingResultConvertToJson("Data/Weighing2.json", true, true);
 		} catch (RepositoryException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
