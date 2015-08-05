@@ -124,7 +124,7 @@ public class ImgAcqStationProfileDao extends DAO<ImgAcqStationProfile> {
 			iasp.setZoom(Utils.convertToInt(rs.getObject("zoom")));
 			iasp.setFocus(Utils.convertToInt(rs.getObject("focus")));
 			iasp.setAperture(Utils.convertToInt(rs.getObject("aperture")));
-			iasp.setRotationspeed(Utils.convertToString(rs.getObject("rotationspeed")));
+			iasp.setRotationspeed(Utils.convertToDouble(rs.getObject("rotationspeed")));
 			iasp.setTopviewcount(Utils.convertToInt(rs.getObject("topviewcount")));
 			iasp.setSideviewcount(Utils.convertToInt(rs.getObject("sideviewcount")));
 			System.out.println("imageacqstationid: " +iasp.getImgacqstationprofileid());

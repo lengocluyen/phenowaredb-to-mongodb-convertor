@@ -187,6 +187,7 @@ public class WateringConvertor {
 		}
 		try {
 			ward.getConnect().close();
+			System.out.println("Fermeture connexion WateringresultDAO.");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -104,6 +104,7 @@ public class ImgAcqStationProfileConvertor {
 		}
 		try {
 			iaspd.getConnect().close();
+			System.out.println("Fermeture connexion ImgAcqStationProfileDAO.");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

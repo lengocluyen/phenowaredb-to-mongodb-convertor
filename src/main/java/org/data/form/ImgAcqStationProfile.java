@@ -23,7 +23,7 @@ public class ImgAcqStationProfile {
 	int zoom;
 	int focus;
 	int aperture;
-	String rotationspeed;
+	double rotationspeed;
 	int topviewcount;
 	int sideviewcount;
 	
@@ -125,10 +125,10 @@ public class ImgAcqStationProfile {
 	public void setAperture(int aperture) {
 		this.aperture = aperture;
 	}
-	public String getRotationspeed() {
+	public double getRotationspeed() {
 		return rotationspeed;
 	}
-	public void setRotationspeed(String rotationspeed) {
+	public void setRotationspeed(double rotationspeed) {
 		this.rotationspeed = rotationspeed;
 	}
 	public int getTopviewcount() {

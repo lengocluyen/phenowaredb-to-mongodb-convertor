@@ -111,6 +111,7 @@ public class ImgAcqCameraProfileConvertor {
 		}
 		try {
 			iacpd.getConnect().close();
+			System.out.println("Fermeture connexion ImgAcqCameraProfileDAO.");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

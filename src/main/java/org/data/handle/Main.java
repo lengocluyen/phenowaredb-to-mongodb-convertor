@@ -48,21 +48,21 @@ public class Main {
 			System.out.println(Utils.timePerformance(start, end));
 		
 			
-//			start = new Date();
-//			ImageConvertor.ImagesConvertToJson("Data/Image.json",false, true);
-//			end = new Date();
-//			System.out.println(Utils.timePerformance(start, end));
-//			
-//			start = new Date();
-//			ImageAnalysisProcessingConvertor.ImageAnalysisProcessingConvertToJson(
-//					"Data/ImageAnalysisProcessing.json",false,true);
-//			end = new Date();
-//			System.out.println(Utils.timePerformance(start, end));
-//			
-//			start = new Date();
-//			ImageAnalysisConvertor.ImageAnalysisConvertToJson("Data/ImageAnalysis.json",false, true);
-//			end = new Date();
-//			System.out.println(Utils.timePerformance(start, end));
+			start = new Date();
+			ImageConvertor.ImagesConvertToJson("Data/Image.json",false, true);
+			end = new Date();
+			System.out.println(Utils.timePerformance(start, end));
+			
+			start = new Date();
+			ImageAnalysisProcessingConvertor.ImageAnalysisProcessingConvertToJson(
+					"Data/ImageAnalysisProcessing.json",false,true);
+			end = new Date();
+			System.out.println(Utils.timePerformance(start, end));
+			
+			start = new Date();
+			ImageAnalysisConvertor.ImageAnalysisConvertToJson("Data/ImageAnalysis.json",false, true);
+			end = new Date();
+			System.out.println(Utils.timePerformance(start, end));
 		}
 		catch(Exception e){
 			e.printStackTrace();

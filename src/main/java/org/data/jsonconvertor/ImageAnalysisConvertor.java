@@ -380,6 +380,7 @@ public class ImageAnalysisConvertor {
 		}
 		try {
 			iprd.getConnect().close();
+			System.out.println("Fermeture connexion ImgProcResultDAO.");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

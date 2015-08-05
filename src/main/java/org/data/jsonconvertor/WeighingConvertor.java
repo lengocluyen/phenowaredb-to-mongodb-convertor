@@ -161,6 +161,7 @@ public class WeighingConvertor {
 		}
 		try {
 			wrsd.getConnect().close();
+			System.out.println("Fermeture connexion WeighingresultDAO.");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

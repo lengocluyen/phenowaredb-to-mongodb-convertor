@@ -180,6 +180,7 @@ public class ImageConvertor {
 		}
 		try {
 			id.getConnect().close();
+			System.out.println("Fermeture connexion ImageDAO.");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

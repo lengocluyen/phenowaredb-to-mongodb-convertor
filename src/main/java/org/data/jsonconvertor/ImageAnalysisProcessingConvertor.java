@@ -82,6 +82,7 @@ public class ImageAnalysisProcessingConvertor {
 		}
 		try {
 			ippd.getConnect().close();
+			System.out.println("Fermeture connexion ImgProcProfileDAO.");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
