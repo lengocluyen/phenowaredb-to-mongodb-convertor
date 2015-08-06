@@ -50,7 +50,6 @@ public class ImageAnalysisConvertor {
 
 			String query = " select * from imgprocresults where resultdate > '" + dateMax + "' order by resultdate;";
 			ResultSet rs = iprd.resultSet(query);
-			FileWriter file = new FileWriter(fileName);
 
 			PlantDaoSesame pds = new PlantDaoSesame();
 
@@ -348,6 +347,7 @@ public class ImageAnalysisConvertor {
 				// jsons.add(imageAnalysis);
 
 				if (writeInFile){
+					FileWriter file = new FileWriter(fileName);
 					String jsonString = new org.json.JSONObject(imageAnalysis)
 					.toString();
 					// file.write("Document json "+i+"\n");
@@ -360,6 +360,7 @@ public class ImageAnalysisConvertor {
 					// jsonString);
 
 					file.flush();
+					file.close();
 				}
 
 				//Insertion du document JSON dans Mongodb
@@ -369,7 +370,7 @@ public class ImageAnalysisConvertor {
 
 			System.out.println("Finish");
 			pds.getConnection().close();
-			file.close();
+			
 		} catch (IOException ie) {
 			ie.printStackTrace();
 		}
@@ -378,12 +379,14 @@ public class ImageAnalysisConvertor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		try {
-			iprd.getConnect().close();
-			System.out.println("Fermeture connexion ImgProcResultDAO.");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		finally{
+			try {
+				iprd.getConnect().close();
+				System.out.println("Fermeture connexion ImgProcResultDAO.");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 	}

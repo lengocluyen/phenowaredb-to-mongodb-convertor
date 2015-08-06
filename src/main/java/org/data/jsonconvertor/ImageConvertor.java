@@ -52,7 +52,7 @@ public class ImageConvertor {
 			
 			String query = " select * from images where acquisitiondate > '" + dateMax + "' order by acquisitiondate;";
 			ResultSet rs = id.resultSet(query);
-			FileWriter file = new FileWriter(filename);
+			
 			
 			PlantDaoSesame pds = new PlantDaoSesame();
 			
@@ -149,6 +149,7 @@ public class ImageConvertor {
 				// jsons.add(image);
 
 				if (writeInFile){
+					FileWriter file = new FileWriter(filename);
 					String jsonString = new org.json.JSONObject(image)
 					.toString();
 					// file.write("Document json "+i+"\n");
@@ -161,6 +162,7 @@ public class ImageConvertor {
 					// jsonString);
 
 					file.flush();
+					file.close();
 				}
 				//Insertion du document JSON dans Mongodb
 				imgDaoMongo.getCollection().insertOne(new Document(image));
@@ -169,7 +171,7 @@ public class ImageConvertor {
 			System.out.println("Finish");
 			pds.getConnection().close();
 			
-			file.close();
+			
 		} catch (IOException ie) {
 			ie.printStackTrace();
 		}
@@ -178,12 +180,14 @@ public class ImageConvertor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		try {
-			id.getConnect().close();
-			System.out.println("Fermeture connexion ImageDAO.");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		finally{
+			try {
+				id.getConnect().close();
+				System.out.println("Fermeture connexion ImageDAO.");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

@@ -21,7 +21,7 @@ public abstract class DAO<T> {
 
 			} catch (Exception ex) {
 				this.connect = conn;
-				//System.out.println("connectException : " + this.connect);
+				System.out.println("connectException : connexion = " + this.connect);
 
 			}
 		}

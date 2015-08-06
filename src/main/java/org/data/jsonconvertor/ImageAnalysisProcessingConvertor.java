@@ -37,8 +37,7 @@ public class ImageAnalysisProcessingConvertor {
 			
 			String query = " select * from imgprocprofiles where imgprocprofileid > " + idMax + " order by imgprocprofileid;";
 			ResultSet rs = ippd.resultSet(query);
-			FileWriter file = new FileWriter(filename);
-			
+						
 			while(rs.next()){
 				
 				ImgProcProfile ipp = ippd.get(rs);
@@ -56,6 +55,7 @@ public class ImageAnalysisProcessingConvertor {
 			//jsons.add(imageAnalysProcessing);
 			
 			if (writeInFile){
+				FileWriter file = new FileWriter(filename);
 				String jsonString = new org.json.JSONObject(imageAnalysProcessing)
 				.toString();
 				if (formated)
@@ -63,6 +63,7 @@ public class ImageAnalysisProcessingConvertor {
 				else
 					file.write(jsonString + "\n");
 				file.flush();
+				file.close();
 			}
 			
 			//Insertion du document JSON dans Mongodb
@@ -71,7 +72,7 @@ public class ImageAnalysisProcessingConvertor {
 		
 		//return jsons;
 			System.out.println("Finish");
-			file.close();
+		
 		} catch (IOException ie) {
 			ie.printStackTrace();
 		}
@@ -80,14 +81,15 @@ public class ImageAnalysisProcessingConvertor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		try {
-			ippd.getConnect().close();
-			System.out.println("Fermeture connexion ImgProcProfileDAO.");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		finally{
+			try {
+				ippd.getConnect().close();
+				System.out.println("Fermeture connexion ImgProcProfileDAO.");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-
 	}
 
 	public static void ExportToFile(String filename) {

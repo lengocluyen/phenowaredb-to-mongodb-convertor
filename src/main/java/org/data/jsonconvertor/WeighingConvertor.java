@@ -40,8 +40,6 @@ public class WeighingConvertor {
 			String query = " select * from weighingresults where resultdate > '" + dateMax + "' order by resultdate ;";
 			ResultSet rs = wrsd.resultSet(query);
 
-			FileWriter file = new FileWriter(filename);
-
 			PlantDaoSesame pds = new PlantDaoSesame();
 
 			while(rs.next()) {
@@ -129,6 +127,7 @@ public class WeighingConvertor {
 
 				//jsons.add(weighing);
 				if (writeInFile){
+					FileWriter file = new FileWriter(filename);
 					String jsonString = new org.json.JSONObject(weighing)
 					.toString();
 					// file.write("Document json "+i+"\n");
@@ -141,6 +140,7 @@ public class WeighingConvertor {
 					// jsonString);
 
 					file.flush();
+					file.close();
 				}
 				
 				//Insertion du document JSON dans Mongodb
@@ -149,7 +149,6 @@ public class WeighingConvertor {
 
 			System.out.println("Finish");
 			pds.getConnection().close();
-			file.close();
 		} catch (IOException ie) {
 			ie.printStackTrace();
 		}
@@ -159,15 +158,15 @@ public class WeighingConvertor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		try {
-			wrsd.getConnect().close();
-			System.out.println("Fermeture connexion WeighingresultDAO.");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		finally{
+			try {
+				wrsd.getConnect().close();
+				System.out.println("Fermeture connexion WeighingresultDAO.");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-
-
 	}
 	
 	public static int ComputedWeight(int before, int after){

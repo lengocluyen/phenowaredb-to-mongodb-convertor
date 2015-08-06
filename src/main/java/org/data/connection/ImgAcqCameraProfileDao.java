@@ -91,7 +91,6 @@ public class ImgAcqCameraProfileDao extends DAO<ImgAcqCameraProfile>{
 
 	@Override
 	public ResultSet resultSet(String query) throws SQLException {
-
 		Statement statement = this.connect
 				.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
 						ResultSet.CONCUR_UPDATABLE);

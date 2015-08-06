@@ -45,7 +45,6 @@ public class WateringConvertor {
 			System.out.println("Date max Watering dans mongodb " + dateMax);
 			String query = " select * from wateringresults where resultdate > '" + dateMax + "' order by resultdate;";
 			ResultSet rs = ward.resultSet(query);
-			FileWriter file = new FileWriter(filename);
 
 			PlantDaoSesame pds = new PlantDaoSesame();
 			try{
@@ -149,6 +148,7 @@ public class WateringConvertor {
 
 					// jsons.add(image);
 					if (writeInFile){
+						FileWriter file = new FileWriter(filename);
 						String jsonString = new org.json.JSONObject(watering).toString();
 						// file.write("Document json "+i+"\n");
 
@@ -160,6 +160,7 @@ public class WateringConvertor {
 						// jsonString);
 
 						file.flush();
+						file.close();
 					}
 
 					//Insertion du document JSON dans Mongodb
@@ -175,7 +176,6 @@ public class WateringConvertor {
 			finally{
 				rs.close();
 				pds.getConnection().close();
-				file.close();
 			}
 		} catch (IOException ie) {
 			ie.printStackTrace();
@@ -185,16 +185,15 @@ public class WateringConvertor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		try {
-			ward.getConnect().close();
-			System.out.println("Fermeture connexion WateringresultDAO.");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		finally{ 
+			try {
+				ward.getConnect().close();
+				System.out.println("Fermeture connexion WateringresultDAO.");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-
-
-
 	}
 
 	public static void ExportToFile(String filename) {

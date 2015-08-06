@@ -43,7 +43,6 @@ public class ImgAcqStationProfileConvertor {
 			
 			String query = " select * from imgacqstationprofiles where imgacqstationprofileid > " + idMax +  " order by imgacqstationprofileid;";
 			ResultSet rs = iaspd.resultSet(query);
-			FileWriter file = new FileWriter(filename);
 			
 			while (rs.next()) {
 				numIncrUriStatProf ++;
@@ -75,6 +74,7 @@ public class ImgAcqStationProfileConvertor {
 				stationProfile.put("settings", settings);
 				
 				if (writeInFile){
+					FileWriter file = new FileWriter(filename);
 					String jsonString = new org.json.JSONObject(stationProfile)
 					.toString();
 					// file.write("Document json "+i+"\n");
@@ -87,6 +87,7 @@ public class ImgAcqStationProfileConvertor {
 					// jsonString);
 
 					file.flush();
+					file.close();
 				}
 				
 				//Insertion du document JSON dans Mongodb
@@ -95,21 +96,22 @@ public class ImgAcqStationProfileConvertor {
 			}
 
 			System.out.println("Finish");
-			file.close();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		try {
-			iaspd.getConnect().close();
-			System.out.println("Fermeture connexion ImgAcqStationProfileDAO.");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		finally{
+			try {
+				iaspd.getConnect().close();
+				System.out.println("Fermeture connexion ImgAcqStationProfileDAO.");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-
 	}
 	
 	

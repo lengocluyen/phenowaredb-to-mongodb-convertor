@@ -18,18 +18,18 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		//TODO rediriger plutot l'output et les erreurs vers un fichier dans le script de lancement
-		File file = new File("Data/logs.txt");
-		FileOutputStream fis;
-		try {
-			fis = new FileOutputStream(file);
-			PrintStream out = new PrintStream(fis);
-			System.setOut(out);
-			//System.setErr(out);
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+//		//TODO rediriger plutot l'output et les erreurs vers un fichier dans le script de lancement
+//		File file = new File("Data/logs.txt");
+//		FileOutputStream fis;
+//		try {
+//			fis = new FileOutputStream(file);
+//			PrintStream out = new PrintStream(fis);
+//			System.setOut(out);
+//			//System.setErr(out);
+//		} catch (FileNotFoundException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 		
 		
 

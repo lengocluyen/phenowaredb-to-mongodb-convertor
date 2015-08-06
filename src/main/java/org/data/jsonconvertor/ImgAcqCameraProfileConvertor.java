@@ -42,8 +42,7 @@ public class ImgAcqCameraProfileConvertor {
 			
 			String query = " select * from imgacqcameraprofiles where imgacqcameraprofileid > " + idMax + " order by imgacqcameraprofileid;";
 			ResultSet rs = iacpd.resultSet(query);
-			FileWriter file = new FileWriter(filename);
-			
+						
 			while (rs.next()) {
 				numIncrUriCamProf ++;
 				ImgAcqCameraProfile iacp = iacpd.get(rs);
@@ -83,6 +82,7 @@ public class ImgAcqCameraProfileConvertor {
 				cameraProfile.put("settings", settings);
 				
 				if (writeInFile){
+					FileWriter file = new FileWriter(filename);
 					String jsonString = new org.json.JSONObject(cameraProfile)
 					.toString();
 					// file.write("Document json "+i+"\n");
@@ -95,6 +95,7 @@ public class ImgAcqCameraProfileConvertor {
 					// jsonString);
 
 					file.flush();
+					file.close();
 				}
 
 				//Insertion du document JSON dans Mongodb
@@ -102,19 +103,21 @@ public class ImgAcqCameraProfileConvertor {
 			}
 
 			System.out.println("Finish");
-			file.close();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		try {
-			iacpd.getConnect().close();
-			System.out.println("Fermeture connexion ImgAcqCameraProfileDAO.");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		finally{
+			try {
+				iacpd.getConnect().close();
+				System.out.println("Fermeture connexion ImgAcqCameraProfileDAO.");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 	}
