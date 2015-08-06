@@ -43,7 +43,13 @@ public class WateringConvertor {
 			//date maximum des waterings deja presents dans la base mongodb
 			String dateMax = watDaoMongo.getDateMax();
 			System.out.println("Date max Watering dans mongodb " + dateMax);
-			String query = " select * from wateringresults where resultdate > '" + dateMax + "' order by resultdate;";
+			//id du dernier watering insere dans mongo
+			int lastId = watDaoMongo.getLastWateringid();
+			
+			String query = " select * from wateringresults where " +
+					"resultdate > '" + dateMax + "' or " +
+					"(resultdate = '" + dateMax + "' and wateringid > " + lastId +") " +
+					"order by resultdate, wateringid;";
 			ResultSet rs = ward.resultSet(query);
 
 			PlantDaoSesame pds = new PlantDaoSesame();

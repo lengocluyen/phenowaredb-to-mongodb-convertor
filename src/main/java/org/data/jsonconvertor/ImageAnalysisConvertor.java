@@ -46,9 +46,14 @@ public class ImageAnalysisConvertor {
 			//date maximum des analyses deja presentes dans la base mongodb
 			String dateMax = procResDaoMongo.getDateMax();
 			System.out.println("Date Max ImageAnalysis dans mongodb " + dateMax);
+			//resultid de la derniere analyse inseree dans mongodb
+			int lastId = procResDaoMongo.getLastResultid();
 
 
-			String query = " select * from imgprocresults where resultdate > '" + dateMax + "' order by resultdate;";
+			String query = " select * from imgprocresults where " +
+					"resultdate > '" + dateMax + "' or " +
+					"( resultdate = '" + dateMax + "' and resultid > " + lastId +") "+
+					"order by resultdate, resultid limit 100000;";
 			ResultSet rs = iprd.resultSet(query);
 
 			PlantDaoSesame pds = new PlantDaoSesame();

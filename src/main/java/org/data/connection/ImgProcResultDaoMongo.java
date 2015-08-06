@@ -54,4 +54,19 @@ public class ImgProcResultDaoMongo extends DAOMongo<ImgProcResult>{
 			return date;
 		}
 	}
+		
+		public int getLastResultid(){
+			Document doc = collection.find().sort(Sorts.descending("_id")).first(); //dernier document insere
+
+			if (doc == null)  //pas encore de document analyse dans la base
+				return 0;
+
+			Integer resultid = ((Document) doc.get("configuration")).getInteger("resultid"); // recuperation du resultid
+
+			if (resultid == null)  
+				return 0;
+			else {
+				return resultid;
+		}
+	}
 }

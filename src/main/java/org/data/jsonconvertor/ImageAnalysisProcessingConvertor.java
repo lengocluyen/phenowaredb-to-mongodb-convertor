@@ -11,14 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.bson.Document;
-import org.data.connection.ImageDao;
 import org.data.connection.ImgProcProfileDao;
 import org.data.connection.ImgProcProfileDaoMongo;
-import org.data.connection.ImgProcResultDao;
-import org.data.form.Image;
 import org.data.form.ImgProcProfile;
-import org.data.form.ImgProcResult;
-import org.data.handle.JsonReadWrite;
 import org.data.handle.Utils;
 
 public class ImageAnalysisProcessingConvertor {

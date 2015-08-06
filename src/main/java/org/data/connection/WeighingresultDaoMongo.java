@@ -52,4 +52,19 @@ public class WeighingresultDaoMongo extends DAOMongo<Weighingresult>{
 			return date;
 		}
 	}
+	
+	public int getLastWeighingid(){
+		Document doc = collection.find().sort(Sorts.descending("_id")).first(); //dernier doc insere
+
+		if (doc == null)  //pas encore de document pesee dans la base
+			return 0;
+
+		Integer weighingid = ((Document) doc.get("configuration")).getInteger("weighingid"); // recuperation du weighingid
+
+		if (weighingid == null)  
+			return 0;
+		else {
+			return weighingid;
+		}
+	}
 }

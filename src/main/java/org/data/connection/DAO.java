@@ -11,18 +11,21 @@ public abstract class DAO<T> {
 
 	public DAO(Connection conn) {
 		if (this.connect == null) {
-			try {
-				Class.forName("org.postgresql.Driver");
-				this.connect = DriverManager
-						.getConnection(
-								"jdbc:postgresql://lps-elcomdb.supagro.inra.fr:5432/phenowaredb",
-								"phis", "c1.61!");
-				this.connect.setAutoCommit(false);
-
-			} catch (Exception ex) {
+			if (conn != null)
 				this.connect = conn;
-				System.out.println("connectException : connexion = " + this.connect);
+			else{
+				try {
+					Class.forName("org.postgresql.Driver");
+					this.connect = DriverManager
+							.getConnection(
+									"jdbc:postgresql://lps-elcomdb.supagro.inra.fr:5432/phenowaredb",
+									"phis", "c1.61!");
+					this.connect.setAutoCommit(false);
 
+				} catch (Exception ex) {
+					System.out.println("connectException : connexion = " + this.connect);
+					ex.printStackTrace();
+				}
 			}
 		}
 	}

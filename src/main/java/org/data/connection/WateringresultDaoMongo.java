@@ -52,4 +52,19 @@ public class WateringresultDaoMongo extends DAOMongo<Wateringresult>{
 			return date;
 		}
 	}
+	
+	public int getLastWateringid(){
+		Document doc = collection.find().sort(Sorts.descending("_id")).first(); //dernier doc insere
+
+		if (doc == null)  //pas encore de document irrigation dans la base
+			return 0;
+
+		Integer wateringid = ((Document) doc.get("configuration")).getInteger("wateringid"); // recuperation du wateringid
+
+		if (wateringid == null)  
+			return 0;
+		else {
+			return wateringid;
+	}
+}
 }

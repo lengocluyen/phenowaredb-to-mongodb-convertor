@@ -105,6 +105,21 @@ public class ImageDaoMongo extends DAOMongo<Image>{
 		}
 	}
 	
+	public int getLastImgid(){
+		Document doc = collection.find().sort(Sorts.descending("_id")).first(); //dernier doc insere
+
+		if (doc == null)  //pas encore de document image dans la base
+			return 0;
+
+		Integer imgid = ((Document) doc.get("configuration")).getInteger("imgid"); // recuperation de l'imgid
+
+		if (imgid == null)  
+			return 0;
+		else {
+			return imgid;
+	}
+}
+	
 	public String getImageUriFromId(int id){
 		Document doc = collection.find(Filters.eq("configuration.imgid", id)).first();
 		if(doc == null)  //cet id est absent dans la base mongodb

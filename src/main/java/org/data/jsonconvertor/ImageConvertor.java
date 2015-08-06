@@ -45,12 +45,17 @@ public class ImageConvertor {
 			//date maximum des images deja presentes dans la base mongodb
 			String dateMax = imgDaoMongo.getDateMax();
 			System.out.println("DateMax dans mongodb " + dateMax);
+			//imgid de la derniere image inseree dans mongo
+			int lastId = imgDaoMongo.getLastImgid();
+		
 
-			 
 			CameraProfileDaoMongo camProfDaoMongo = new CameraProfileDaoMongo();
 			StationProfileDaoMongo statProfDaoMongo = new StationProfileDaoMongo();
 			
-			String query = " select * from images where acquisitiondate > '" + dateMax + "' order by acquisitiondate;";
+			String query = " select * from images where " +
+					"acquisitiondate > '" + dateMax + "' or " +
+					"(acquisitiondate = '" + dateMax + "' and imgid > " + lastId +") " +
+					"order by acquisitiondate, imgid;";
 			ResultSet rs = id.resultSet(query);
 			
 			

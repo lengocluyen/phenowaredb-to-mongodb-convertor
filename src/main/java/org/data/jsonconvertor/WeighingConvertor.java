@@ -37,7 +37,13 @@ public class WeighingConvertor {
 			//date maximum des pesees deja presentes dans la base mongodb
 			String dateMax = weighDaoMongo.getDateMax();
 			System.out.println("Date max Weighing dans mongodb " + dateMax);
-			String query = " select * from weighingresults where resultdate > '" + dateMax + "' order by resultdate ;";
+			// id de la derniere pesee inseree dans mongo
+			int lastId = weighDaoMongo.getLastWeighingid();
+			
+			String query = " select * from weighingresults where " +
+					"resultdate > '" + dateMax + "' or " +
+					"(resultdate = '" + dateMax + "' and weighingid > " + lastId +") " +
+					"order by resultdate, weighingid ;";
 			ResultSet rs = wrsd.resultSet(query);
 
 			PlantDaoSesame pds = new PlantDaoSesame();
