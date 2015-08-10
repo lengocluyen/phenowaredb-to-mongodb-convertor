@@ -129,11 +129,12 @@ public class WeighingresultDao extends DAO<Weighingresult> {
 		return result;
 	}
 
-	WeighingSetpointDao wsd = new WeighingSetpointDao(null);
-	PlantDao pld = new PlantDao(null);
-	StudyDao std = new StudyDao(null);
+
 	@Override
 	public Weighingresult get(ResultSet result) {
+		WeighingSetpointDao wsd = new WeighingSetpointDao(this.getConnect());
+		PlantDao pld = new PlantDao(this.getConnect());
+		StudyDao std = new StudyDao(this.getConnect());
 		Weighingresult temps = new Weighingresult();
 		try {
 			temps.setWeighingid(Utils.convertToInt(result.getInt("weighingid")));

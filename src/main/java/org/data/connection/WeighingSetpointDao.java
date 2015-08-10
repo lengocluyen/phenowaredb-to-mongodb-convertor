@@ -45,7 +45,7 @@ public class WeighingSetpointDao extends DAO<WeighingSetpoint>{
 	public WeighingSetpoint single(int taskid, int plantid, String studyname) {
 		// TODO Auto-generated method stub
 		try {
-			StudyDao sd = new StudyDao(null);
+			StudyDao sd = new StudyDao(this.getConnect());
 			Study s = sd.single(studyname);
 			List<WeighingSetpoint> ses = this.all();
 			for(WeighingSetpoint ws: ses){
@@ -100,7 +100,7 @@ public class WeighingSetpointDao extends DAO<WeighingSetpoint>{
 			ws.setStudyid(Utils.convertToInt(rs.getObject("studyid")));
 			ws.setScaletypeid(Utils.convertToInt(rs.getObject("Scaletypeid")));
 			
-			StudyDao sd = new StudyDao(null);
+			StudyDao sd = new StudyDao(this.getConnect());
 			Study s = sd.single(ws.getStudyid());
 			ws.setStudy(s);
 			return ws;
